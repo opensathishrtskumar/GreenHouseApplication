@@ -31,6 +31,6 @@
 		<authentication-provider ref="usernamePasswordAuthenticationProvider" />
 	</authentication-manager>
 	
-	<beans:bean id="usernamePasswordAuthenticationProvider" class="org.lemma.ems.infra.config.UsernamePasswordAuthenticationProvider"/>
+	<beans:bean id="usernamePasswordAuthenticationProvider" class="org.lemma.infra.config.UsernamePasswordAuthenticationProvider"/>
     
 </beans:beans>

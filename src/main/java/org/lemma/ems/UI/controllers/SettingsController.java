@@ -4,10 +4,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.lemma.ems.UI.model.Account;
+import org.lemma.ems.UI.model.ChangePasswordForm;
 import org.lemma.ems.UI.validator.ChangePasswordValidator;
 import org.lemma.ems.base.dao.UserDetailsDAO;
-import org.lemma.ems.model.Account;
-import org.lemma.ems.model.ChangePasswordForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

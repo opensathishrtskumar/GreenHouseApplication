@@ -1,11 +1,11 @@
-package org.lemma.ems.infra.config.scheduler;
+package org.lemma.infra.config.scheduler;
 
 import javax.annotation.PostConstruct;
 
-import org.lemma.ems.infra.config.scheduler.worker.ArchiveCleanupTask;
-import org.lemma.ems.infra.config.scheduler.worker.DailyBackUpTask;
-import org.lemma.ems.infra.config.scheduler.worker.MonthlyBackupTask;
 import org.lemma.ems.util.concurrency.ConcurrencyUtils;
+import org.lemma.infra.config.scheduler.worker.ArchiveCleanupTask;
+import org.lemma.infra.config.scheduler.worker.DailyBackUpTask;
+import org.lemma.infra.config.scheduler.worker.MonthlyBackupTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

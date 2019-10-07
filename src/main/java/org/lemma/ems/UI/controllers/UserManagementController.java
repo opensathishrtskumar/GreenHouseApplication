@@ -3,7 +3,7 @@ package org.lemma.ems.UI.controllers;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.lemma.ems.model.SignupForm;
+import org.lemma.ems.UI.model.SignupForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

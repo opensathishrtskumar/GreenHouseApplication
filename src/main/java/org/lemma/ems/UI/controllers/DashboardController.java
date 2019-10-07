@@ -3,7 +3,7 @@ package org.lemma.ems.UI.controllers;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.lemma.ems.model.DateRangeReportForm;
+import org.lemma.ems.UI.model.DateRangeReportForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

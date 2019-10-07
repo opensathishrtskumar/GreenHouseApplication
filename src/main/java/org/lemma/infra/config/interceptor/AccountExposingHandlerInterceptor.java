@@ -1,9 +1,9 @@
-package org.lemma.ems.infra.config.interceptor;
+package org.lemma.infra.config.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.lemma.ems.model.Account;
+import org.lemma.ems.UI.model.Account;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.HandlerInterceptor;

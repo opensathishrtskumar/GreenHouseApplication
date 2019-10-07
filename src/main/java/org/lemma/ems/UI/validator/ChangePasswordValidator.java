@@ -1,7 +1,7 @@
 package org.lemma.ems.UI.validator;
 
-import org.lemma.ems.model.Account;
-import org.lemma.ems.model.ChangePasswordForm;
+import org.lemma.ems.UI.model.Account;
+import org.lemma.ems.UI.model.ChangePasswordForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;

@@ -1,4 +1,4 @@
-package org.lemma.ems.infra.config.listener;
+package org.lemma.infra.config.listener;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

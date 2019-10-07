@@ -6,7 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.lemma.ems.model.DateRangeReportForm;
+import org.lemma.ems.UI.model.DateRangeReportForm;
 import org.lemma.ems.util.EMSUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

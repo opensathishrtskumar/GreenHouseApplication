@@ -1,4 +1,4 @@
-package org.lemma.ems.infra.config.scheduler.worker;
+package org.lemma.infra.config.scheduler.worker;
 
 import java.util.concurrent.Callable;
 

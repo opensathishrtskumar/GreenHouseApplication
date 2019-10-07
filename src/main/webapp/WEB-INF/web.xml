@@ -32,7 +32,7 @@
 	</listener>
 
 	<listener>
-		<listener-class>org.lemma.ems.infra.config.listener.EMSContextListener</listener-class>
+		<listener-class>org.lemma.infra.config.listener.EMSContextListener</listener-class>
 	</listener>
 
 	<!-- Secures the application -->

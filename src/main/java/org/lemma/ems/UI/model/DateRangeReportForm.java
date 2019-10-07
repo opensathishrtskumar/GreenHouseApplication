@@ -1,5 +1,5 @@
 
-package org.lemma.ems.model;
+package org.lemma.ems.UI.model;
 
 import javax.validation.constraints.NotNull;
 

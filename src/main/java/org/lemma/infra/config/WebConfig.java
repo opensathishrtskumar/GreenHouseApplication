@@ -1,12 +1,12 @@
 
-package org.lemma.ems.infra.config;
+package org.lemma.infra.config;
 
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.lemma.ems.infra.config.interceptor.AccountExposingHandlerInterceptor;
+import org.lemma.infra.config.interceptor.AccountExposingHandlerInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;

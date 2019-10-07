@@ -1,5 +1,5 @@
 
-package org.lemma.ems.infra.config;
+package org.lemma.infra.config;
 
 import javax.sql.DataSource;
 
