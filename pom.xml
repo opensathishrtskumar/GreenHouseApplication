@@ -7,6 +7,13 @@
 	<name>GreenHouseApplication</name>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<packaging>war</packaging>
+
+	<url>http://localhost:8080/GreenHouseApplication</url>
+	<description>Makes GreenHouse through proper Energy Management</description>
+	<organization>
+		<name>Lemma</name>
+	</organization>
+
 	<properties>
 		<java-version>1.8</java-version>
 		<org.springframework-version>4.2.2.RELEASE</org.springframework-version>
@@ -75,10 +82,6 @@
 			<version>${org.springframework.security-version}</version>
 		</dependency>
 
-		<!-- <dependency> <groupId>org.springframework.security.oauth</groupId> 
-			<artifactId>spring-security-oauth2</artifactId> <version>${org.springframework.security.oauth-version}</version> 
-			</dependency> -->
-
 		<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
 		<dependency>
 			<groupId>com.sun.mail</groupId>
@@ -145,6 +148,7 @@
 			<version>2.1</version>
 			<scope>provided</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>javax.servlet.jsp.jstl</groupId>
 			<artifactId>jstl-api</artifactId>
@@ -156,6 +160,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.glassfish.web</groupId>
 			<artifactId>jstl-impl</artifactId>
@@ -211,13 +216,13 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.9</version>
+			<version>5.1.48</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-dbcp2</artifactId>
-			<version>2.1.1</version>
+			<version>2.6.0</version>
 		</dependency>
 
 		<dependency>
@@ -358,4 +363,5 @@
 
 		</plugins>
 	</build>
+
 </project>

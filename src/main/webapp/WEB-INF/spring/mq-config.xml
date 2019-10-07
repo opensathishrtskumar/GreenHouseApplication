@@ -7,18 +7,14 @@
 						http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
 						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<context:component-scan base-package="org.lemma" />
-
-	<context:property-placeholder location="classpath:/prop/application.properties"
-		system-properties-mode="OVERRIDE" />
-
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" lazy-init="false" destroy-method="close">
+	<bean id="mysql" class="org.apache.commons.dbcp2.BasicDataSource"
+		lazy-init="false" destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="${dburl}" />
 		<property name="defaultAutoCommit" value="true" />
-		<property name="initialSize" value="5" />
-		<property name="minIdle" value="10" />
-		<property name="maxTotal" value="30" />
+		<property name="initialSize" value="1" />
+		<property name="minIdle" value="3" />
+		<property name="maxTotal" value="5" />
 		<property name="validationQuery" value="select 1" />
 		<property name="testOnBorrow" value="true" />
 		<property name="minEvictableIdleTimeMillis" value="5000" />
@@ -26,13 +22,6 @@
 		<property name="removeAbandonedTimeout" value="10" />
 		<property name="timeBetweenEvictionRunsMillis" value="5000" />
 	</bean>
-	
 
-	<task:annotation-driven executor="taskExecutor" scheduler="scheduler" />
-
-	<task:executor id="taskExecutor" keep-alive="120"
-		pool-size="10-50" queue-capacity="100" rejection-policy="CALLER_RUNS" />
-
-	<task:scheduler id="scheduler" pool-size="15" />
 
 </beans>

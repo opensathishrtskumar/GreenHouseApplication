@@ -14,14 +14,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class DataBaseConfig {
 
 	@Autowired
-	@Qualifier("basicDataSource")
+	@Qualifier("dataSource")
 	private DataSource dataSource;
 
+	
 	/**
 	 * Allows repositories to access RDBMS data using the JDBC API.
 	 */
 	@Bean
-	@DependsOn("basicDataSource")
+	@DependsOn("dataSource")
 	public JdbcTemplate jdbcTemplate() {
 		return new JdbcTemplate(dataSource);
 	}
