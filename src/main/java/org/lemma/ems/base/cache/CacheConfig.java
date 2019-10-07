@@ -10,11 +10,17 @@ import org.springframework.core.io.ClassPathResource;
 @Configuration
 public class CacheConfig {
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public CacheManager cacheManager() {
 		return new EhCacheCacheManager(ehCacheCacheManager().getObject());
 	}
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public EhCacheManagerFactoryBean ehCacheCacheManager() {
 		EhCacheManagerFactoryBean factory = new EhCacheManagerFactoryBean();
