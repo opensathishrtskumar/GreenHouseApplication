@@ -6,7 +6,6 @@ import static org.lemma.ems.constants.EmsConstants.TIMEOUT;
 import static org.lemma.ems.constants.MessageConstants.REPORT_KEY_SEPARATOR;
 import static org.lemma.ems.constants.MessageConstants.REPORT_RECORD_SEPARATOR;
 
-import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,8 +27,9 @@ import java.util.stream.Collectors;
 
 import org.lemma.ems.UI.dto.DeviceDetailsDTO;
 import org.lemma.ems.UI.dto.ExtendedSerialParameter;
-import org.lemma.ems.UI.dto.GroupsDTO;
 import org.lemma.ems.UI.dto.SplitJoinDTO;
+import org.lemma.ems.base.core.util.MemoryMappingParser;
+import org.lemma.ems.base.core.util.OrderedProperties;
 import org.lemma.ems.constants.EmsConstants;
 import org.lemma.ems.reports.summary.MeterSummary;
 import org.lemma.ems.scheduler.base.SchedulerConstants;

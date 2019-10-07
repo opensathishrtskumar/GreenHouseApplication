@@ -11,7 +11,7 @@ import javax.annotation.PostConstruct;
 import org.lemma.ems.UI.dto.DeviceDetailsDTO;
 import org.lemma.ems.UI.dto.SettingsDTO;
 import org.lemma.ems.base.cache.CacheUtil;
-import org.lemma.ems.constants.QueryConstants;
+import org.lemma.ems.base.dao.constants.QueryConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

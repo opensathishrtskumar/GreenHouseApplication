@@ -169,29 +169,7 @@ public abstract class Helper {
 		return timerange;
 	}
 	
-	
-	
-	
-	
 	public static void main(String[] args) throws Exception {
-		/*
-		 * Properties prop = getInitialMainConfig(); prop.put(EMAIL_DETAILS_KEY,
-		 * EMSUtility.convertObjectToJSONString(new EmailDTO()));
-		 * TempDataManager.writeTempConfig(prop, TempDataManager.MAIN_CONFIG);
-		 */
-		/*
-		 * prop.list(System.out); String p =
-		 * prop.getProperty(EMAIL_DETAILS_KEY);
-		 * System.out.println(EMSUtility.convertJson2Object(p, EmailDTO.class));
-		 */
-
-		/*
-		 * Properties props =
-		 * TempDataManager.retrieveTempConfig(TempDataManager.MAIN_CONFIG);
-		 * String p = props.getProperty(EMAIL_DETAILS_KEY);
-		 * System.out.println(EMSUtility.convertJson2Object(p, EmailDTO.class));
-		 */
-
-		// TempDataManager.writeTempConfig(props, TempDataManager.MAIN_CONFIG);
+	
 	}
 }

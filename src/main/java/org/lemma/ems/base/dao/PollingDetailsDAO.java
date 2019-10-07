@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 import org.lemma.ems.UI.dto.DeviceDetailsDTO;
 import org.lemma.ems.UI.dto.PollingDetailDTO;
 import org.lemma.ems.UI.dto.SettingsDTO;
-import org.lemma.ems.constants.QueryConstants;
+import org.lemma.ems.base.dao.constants.QueryConstants;
 import org.lemma.ems.reports.summary.finder.SummaryFinder;
 import org.lemma.ems.util.EMSUtility;
 import org.slf4j.Logger;

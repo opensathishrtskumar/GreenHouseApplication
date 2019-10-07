@@ -1,13 +1,13 @@
 package org.lemma.ems.constants;
 
-import static org.lemma.ems.constants.DBConstants.HOST;
-import static org.lemma.ems.constants.DBConstants.PASSWORD;
-import static org.lemma.ems.constants.DBConstants.PORT;
-import static org.lemma.ems.constants.DBConstants.USERNAME;
+import static org.lemma.ems.base.dao.constants.DBConstants.HOST;
+import static org.lemma.ems.base.dao.constants.DBConstants.PASSWORD;
+import static org.lemma.ems.base.dao.constants.DBConstants.PORT;
+import static org.lemma.ems.base.dao.constants.DBConstants.USERNAME;
 
 public abstract class MessageConstants {
 
-	public static final String NOT_IMPLEMNENTED = "The Required function is not implementd";
+	public static final String NOT_IMPLEMNENTED = "The Required function is not implemented";
 	public static final String[] DBCONFIG_KEY = { HOST, PORT, USERNAME, PASSWORD };
 	public static final String REPORT_KEY_SEPARATOR = "=";
 	public static final String REPORT_RECORD_SEPARATOR = System.lineSeparator();
