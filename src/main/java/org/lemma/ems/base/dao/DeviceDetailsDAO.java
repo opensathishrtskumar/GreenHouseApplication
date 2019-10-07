@@ -46,7 +46,7 @@ public class DeviceDetailsDAO {
 	}
 
 	private Map<String, String> loadSettings() {
-		logger.debug("loading settings...");
+		logger.debug("loading settings....");
 		List<SettingsDTO> settingsList = pollingDao.fetchSettings();
 		this.settings = new HashMap<>();
 
