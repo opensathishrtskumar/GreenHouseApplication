@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+	<definition name="dashboard" extends="homeSignedIn">
+		<put-attribute name="content" value="/WEB-INF/views/dashboard/dashboard.jsp" />
+	</definition>
+	
+	<definition name="dashboard/chartview" extends="homeSignedIn">
+		<put-attribute name="content" value="/WEB-INF/views/dashboard/chartview.jsp" />
+		
+		<put-list-attribute name="styles" inherit="true">
+			<add-attribute value="/resources/jquery/multiselect/css/jquery.multiselect.css" />
+			<add-attribute value="/resources/dashboard/css/dashboard.css" />
+		</put-list-attribute>
+
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/resources/jquery/multiselect/js/jquery.multiselect.js" />
+			<add-attribute value="/resources/dashboard/js/dashboard.js" />
+		</put-list-attribute>
+		
+	</definition>
+	
+</tiles-definitions>

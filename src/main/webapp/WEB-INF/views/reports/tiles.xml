@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+	<definition name="reports" extends="homeSignedIn">
+		<put-attribute name="content" value="/WEB-INF/views/reports/reports.jsp" />
+	</definition>
+	
+	<definition name="reports/daterange" extends="homeSignedIn">
+		<put-attribute name="content" value="/WEB-INF/views/reports/daterange.jsp" />
+		
+		<put-list-attribute name="styles" inherit="true">
+			<add-attribute value="/resources/datetimepicker/css/bootstrap-combined.min.css" />
+			<add-attribute value="/resources/datetimepicker/css/bootstrap-datetimepicker.min.css" />
+			<add-attribute value="/resources/jquery/multiselect/css/jquery.multiselect.css" />
+			<add-attribute value="/resources/reports/css/reports.css" />
+		</put-list-attribute>
+
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/resources/datetimepicker/js/bootstrap.min.js" />
+			<add-attribute value="/resources/datetimepicker/js/bootstrap-datetimepicker.min.js" />
+			<add-attribute value="/resources/jquery/multiselect/js/jquery.multiselect.js" />
+			<add-attribute value="/resources/reports/js/reports.js" />
+		</put-list-attribute>
+		
+	</definition>
+	
+</tiles-definitions>
