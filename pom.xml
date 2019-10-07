@@ -295,6 +295,37 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/security-1.0.jar</systemPath>
 		</dependency>
+		
+		<!-- <dependency>
+		    <groupId>org.apache.activemq</groupId>
+		    <artifactId>activemq-broker</artifactId>
+		    <version>5.15.8</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.apache.xbean</groupId>
+		    <artifactId>xbean-spring</artifactId>
+		    <version>4.14</version>
+		</dependency> -->
+				
+		<dependency>
+		    <groupId>org.apache.activemq</groupId>
+		    <artifactId>activemq-spring</artifactId>
+		    <version>5.15.5</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.apache.activemq</groupId>
+		    <artifactId>activemq-kahadb-store</artifactId>
+		    <version>5.15.5</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.apache.activemq</groupId>
+		    <artifactId>activemq-core</artifactId>
+		    <version>5.7.0</version>
+		</dependency>
+								
 
 	</dependencies>
 	<repositories>
