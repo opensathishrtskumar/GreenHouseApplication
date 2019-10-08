@@ -13,9 +13,6 @@
 	<!--Embeded broker configured to use KahaDB(File system storage)  -->
 
 	<broker xmlns="http://activemq.apache.org/schema/core"  useJmx="false" brokerName="localhost" dataDirectory="${java.io.tmpdir}">
-		 <managementContext>
-            <managementContext createConnector="false"/>
-        </managementContext>
         
         <destinationPolicy>
             <policyMap>

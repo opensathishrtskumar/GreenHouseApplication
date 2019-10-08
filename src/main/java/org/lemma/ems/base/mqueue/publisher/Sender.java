@@ -1,5 +1,7 @@
 package org.lemma.ems.base.mqueue.publisher;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jms.core.JmsTemplate;
@@ -11,9 +13,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class Sender {
-
+	
+	private static final Logger logger = LoggerFactory.getLogger(Sender.class);
+	
 	@Autowired
-	@Qualifier("publisherTemplate")
+	@Qualifier("topicPublisherTemplate")
 	private JmsTemplate senderTemplate;
 
 	/**
@@ -22,6 +26,7 @@ public class Sender {
 	 */
 	public void publishEvent(String topic, Object message) {
 		senderTemplate.convertAndSend(topic, message);
+		logger.debug("Message published {}", System.currentTimeMillis());
 	}
 
 }

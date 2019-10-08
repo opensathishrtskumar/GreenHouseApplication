@@ -7,7 +7,7 @@ import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
 /**
- * @author RTS Sathish  Kumar
+ * @author RTS Sathish Kumar
  *
  */
 @Component
@@ -16,13 +16,13 @@ public class Receiver {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Receiver.class);
 
-	@JmsListener(destination = "${startup.notification}", containerFactory = "subscriberConfig")
-	public void receive1(String message) {	
-		LOGGER.info("'subscriber1' received message='{}'", message);
+	@JmsListener(destination = "${startup.notification}", containerFactory = "topicSubscriberConfig")
+	public void receive1(String message) {
+		LOGGER.info("'subscriber1' received message='{}' time={}", message, System.currentTimeMillis());
 	}
 
-	@JmsListener(destination = "${startup.notification}", containerFactory = "subscriberConfig")
+	@JmsListener(destination = "${startup.notification}", containerFactory = "topicSubscriberConfig")
 	public void receive2(String message) {
-		LOGGER.info("'subscriber2' received message='{}'", message);
+		LOGGER.info("'subscriber2' received message='{}' time={}", message, System.currentTimeMillis());
 	}
 }

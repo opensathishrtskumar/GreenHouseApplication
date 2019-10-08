@@ -10,7 +10,7 @@ import org.springframework.jms.core.JmsTemplate;
 @Configuration
 public class SenderConfig {
 
-	@Value("${activemq.tcp-broker-url}")
+	@Value("${activemq.vm-broker-url}")
 	private String brokerUrl;
 
 	@Bean(name = "publisherConfig")
@@ -19,7 +19,10 @@ public class SenderConfig {
 		activeMQConnectionFactory.setBrokerURL(brokerUrl);
 		activeMQConnectionFactory.setAlwaysSyncSend(false);
 		activeMQConnectionFactory.setAlwaysSessionAsync(true);
-		//FIXME : configure pooled connection facctory
+		activeMQConnectionFactory.setDispatchAsync(true);
+		activeMQConnectionFactory.setDisableTimeStampsByDefault(true);
+		activeMQConnectionFactory.setUseAsyncSend(true);
+		activeMQConnectionFactory.setMaxThreadPoolSize(10);
 		return activeMQConnectionFactory;
 	}
 
@@ -28,7 +31,7 @@ public class SenderConfig {
 		return new CachingConnectionFactory(senderActiveMQConnectionFactory());
 	}
 
-	@Bean(name  = "publisherTemplate")
+	@Bean(name = "topicPublisherTemplate")
 	public JmsTemplate jmsTemplate() {
 		JmsTemplate jmsTemplate = new JmsTemplate(cachingConnectionFactory());
 		jmsTemplate.setPubSubDomain(true);
