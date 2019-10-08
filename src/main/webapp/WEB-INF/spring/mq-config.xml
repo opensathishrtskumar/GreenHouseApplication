@@ -57,16 +57,13 @@
 		</persistenceAdapter>
 
 		<transportConnectors>
-			<transportConnector name="openwire" uri="tcp://localhost:61616?maximumConnections=500&amp;wireFormat.maxFrameSize=104857600" />
-			<transportConnector name="vm" uri="vm://localhost:61617?maximumConnections=500&amp;wireFormat.maxFrameSize=104857600" />
+			<transportConnector name="tcpconnector" uri="${activemq.tcp-broker-url}" />
+			<transportConnector name="vmconnector" uri="${activemq.vm-broker-url}" />
 		</transportConnectors>
 		
 		<shutdownHooks>
             <bean xmlns="http://www.springframework.org/schema/beans" class="org.apache.activemq.hooks.SpringContextHook" />
         </shutdownHooks>
 	</broker>
-	
-	
-	
 
 </beans>
