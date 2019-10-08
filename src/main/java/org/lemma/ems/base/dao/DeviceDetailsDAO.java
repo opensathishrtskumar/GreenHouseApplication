@@ -1,7 +1,5 @@
 package org.lemma.ems.base.dao;
 
-import static org.lemma.ems.base.cache.CacheConstants.ACTIVE_DEVICES;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +8,9 @@ import javax.annotation.PostConstruct;
 
 import org.lemma.ems.UI.dto.DeviceDetailsDTO;
 import org.lemma.ems.UI.dto.SettingsDTO;
+import org.lemma.ems.base.cache.CacheEntryConstants;
 import org.lemma.ems.base.cache.CacheUtil;
+import org.lemma.ems.base.cache.Caches;
 import org.lemma.ems.base.dao.constants.QueryConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,11 +68,14 @@ public class DeviceDetailsDAO {
 
 	public List<DeviceDetailsDTO> fetchActiveDeviceDetails() {
 		logger.debug("loading active devices...");
-		List<DeviceDetailsDTO> activeDevices = cacheUtil.getCacheEntry(ACTIVE_DEVICES, List.class);
+
+		String name = CacheEntryConstants.ACTIVE_DEVICES.getName();
+
+		List<DeviceDetailsDTO> activeDevices = cacheUtil.getCacheEntry(Caches.ETERNAL, name, List.class);
 
 		if (activeDevices == null) {
 			activeDevices = pollingDao.fetchAllDeviceDetails(QueryConstants.SELECT_ENABLED_ENDEVICES, new Object[] {});
-			cacheUtil.putCacheEntry(ACTIVE_DEVICES, activeDevices);
+			cacheUtil.putCacheEntry(Caches.ETERNAL, name, activeDevices);
 		}
 
 		logger.debug("loaded active devices...");

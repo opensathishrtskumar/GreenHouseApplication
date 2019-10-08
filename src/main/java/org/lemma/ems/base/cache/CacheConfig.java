@@ -7,8 +7,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
+/**
+ * @author RTS Sathish  Kumar
+ *
+ */
 @Configuration
-public class CacheConfig {
+final class CacheConfig {
 
 	/**
 	 * @return

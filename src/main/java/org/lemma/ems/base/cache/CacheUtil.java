@@ -6,23 +6,21 @@ import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CacheUtil {
-
-	public static final String CACHENAME = "emscache";
+public final class CacheUtil {
 
 	@Autowired
 	private CacheManager cacheManager;
 
-	public Cache getCache() {
-		return cacheManager.getCache(CACHENAME);
+	public Cache getCache(Caches cache) {
+		return cacheManager.getCache(cache.getName());
 	}
 
-	public void putCacheEntry(String key, Object value) {
-		getCache().put(key, value);
+	public void putCacheEntry(Caches cache, String key, Object value) {
+		getCache(cache).put(key, value);
 	}
 
-	public <T> T getCacheEntry(String key, Class<T> className) {
-		return getCache().get(key, className);
+	public <T> T getCacheEntry(Caches cache, String key, Class<T> className) {
+		return getCache(cache).get(key, className);
 	}
 
 }
