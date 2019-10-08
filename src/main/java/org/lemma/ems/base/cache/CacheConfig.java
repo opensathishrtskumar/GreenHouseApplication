@@ -12,7 +12,7 @@ import org.springframework.core.io.ClassPathResource;
  *
  */
 @Configuration
-final class CacheConfig {
+public class CacheConfig {
 
 	/**
 	 * @return
