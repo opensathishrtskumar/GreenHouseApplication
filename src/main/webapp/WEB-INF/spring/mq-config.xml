@@ -57,8 +57,8 @@
 		</persistenceAdapter>
 
 		<transportConnectors>
-			<transportConnector name="tcpconnector" uri="${activemq.tcp-broker-url}" />
-			<transportConnector name="vmconnector" uri="${activemq.vm-broker-url}" />
+			<transportConnector name="tcpconnector" uri="${activemq.tcp-broker-url}?maximumConnections=500&amp;wireFormat.maxFrameSize=104857600" />
+			<transportConnector name="vmconnector" uri="${activemq.vm-broker-url}?broker.persistent=true,useShutdownHook=false" />
 		</transportConnectors>
 		
 		<shutdownHooks>

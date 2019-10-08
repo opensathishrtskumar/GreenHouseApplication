@@ -14,7 +14,7 @@ public class ReceiverConfig {
 	@Value("${activemq.tcp-broker-url}")
 	private String brokerUrl;
 
-	@Bean(name = "subscriberConfig")
+	@Bean
 	public ActiveMQConnectionFactory receiverActiveMQConnectionFactory() {
 		ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory();
 		activeMQConnectionFactory.setBrokerURL(brokerUrl);
@@ -22,7 +22,7 @@ public class ReceiverConfig {
 		return activeMQConnectionFactory;
 	}
 
-	@Bean
+	@Bean(name = "subscriberConfig")
 	public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
 		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
 		factory.setConnectionFactory(receiverActiveMQConnectionFactory());
