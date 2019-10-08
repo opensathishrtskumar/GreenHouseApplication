@@ -27,6 +27,12 @@
 		<property name="timeBetweenEvictionRunsMillis" value="5000" />
 	</bean>
 	
+	<!-- Expose bean in jndi -->
+	<bean class="org.lemma.ems.base.jndi.JndiExporter">
+	    <property name="bean" ref="dataSource" />
+	    <property name="jndiName" value="dataSource"/>
+	</bean>
+	
 
 	<task:annotation-driven executor="taskExecutor" scheduler="scheduler" />
 

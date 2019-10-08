@@ -32,7 +32,7 @@ import org.lemma.ems.base.core.util.MemoryMappingParser;
 import org.lemma.ems.base.core.util.OrderedProperties;
 import org.lemma.ems.constants.EmsConstants;
 import org.lemma.ems.reports.summary.MeterSummary;
-import org.lemma.ems.scheduler.base.SchedulerConstants;
+import org.lemma.ems.scheduler.util.SchedulerConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
