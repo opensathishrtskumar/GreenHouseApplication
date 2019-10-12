@@ -35,10 +35,21 @@ public final class CacheUtil {
 		return getCache(Caches.ETERNAL).get(key, className);
 	}
 	
+	/**
+	 * @param cache
+	 * @param key
+	 * @param value
+	 */
 	public void putCacheEntry(Caches cache, String key, Object value) {
 		getCache(cache).put(key, value);
 	}
 
+	/**
+	 * @param cache
+	 * @param key
+	 * @param className
+	 * @return
+	 */
 	public <T> T getCacheEntry(Caches cache, String key, Class<T> className) {
 		return getCache(cache).get(key, className);
 	}

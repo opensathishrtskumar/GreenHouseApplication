@@ -9,4 +9,8 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- Dont configure in Servlet Context, configured in Context loaded itself -->
+	
+	<!-- Beans configured is specific to Dispatcher, Context Beans are global -->
+	
+	<!-- Dispatcher to Context possbile, not reverse -->
 </beans:beans>

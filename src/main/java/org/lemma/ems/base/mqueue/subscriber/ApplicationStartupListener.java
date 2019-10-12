@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.lemma.ems.UI.dto.SchedulesDTO;
 import org.lemma.ems.UI.dto.SettingsDTO;
 import org.lemma.ems.base.cache.CacheEntryConstants;
 import org.lemma.ems.base.cache.CacheUtil;
-import org.lemma.ems.base.dao.SetttingsDAO;
+import org.lemma.ems.base.dao.SchedulesDAO;
+import org.lemma.ems.base.dao.SettingsDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +31,21 @@ public class ApplicationStartupListener {
 	private CacheUtil cacheUtil;
 	
 	@Autowired
-	private SetttingsDAO settingsDao;
+	private SettingsDAO settingsDao;
+	
+	
+	@Autowired
+	private SchedulesDAO schedulesDAO;
+	
 	
 
 	/* constants */
 	public static final String APP_STARTUP = "APP.INIT.TOPIC";
 
+	/**
+	 * @param message
+	 * @throws Exception
+	 */
 	@JmsListener(destination = APP_STARTUP, containerFactory = "topicSubscriberConfig")
 	public void loadSettings2Cache(Object message) throws Exception {
 		List<SettingsDTO> settings = settingsDao.fetchSettings();
@@ -51,8 +62,23 @@ public class ApplicationStartupListener {
 		logger.info("loadSettings2Cache Loading Settings into Cache {}", message);
 	}
 
+	/**
+	 * @param message
+	 */
 	@JmsListener(destination = APP_STARTUP, containerFactory = "topicSubscriberConfig")
 	public void loadDeviceDetails2Cache(Object message) {
 		logger.info("loadDeviceDetails2Cache Loading Settings into Cache {}", message);
+		//TODO:
+	}
+	
+	/**
+	 * @param message
+	 */
+	@JmsListener(destination = APP_STARTUP, containerFactory = "topicSubscriberConfig")
+	public void triggerSchedules(Object message) {
+		logger.info("triggerSchedules Loading Settings into Cache {}", message);
+		
+		List<SchedulesDTO> activeSchedules = schedulesDAO.fetchActiveSchedules();
+		
 	}
 }

@@ -1,5 +1,7 @@
 package org.lemma.infra.config.listener;
 
+import static org.springframework.web.context.ContextLoader.CONTEXT_INITIALIZER_CLASSES_PARAM;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
@@ -17,8 +19,6 @@ import org.springframework.web.WebApplicationInitializer;
  */
 @Component
 public class WebAppInitializer implements WebApplicationInitializer {
-
-	private static final String CONTEXT_INITIALIZER_CLASSES_PARAM = "contextInitializerClasses";
 
 	/*
 	 * (non-Javadoc)

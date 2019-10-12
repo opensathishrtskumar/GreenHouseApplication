@@ -25,9 +25,9 @@ import com.ems.security.Security;
  *
  */
 @Repository
-public class SetttingsDAO {
+public class SettingsDAO {
 
-	private static final Logger logger = LoggerFactory.getLogger(SetttingsDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(SettingsDAO.class);
 	
 	public static enum SettingsGroup{
 		EMAIL("EMAIL");
@@ -61,13 +61,13 @@ public class SetttingsDAO {
 	
 
 	/* Queries related to SetttingsDAO TABLE */
-	private static final String FETCH_SETTINGS = "select * from settings";
+	private static final String FETCH_SETTINGS = "select * from setup.settings";
 
 	@Autowired
 	private Security security;
 
 	@Inject
-	public SetttingsDAO(JdbcTemplate jdbcTemplate) {
+	public SettingsDAO(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
