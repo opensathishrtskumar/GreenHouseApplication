@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.lemma.ems.UI.model.Account;
+import org.lemma.ems.UI.dto.UserDetailsDTO;
 import org.lemma.ems.UI.model.ChangePasswordForm;
 import org.lemma.ems.UI.validator.ChangePasswordValidator;
 import org.lemma.ems.base.dao.UserDetailsDAO;
@@ -23,18 +23,18 @@ import com.ems.security.Security;
 @Controller
 public class SettingsController {
 	private static final Logger logger = LoggerFactory.getLogger(SettingsController.class);
-	
+
 	@Autowired
 	private Security security;
 
 	@Autowired
 	private UserDetailsDAO userDetailsDAO;
-	
+
 	@RequestMapping(value = "/ems/settings", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView showSettings(HttpServletRequest request, HttpServletResponse response) {
 		return new ModelAndView("settings");
 	}
-	
+
 	@RequestMapping(value = "/ems/changePassword", method = RequestMethod.GET)
 	public ModelAndView getChangePassword(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView view = new ModelAndView("reset/changePassword");
@@ -60,8 +60,8 @@ public class SettingsController {
 		view.addObject("message", count);
 
 		// Set the current password back in context
-		Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		account.setEncryptedPassword(form.getConfirmPassword());
+		UserDetailsDTO account = (UserDetailsDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		account.setPassword(form.getConfirmPassword());
 
 		return view;
 	}

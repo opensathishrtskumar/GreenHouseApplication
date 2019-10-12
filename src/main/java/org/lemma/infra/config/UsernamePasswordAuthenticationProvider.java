@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.lemma.ems.UI.model.Account;
+import org.lemma.ems.UI.dto.UserDetailsDTO;
 import org.lemma.ems.base.dao.UserDetailsDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +16,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 
 /**
- * @author RTS Sathish  Kumar
+ * @author RTS Sathish Kumar
  * 
- * Custom Authentication Provider
+ *         Custom Authentication Provider
  */
 public class UsernamePasswordAuthenticationProvider implements AuthenticationProvider {
 
@@ -28,7 +28,7 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
 
 	@PostConstruct
 	public void init() {
-		logger.debug("UsernamePasswordAuthentication initialized");
+		logger.trace("UsernamePasswordAuthentication initialized");
 	}
 
 	/**
@@ -39,15 +39,19 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
 		this.accountRepository = accountRepository;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.springframework.security.authentication.AuthenticationProvider#authenticate(org.springframework.security.core.Authentication)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.security.authentication.AuthenticationProvider#
+	 * authenticate(org.springframework.security.core.Authentication)
 	 */
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
 		try {
-			Account account = accountRepository.authenticate(token.getName(), (String) token.getCredentials());
-			return authenticatedToken(account, authentication);
+			UserDetailsDTO userDetails = accountRepository.authenticate(token.getName(),
+					(String) token.getCredentials(), UserDetailsDAO.ACTIVE);
+			return authenticatedToken(userDetails, authentication);
 		} catch (Exception e) {
 			logger.error("{}", e);
 			throw new org.springframework.security.core.userdetails.UsernameNotFoundException(token.getName(), e);
@@ -68,9 +72,9 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
 	 * @param original
 	 * @return
 	 */
-	private Authentication authenticatedToken(Account account, Authentication original) {
+	private Authentication authenticatedToken(UserDetailsDTO userDetails, Authentication original) {
 		List<GrantedAuthority> authorities = null;
-		UsernamePasswordAuthenticationToken authenticated = new UsernamePasswordAuthenticationToken(account, null,
+		UsernamePasswordAuthenticationToken authenticated = new UsernamePasswordAuthenticationToken(userDetails, null,
 				authorities);
 		authenticated.setDetails(original.getDetails());
 		return authenticated;

@@ -1,6 +1,6 @@
 package org.lemma.ems.UI.validator;
 
-import org.lemma.ems.UI.model.Account;
+import org.lemma.ems.UI.dto.UserDetailsDTO;
 import org.lemma.ems.UI.model.ChangePasswordForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ public class ChangePasswordValidator {
 		}
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Account account = (Account) authentication.getPrincipal();
+		UserDetailsDTO account = (UserDetailsDTO) authentication.getPrincipal();
 
 		form.setId(account.getId());
 
@@ -44,7 +44,7 @@ public class ChangePasswordValidator {
 			logger.error(" password encryption error {}", e);
 		}
 
-		if (!encryptedPassword.equals(account.getEncryptedPassword())) {
+		if (!encryptedPassword.equals(account.getPassword())) {
 			formBinding.rejectValue("oldPassword", "changepassword.mismatch");
 		}
 

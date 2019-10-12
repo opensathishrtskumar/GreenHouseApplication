@@ -3,7 +3,7 @@ package org.lemma.infra.config.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.lemma.ems.UI.model.Account;
+import org.lemma.ems.UI.dto.UserDetailsDTO;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -21,8 +21,10 @@ public class AccountExposingHandlerInterceptor implements HandlerInterceptor {
 	 * @see org.springframework.web.servlet.HandlerInterceptor#preHandle(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object)
 	 */
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();		
-		if (auth != null && auth.getPrincipal() instanceof Account) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		//Sets UserDetailsDTO in every request
+		if (auth != null && auth.getPrincipal() instanceof UserDetailsDTO) {
 			request.setAttribute("account", auth.getPrincipal());
 		}
 		return true;
