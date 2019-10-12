@@ -19,13 +19,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.env.Environment;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.support.StandardServletEnvironment;
 
 @RestController
 @RequestMapping("/rest")
@@ -48,20 +46,14 @@ public class HelperController {
 	@Value("${startup.notification}")
 	private String startupNotification;
 	
-	@Autowired
-	private Environment environment; 
-
 	@RequestMapping(value = "/publish", method = RequestMethod.GET)
 	@ResponseBody
 	public DeviceDetailsDTO publish() {
 
-		sender.publishEvent(startupNotification, "SUCCESS");
-
 		DeviceDetailsDTO dto = new DeviceDetailsDTO();
 		dto.setDeviceName("EMSDevice");
-		StandardServletEnvironment env;
 		
-		logger.debug(" environment {}",environment.getClass().getCanonicalName());
+		sender.publishEvent(startupNotification, "SUCCESS");
 
 		return dto;
 	}

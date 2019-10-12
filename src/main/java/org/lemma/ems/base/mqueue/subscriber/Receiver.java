@@ -1,5 +1,6 @@
 package org.lemma.ems.base.mqueue.subscriber;
 
+import org.lemma.ems.UI.dto.DeviceDetailsDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jms.annotation.EnableJms;
@@ -17,12 +18,12 @@ public class Receiver {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Receiver.class);
 
 	@JmsListener(destination = "${startup.notification}", containerFactory = "topicSubscriberConfig")
-	public void receive1(String message) {
+	public void receive1(DeviceDetailsDTO message) {
 		LOGGER.info("'subscriber1' received message='{}' time={}", message, System.currentTimeMillis());
 	}
 
 	@JmsListener(destination = "${startup.notification}", containerFactory = "topicSubscriberConfig")
-	public void receive2(String message) {
+	public void receive2(DeviceDetailsDTO message) {
 		LOGGER.info("'subscriber2' received message='{}' time={}", message, System.currentTimeMillis());
 	}
 }
