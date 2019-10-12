@@ -48,11 +48,11 @@ public class ApplicationStartupListener {
 		 */
 		cacheUtil.putCacheEntry(CacheEntryConstants.SETTINGS.getName(), collect);
 		
-		logger.info("EventListener 1 Loading Settings into Cache {}", message);
+		logger.info("loadSettings2Cache Loading Settings into Cache {}", message);
 	}
 
 	@JmsListener(destination = APP_STARTUP, containerFactory = "topicSubscriberConfig")
-	public void applicationStartupEvent2(Object message) {
-		logger.info("EventListener 2 Loading Settings into Cache {}", message);
+	public void loadDeviceDetails2Cache(Object message) {
+		logger.info("loadDeviceDetails2Cache Loading Settings into Cache {}", message);
 	}
 }
