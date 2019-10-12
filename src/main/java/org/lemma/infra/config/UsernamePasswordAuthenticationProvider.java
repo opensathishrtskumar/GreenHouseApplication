@@ -1,5 +1,6 @@
 package org.lemma.infra.config;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -73,7 +74,7 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
 	 * @return
 	 */
 	private Authentication authenticatedToken(UserDetailsDTO userDetails, Authentication original) {
-		List<GrantedAuthority> authorities = null;
+		List<GrantedAuthority> authorities = new ArrayList<>();
 		UsernamePasswordAuthenticationToken authenticated = new UsernamePasswordAuthenticationToken(userDetails, null,
 				authorities);
 		authenticated.setDetails(original.getDetails());
