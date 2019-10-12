@@ -11,16 +11,7 @@
 	<div class="formInfo">
 		<h2>Sign In</h2>
 		<c:if test="${not empty param['error']}">
-			<c:set var="error" scope="page" value="${param['error']}" />
-			<c:choose>
-				<c:when test="${error == '1'} }">
-					<div class="error">Your sign in information was incorrect.
-						Please try again.</div>
-				</c:when>
-				<c:otherwise>
-					<!-- Add messages if required -->
-				</c:otherwise>
-			</c:choose>
+			<div class="error">Your sign in information was incorrect. Please try again.</div>
 		</c:if>
 	</div>
 	<fieldset>
