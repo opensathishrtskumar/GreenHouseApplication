@@ -116,8 +116,8 @@ public class PollingDetailsDAO {
 			public SettingsDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 				SettingsDTO dto = new SettingsDTO();
 				dto.setId(rs.getLong("id"));
-				dto.setSkey(rs.getString("skey"));
-				dto.setSvalue(rs.getString("svalue"));
+				dto.setConfigName(rs.getString("configname"));
+				dto.setConfigValue(rs.getString("configvalue"));
 
 				return dto;
 			}

@@ -51,7 +51,7 @@ public class DeviceDetailsDAO {
 		this.settings = new HashMap<>();
 
 		for (SettingsDTO setting : settingsList) {
-			this.settings.put(setting.getSkey(), setting.getSvalue());
+			this.settings.put(setting.getConfigName(), setting.getConfigName());
 		}
 
 		logger.debug("settings loaded...");

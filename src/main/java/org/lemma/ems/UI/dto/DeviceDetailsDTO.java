@@ -13,7 +13,9 @@ public class DeviceDetailsDTO implements Serializable {
 
 	private long uniqueId;
 	private int deviceId;
+	private int type;
 	private String deviceName;
+	private int deleted;
 	private int baudRate;
 	private int wordLength;
 	private String parity;
@@ -144,6 +146,14 @@ public class DeviceDetailsDTO implements Serializable {
 		this.deviceId = deviceId;
 	}
 
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+	
 	public String getDeviceName() {
 		return deviceName;
 	}
@@ -152,6 +162,14 @@ public class DeviceDetailsDTO implements Serializable {
 		this.deviceName = deviceName;
 	}
 
+	public int getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
+	}
+		
 	public int getBaudRate() {
 		return baudRate;
 	}
