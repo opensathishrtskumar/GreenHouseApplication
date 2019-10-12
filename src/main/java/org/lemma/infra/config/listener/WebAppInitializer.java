@@ -8,11 +8,25 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.WebApplicationInitializer;
 
+/**
+ * 
+ * Add Servlet initialization parameters
+ * 
+ * @author RTS Sathish Kumar
+ *
+ */
 @Component
 public class WebAppInitializer implements WebApplicationInitializer {
 
 	private static final String CONTEXT_INITIALIZER_CLASSES_PARAM = "contextInitializerClasses";
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.springframework.web.WebApplicationInitializer#onStartup(javax.servlet.
+	 * ServletContext)
+	 */
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		String initializerClasses = servletContext.getInitParameter(CONTEXT_INITIALIZER_CLASSES_PARAM);

@@ -8,24 +8,34 @@ import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
 
+/**
+ * @author RTS Sathish Kumar
+ *
+ */
 public class DBConfigPropertySourceInitializer
 		implements ApplicationContextInitializer<ConfigurableWebApplicationContext> {
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.springframework.context.ApplicationContextInitializer#initialize(org.
+	 * springframework.context.ConfigurableApplicationContext)
+	 */
 	@Override
 	public void initialize(ConfigurableWebApplicationContext applicationContext) {
 		MutablePropertySources propertySources = applicationContext.getEnvironment().getPropertySources();
 		propertySources.addLast(getPropertySource());
-		System.out.println("Registered PropertySource");
 	}
 
+	/**
+	 * Returns configured PropertySource
+	 * 
+	 * @return
+	 */
 	private PropertySource getPropertySource() {
 		Properties properties = new Properties();
-		properties.put("smtp.host", "smtp.gmail.com");
-
-		PropertiesPropertySource src = new PropertiesPropertySource("DB_PROPS", properties);
-
-		System.out.println(src.containsProperty("smtp.host") + " ::: ");
-
-		return src;
+		// Add properties if any required
+		return new PropertiesPropertySource("INIT_PROPS", properties);
 	}
 }

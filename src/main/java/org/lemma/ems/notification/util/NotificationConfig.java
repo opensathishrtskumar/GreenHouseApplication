@@ -5,13 +5,14 @@ import java.util.Properties;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.VelocityException;
+import org.lemma.ems.base.cache.CacheUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.ui.velocity.VelocityEngineFactoryBean;
 
@@ -23,6 +24,12 @@ import org.springframework.ui.velocity.VelocityEngineFactoryBean;
 public class NotificationConfig {
 
 	private static final Logger logger = LoggerFactory.getLogger(NotificationConfig.class);
+
+	@Autowired
+	private Environment env;
+
+	@Autowired
+	private CacheUtil cacheUtil;
 
 	/**
 	 * @return
@@ -42,27 +49,32 @@ public class NotificationConfig {
 
 	@Bean
 	@Lazy(true)
-	public JavaMailSenderImpl createJavaMailSenderImpl(/*@Value("${smtp.host}") String host*/) {
+	public JavaMailSenderImpl createJavaMailSenderImpl() {
+		// FIXME : load props/settings from Cache(Decrypted)
 		JavaMailSenderImpl bean = new JavaMailSenderImpl();
+		
+		String host = "smtp.gmail.com";
+		int port = 587;
+		String userName = "ems.ses03@gmail.com";
+		String password = "kavi071215";
 
-		//logger.debug(" host {}", host);
-
-		// FIXME : load from props or settings
-		bean.setHost("smtp.gmail.com");
-		bean.setPort(587);
-		bean.setUsername("ems.ses03@gmail.com");
-		bean.setPassword("kavi071215");
+		bean.setHost(host);
+		bean.setPort(port);
+		bean.setUsername(userName);
+		bean.setPassword(password);
 
 		Properties javaMailProps = new Properties();
-		javaMailProps.put("mail.debug", true);
-		javaMailProps.put("mail.smtp.auth", true);
-		javaMailProps.put("mail.smtp.starttls.enable", true);
+
+		javaMailProps.put("mail.smtp.host", host);
+		javaMailProps.put("mail.smtp.port", port);
+		javaMailProps.put("mail.debug", "false");
+		javaMailProps.put("mail.smtp.auth", "true");
+		javaMailProps.put("mail.smtp.starttls.enable", "true");
 		javaMailProps.put("mail.mime.charset", "UTF-8");
 		javaMailProps.put("mail.transport.protocol", "smtp");
-
+		javaMailProps.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 		bean.setJavaMailProperties(javaMailProps);
 
 		return bean;
 	}
-
 }
