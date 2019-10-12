@@ -33,7 +33,8 @@ public class ReceiverConfig {
 		activeMQConnectionFactory.setDispatchAsync(true);
 		activeMQConnectionFactory.setDisableTimeStampsByDefault(true);
 		activeMQConnectionFactory.setUseAsyncSend(true);
-		activeMQConnectionFactory.setMaxThreadPoolSize(10);
+		activeMQConnectionFactory.setMaxThreadPoolSize(50);
+		activeMQConnectionFactory.setTrustAllPackages(true);
 		return activeMQConnectionFactory;
 	}
 

@@ -21,22 +21,22 @@ public class EmbededMQConfigurator {
 	/**
 	 * @return
 	 */
-	/*@Bean
+	@Bean
 	public MessageConverter messageConverter() {
 		MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
 		converter.setObjectMapper(objectMapper());
 		return converter;
-	}*/
+	}
 
 	/**
 	 * @return
 	 */
-	/*@Bean
+	@Bean
 	public ObjectMapper objectMapper() {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.registerModule(new JavaTimeModule());
 		mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 		return mapper;
-	}*/
+	}
 
 }

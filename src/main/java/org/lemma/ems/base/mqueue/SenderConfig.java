@@ -22,7 +22,8 @@ public class SenderConfig {
 		activeMQConnectionFactory.setDispatchAsync(true);
 		activeMQConnectionFactory.setDisableTimeStampsByDefault(true);
 		activeMQConnectionFactory.setUseAsyncSend(true);
-		activeMQConnectionFactory.setMaxThreadPoolSize(5);
+		activeMQConnectionFactory.setMaxThreadPoolSize(10);
+		activeMQConnectionFactory.setTrustAllPackages(true);
 		return activeMQConnectionFactory;
 	}
 
