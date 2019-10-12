@@ -14,7 +14,27 @@ public final class CacheUtil {
 	public Cache getCache(Caches cache) {
 		return cacheManager.getCache(cache.getName());
 	}
-
+	
+	/**
+	 * {@link Caches.ETERNAL} is the default instance
+	 * 
+	 * @param key
+	 * @param value
+	 * 
+	 */
+	public void putCacheEntry(String key, Object value) {
+		getCache(Caches.ETERNAL).put(key, value);
+	}
+	
+	/**
+	 * @param key
+	 * @param className
+	 * @return
+	 */
+	public <T> T getCacheEntry(String key, Class<T> className) {
+		return getCache(Caches.ETERNAL).get(key, className);
+	}
+	
 	public void putCacheEntry(Caches cache, String key, Object value) {
 		getCache(cache).put(key, value);
 	}
