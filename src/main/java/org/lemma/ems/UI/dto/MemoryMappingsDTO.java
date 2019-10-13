@@ -1,5 +1,6 @@
 package org.lemma.ems.UI.dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -9,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.ghgande.j2mod.modbus.msg.ModbusResponse;
 
-public class MemoryMappingsDTO {
+public class MemoryMappingsDTO implements Serializable{
 	private static final Logger logger = LoggerFactory.getLogger(MemoryMappingsDTO.class);
 	private Properties properties;
 	private List<Memory> registeres;

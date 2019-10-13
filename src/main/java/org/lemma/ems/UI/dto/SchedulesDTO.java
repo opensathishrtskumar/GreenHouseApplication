@@ -1,10 +1,12 @@
 package org.lemma.ems.UI.dto;
 
+import java.io.Serializable;
+
 /**
  * @author RTS Sathish Kumar
  *
  */
-public class SchedulesDTO {
+public class SchedulesDTO implements Serializable{
 
 	private long id;
 	private String groupKey;

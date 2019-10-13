@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @author Sathish Kumar
  *
  */
-public class DeviceMemoryDTO {
+public class DeviceMemoryDTO implements Serializable{
 
 	private long uniqueId;
 	private int deviceId;

@@ -10,6 +10,7 @@ import org.lemma.ems.UI.dto.PollingDetailsDTO;
 import org.lemma.ems.base.dao.PollingDetailsDAO;
 import org.lemma.ems.base.dao.constants.QueryConstants;
 import org.lemma.ems.base.mqueue.publisher.Sender;
+import org.lemma.ems.base.mqueue.subscriber.ApplicationStartupListener;
 import org.lemma.ems.notification.util.Mail;
 import org.lemma.ems.notification.util.MailTemplateConstants;
 import org.lemma.ems.notification.util.Mailer;
@@ -54,14 +55,13 @@ public class HelperController {
 	private String startupNotification;
 
 	@RequestMapping(value = "/publish", method = RequestMethod.GET)
-
 	@ResponseBody
 	public DeviceDetailsDTO publish() {
 
 		DeviceDetailsDTO dto = new DeviceDetailsDTO();
 		dto.setDeviceName("EMSDevice");
 
-		sender.publishEvent(startupNotification, dto);
+		sender.publishEvent(ApplicationStartupListener.APP_STARTUP, "SUCCESS");
 
 		return dto;
 	}

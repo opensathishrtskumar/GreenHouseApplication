@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @author Sathish Kumar
  *
  */
-public class DeviceGroupDTO {
+public class DeviceGroupDTO implements Serializable{
 
 	private long uniqueId;
 	private String deviceGroupName;

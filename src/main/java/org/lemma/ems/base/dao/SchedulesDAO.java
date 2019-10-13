@@ -18,21 +18,21 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 /**
- * @author RTS Sathish  Kumar
+ * @author RTS Sathish Kumar
  *
  */
 @Repository("schedulesDAO")
 public class SchedulesDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(SchedulesDAO.class);
-	
+
 	/* All STATUS configuration */
 	public static final int ACTIVE = 1;
 	public static final int INACTIVE = 2;
-	
-	
+
 	/* Queries */
-	public static final String SELECT_DEVICES =  "select * from setup.schedules where status=?";
+	public static final String SELECT_SCHEDULES_BY_STATUS = "select * from setup.schedules where status=?";
+	public static final String SELECT_ALL_SCHEDULES = "select * from setup.schedules";
 
 	private JdbcTemplate jdbcTemplate;
 
@@ -40,46 +40,61 @@ public class SchedulesDAO {
 	public void setDataSource(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
-	
-	public List<SchedulesDTO> fetchActiveSchedules(){
-		return fetchAllSchedules(SELECT_DEVICES, ACTIVE);
+
+	public List<SchedulesDTO> fetchAllSchedulesByStatus() {
+		return fetchAllSchedulesByStatus(SELECT_SCHEDULES_BY_STATUS, ACTIVE);
 	}
-	
+
+	public List<SchedulesDTO> fetchAllSchedules() {
+		return fetchAllSchedules(SELECT_ALL_SCHEDULES);
+	}
+
 	/**
 	 * @param query
 	 * @param status
 	 * @return
 	 */
-	public List<SchedulesDTO> fetchAllSchedules(String query, int status) {
+	private List<SchedulesDTO> fetchAllSchedulesByStatus(String query, int status) {
 
 		return this.jdbcTemplate.query(new PreparedStatementCreator() {
-			
+
 			@Override
 			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-				PreparedStatement prepareStatement = con.prepareStatement(SELECT_DEVICES);
+				PreparedStatement prepareStatement = con.prepareStatement(query);
 				prepareStatement.setInt(1, status);
 				return prepareStatement;
 			}
-		}, new RowMapper<SchedulesDTO>() {
+		}, new ScheduledDTOMapper());
+	}
 
-			@Override
-			public SchedulesDTO mapRow(ResultSet resultSet, int rowIndex) throws SQLException {
-				SchedulesDTO details = new SchedulesDTO();
+	/**
+	 * @param query
+	 * @param status
+	 * @return
+	 */
+	private List<SchedulesDTO> fetchAllSchedules(String query) {
+		return this.jdbcTemplate.query(query, new ScheduledDTOMapper());
+	}
 
-				details.setId(resultSet.getLong("id"));
-				details.setGroupKey(resultSet.getString("groupkey"));
-				details.setJobKey(resultSet.getString("jobkey"));
-				details.setDescription(resultSet.getString("description"));
-				details.setClassName(resultSet.getString("classname"));
-				details.setCronExpression(resultSet.getString("cronexpression"));
-				details.setStatus(resultSet.getInt("status"));
-				details.setCreatedTimeStamp(resultSet.getLong("createdtimestamp"));
-				details.setModifiedTimeStamp(resultSet.getLong("modifiedtimestamp"));
-				details.setHashKey(resultSet.getString("hashkey"));
-				
-				return details;
-			}
-		});
+	class ScheduledDTOMapper implements RowMapper<SchedulesDTO> {
+
+		@Override
+		public SchedulesDTO mapRow(ResultSet resultSet, int rowIndex) throws SQLException {
+			SchedulesDTO details = new SchedulesDTO();
+
+			details.setId(resultSet.getLong("id"));
+			details.setGroupKey(resultSet.getString("groupkey"));
+			details.setJobKey(resultSet.getString("jobkey"));
+			details.setDescription(resultSet.getString("description"));
+			details.setClassName(resultSet.getString("classname"));
+			details.setCronExpression(resultSet.getString("cronexpression"));
+			details.setStatus(resultSet.getInt("status"));
+			details.setCreatedTimeStamp(resultSet.getLong("createdtimestamp"));
+			details.setModifiedTimeStamp(resultSet.getLong("modifiedtimestamp"));
+			details.setHashKey(resultSet.getString("hashkey"));
+
+			return details;
+		}
 	}
 
 	/**

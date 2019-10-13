@@ -5,14 +5,11 @@ import java.util.Properties;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.VelocityException;
-import org.lemma.ems.base.cache.CacheUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.ui.velocity.VelocityEngineFactoryBean;
 
@@ -24,12 +21,6 @@ import org.springframework.ui.velocity.VelocityEngineFactoryBean;
 public class NotificationConfig {
 
 	private static final Logger logger = LoggerFactory.getLogger(NotificationConfig.class);
-
-	@Autowired
-	private Environment env;
-
-	@Autowired
-	private CacheUtil cacheUtil;
 
 	/**
 	 * @return
@@ -50,13 +41,13 @@ public class NotificationConfig {
 	@Bean
 	@Lazy(true)
 	public JavaMailSenderImpl createJavaMailSenderImpl() {
-		// FIXME : load props/settings from Cache(Decrypted)
 		JavaMailSenderImpl bean = new JavaMailSenderImpl();
-		
-		String host = "smtp.gmail.com";
+
+		/* actual values are replaced during APP_STARTUP_EVENT */
+		String host = "smtp.host.com";
 		int port = 587;
-		String userName = "ems.ses03@gmail.com";
-		String password = "kavi071215";
+		String userName = "username@domain.com";
+		String password = "credentials";
 
 		bean.setHost(host);
 		bean.setPort(port);

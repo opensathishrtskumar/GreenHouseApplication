@@ -1,8 +1,8 @@
 package org.lemma.ems.UI.dto;
 
-import java.util.Properties;
+import java.io.Serializable;
 
-public class PollingDetailsDTO {
+public class PollingDetailsDTO implements Serializable {
 	private long deviceUniqueId;
 	private long polledOn;
 	private double voltage_bn;
@@ -29,7 +29,6 @@ public class PollingDetailsDTO {
 	private double va3;
 	private double vah;
 	private double va_avg;
-
 
 	public long getDeviceUniqueId() {
 		return deviceUniqueId;

@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @author Sathish Kumar
  *
  */
-public class PageAccessDetailsDTO {
+public class PageAccessDetailsDTO implements Serializable{
 
 	private long uniqueId;
 	private String resourceName;

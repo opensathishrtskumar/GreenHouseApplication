@@ -28,37 +28,39 @@ import com.ems.security.Security;
 public class SettingsDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(SettingsDAO.class);
-	
-	public static enum SettingsGroup{
+
+	public static enum SettingsGroup {
 		EMAIL("EMAIL");
-		
+
 		String groupKey;
-		
+
 		private SettingsGroup(String groupKey) {
 			this.groupKey = groupKey;
 		}
+
+		public String getGroupKey() {
+			return groupKey;
+		}
 	}
-	
-	public static enum EMAILGroup{
-		HOST("smtp.host"),
-		PORT("smtp.port"),
-		USERNAME("smtp.username"),
-		PASSWORD("smtp.password"),
-		BCC("smtp.bcc.mail"),
-		CC("smtp.cc.mail"),
-		TO("smtp.to.mail");
-		
+
+	public static enum EMAILGroup {
+		HOST("smtp.host"), PORT("smtp.port"), USERNAME("smtp.username"), PASSWORD("smtp.password"), BCC(
+				"smtp.bcc.mail"), CC("smtp.cc.mail"), TO("smtp.to.mail");
+
 		String mailKey;
-		
+
 		private EMAILGroup(String mailKey) {
 			this.mailKey = mailKey;
 		}
+
+		public String getMailKey() {
+			return mailKey;
+		}
+
 	}
-	
+
 	private final JdbcTemplate jdbcTemplate;
 	/* ALL details of SetttingsDAO table */
-	
-	
 
 	/* Queries related to SetttingsDAO TABLE */
 	private static final String FETCH_SETTINGS = "select * from setup.settings";
@@ -90,15 +92,15 @@ public class SettingsDAO {
 			}
 		});
 	}
-	
+
 	public int updateSettings(SettingsDTO settings) throws Exception {
 
 		return jdbcTemplate.update(new PreparedStatementCreator() {
-			
+
 			@Override
 			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 				CallableStatement prepareCall = con.prepareCall("");
-				//TODO
+				// TODO
 				return prepareCall;
 			}
 		});

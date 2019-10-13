@@ -1,10 +1,12 @@
 package org.lemma.ems.UI.dto;
 
+import java.io.Serializable;
+
 /**
  * @author RTS Sathish Kumar
  *
  */
-public class UserDetailsDTO {
+public class UserDetailsDTO implements Serializable {
 
 	private long id;
 	private String name;
