@@ -1,13 +1,13 @@
-package org.lemma.ems.UI.controllers;
+package org.lemma.ems.ui.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.lemma.ems.UI.model.ChangePasswordForm;
-import org.lemma.ems.UI.validator.ChangePasswordValidator;
 import org.lemma.ems.base.dao.UserDetailsDAO;
 import org.lemma.ems.base.dao.dto.UserDetailsDTO;
+import org.lemma.ems.ui.model.ChangePasswordForm;
+import org.lemma.ems.ui.validator.ChangePasswordValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +56,8 @@ public class SettingsController {
 		}
 
 		// Change the password and redirect to success page
-		int count = userDetailsDAO.updatePassword(form);
-		view.addObject("message", count);
+		/*int count = userDetailsDAO.updatePassword(form);
+		view.addObject("message", count);*/
 
 		// Set the current password back in context
 		UserDetailsDTO account = (UserDetailsDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

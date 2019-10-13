@@ -1,11 +1,17 @@
 
-package org.lemma.ems.UI.model;
+package org.lemma.ems.ui.model;
+
+import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * @author RTS Sathish Kumar
+ *
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SignupForm {
+public class SignupForm implements Serializable {
 
 	@JsonProperty("first-name")
 	private String firstName;

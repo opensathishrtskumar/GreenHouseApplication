@@ -1,5 +1,5 @@
 
-package org.lemma.ems.UI.controllers.rest;
+package org.lemma.ems.ui.controllers.rest;
 
 import java.util.Date;
 import java.util.HashMap;

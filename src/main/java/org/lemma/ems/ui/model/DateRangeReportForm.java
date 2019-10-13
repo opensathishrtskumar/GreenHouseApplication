@@ -1,12 +1,17 @@
 
-package org.lemma.ems.UI.model;
+package org.lemma.ems.ui.model;
+
+import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-
-public class DateRangeReportForm {
+/**
+ * @author RTS Sathish Kumar
+ *
+ */
+public class DateRangeReportForm implements Serializable {
 
 	private String deviceName;
 

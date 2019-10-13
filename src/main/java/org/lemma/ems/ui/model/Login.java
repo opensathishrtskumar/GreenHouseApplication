@@ -1,6 +1,12 @@
-package org.lemma.ems.UI.model;
+package org.lemma.ems.ui.model;
 
-public class Login {
+import java.io.Serializable;
+
+/**
+ * @author RTS Sathish Kumar
+ *
+ */
+public class Login implements Serializable {
 	private String username;
 	private String password;
 
