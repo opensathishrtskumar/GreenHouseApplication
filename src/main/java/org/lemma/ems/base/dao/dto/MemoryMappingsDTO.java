@@ -1,4 +1,4 @@
-package org.lemma.ems.UI.dto;
+package org.lemma.ems.base.dao.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;

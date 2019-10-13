@@ -1,6 +1,6 @@
 package org.lemma.ems.base.mqueue.subscriber;
 
-import org.lemma.ems.UI.dto.DeviceDetailsDTO;
+import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jms.annotation.EnableJms;

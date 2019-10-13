@@ -8,7 +8,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.lemma.ems.UI.dto.SchedulesDTO;
+import org.lemma.ems.base.dao.dto.SchedulesDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

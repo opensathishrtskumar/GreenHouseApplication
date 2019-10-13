@@ -22,7 +22,7 @@ import java.util.Properties;
 import java.util.Random;
 
 import org.joda.time.LocalDate;
-import org.lemma.ems.UI.dto.EmailDTO;
+import org.lemma.ems.base.dao.dto.EmailDTO;
 import org.lemma.ems.constants.LimitConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

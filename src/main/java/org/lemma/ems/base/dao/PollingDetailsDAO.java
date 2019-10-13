@@ -9,10 +9,10 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.lemma.ems.UI.dto.DeviceDetailsDTO;
-import org.lemma.ems.UI.dto.PollingDetailsDTO;
-import org.lemma.ems.UI.dto.SettingsDTO;
 import org.lemma.ems.base.dao.constants.QueryConstants;
+import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
+import org.lemma.ems.base.dao.dto.PollingDetailsDTO;
+import org.lemma.ems.base.dao.dto.SettingsDTO;
 import org.lemma.ems.util.EMSUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -45,7 +44,6 @@ public class PollingDetailsDAO {
 			public DeviceDetailsDTO mapRow(ResultSet resultSet, int rowIndex) throws SQLException {
 				DeviceDetailsDTO details = new DeviceDetailsDTO();
 
-				details.setRowIndex(rowIndex++);
 				details.setUniqueId(resultSet.getLong("deviceuniqueid"));
 				details.setDeviceId(resultSet.getInt("unitid"));
 				details.setDeviceName(resultSet.getString("devicealiasname"));
@@ -53,10 +51,6 @@ public class PollingDetailsDAO {
 				details.setWordLength(resultSet.getInt("wordlength"));
 				details.setStopbit(resultSet.getInt("stopbit"));
 				details.setParity(resultSet.getString("parity"));
-				details.setMemoryMapping(resultSet.getString("memorymapping"));// register_assignment
-				boolean splitJoin = EMSUtility.isSplitJoin(details.getMemoryMapping());
-				details.setSplitJoin(splitJoin);
-				details.setEnabled(resultSet.getBoolean("status") ? "true" : "false");
 				details.setRegisterMapping(resultSet.getString("registermapping"));// MSRF/LSRF
 				details.setPort(resultSet.getString("port"));
 				details.setMethod(resultSet.getString("method"));

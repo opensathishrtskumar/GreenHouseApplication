@@ -3,7 +3,7 @@ package org.lemma.infra.config.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.lemma.ems.UI.dto.UserDetailsDTO;
+import org.lemma.ems.base.dao.dto.UserDetailsDTO;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.HandlerInterceptor;

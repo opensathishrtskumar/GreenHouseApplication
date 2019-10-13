@@ -24,11 +24,11 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.lemma.ems.UI.dto.DeviceDetailsDTO;
-import org.lemma.ems.UI.dto.ExtendedSerialParameter;
-import org.lemma.ems.UI.dto.SplitJoinDTO;
 import org.lemma.ems.base.core.util.MemoryMappingParser;
 import org.lemma.ems.base.core.util.OrderedProperties;
+import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
+import org.lemma.ems.base.dao.dto.ExtendedSerialParameter;
+import org.lemma.ems.base.dao.dto.SplitJoinDTO;
 import org.lemma.ems.constants.EmsConstants;
 import org.lemma.ems.scheduler.util.SchedulerConstants;
 import org.slf4j.Logger;
@@ -352,57 +352,11 @@ public abstract class EMSUtility {
 		parameters.setEncoding(ENCODING[1]);
 		parameters.setUnitId(devices.getDeviceId());
 		parameters.setUniqueId(devices.getUniqueId());
-		parameters.setRowIndex(devices.getRowIndex());
-		devices.setSplitJoin(EMSUtility.isSplitJoin(devices.getMemoryMapping()));
-		parameters.setSplitJoin(devices.isSplitJoin());
 		parameters.setDeviceName(devices.getDeviceName());
 		parameters.setRegisterMapping(devices.getRegisterMapping());
 		parameters.setPort(devices.getPort());// PortName property should be set
 		// to create SerialConnection
 		parameters.setMethod(devices.getMethod());
-
-		if (!parameters.isSplitJoin()) {
-			Properties memoryProps = MemoryMappingParser.loadProperties(devices.getMemoryMapping());
-			parameters.setProps(memoryProps);
-			parameters.setMemoryMappings(loadMemoryMappingDetails(devices.getMemoryMapping()));
-		} else {
-			logger.debug("Split Join device Found : {}", devices);
-			SplitJoinDTO splitJoinDto = new SplitJoinDTO();
-			parameters.setSplitJoinDTO(splitJoinDto);
-
-			String[] memoryMappings = devices.getMemoryMapping().split(EmsConstants.SPLIT_JOIN);
-
-			for (String memoryMapping : memoryMappings) {
-
-				if (memoryMapping == null || memoryMapping.trim().length() == 0) {
-					logger.debug("SJ Memory mapping is null continue");
-					continue;
-				}
-
-				try {
-					Properties props = loadProperties(memoryMapping);
-					Map<Long, String> mappings = loadMemoryMappingDetails(memoryMapping);
-
-					splitJoinDto.getProps().add(props);
-					splitJoinDto.getMemoryMappings().add(mappings);
-					// Starting register from where to read
-					splitJoinDto.getReferencce().add((int) getRegisterReference(mappings));
-					// Total number of registers to be read from Reference register
-					splitJoinDto.getCount().add(getRegisterCount(mappings));
-					// Contains sorted registers to be persisted
-					splitJoinDto.getRequiredRegisters().add(getPersistRegisters(mappings.keySet()));
-					// Set default execution status as false
-					splitJoinDto.getStatus().add(false);
-					// Set default Response registers null
-					splitJoinDto.getRegisteres().add(null);
-				} catch (Exception e) {
-					logger.error("{}", e);
-				}
-			}
-
-			logger.trace("SplitJoin DTO for device {} is {} ", devices.getUniqueId(),
-					convertObjectToJSONString(splitJoinDto));
-		}
 
 		return parameters;
 	}

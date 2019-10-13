@@ -5,10 +5,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.lemma.ems.UI.dto.DeviceDetailsDTO;
-import org.lemma.ems.UI.dto.PollingDetailsDTO;
 import org.lemma.ems.base.dao.PollingDetailsDAO;
 import org.lemma.ems.base.dao.constants.QueryConstants;
+import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
+import org.lemma.ems.base.dao.dto.PollingDetailsDTO;
 import org.lemma.ems.base.mqueue.publisher.Sender;
 import org.lemma.ems.base.mqueue.subscriber.ApplicationStartupListener;
 import org.lemma.ems.notification.util.Mail;

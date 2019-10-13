@@ -5,7 +5,7 @@ import static org.lemma.ems.constants.EmsConstants.TIMEOUT;
 
 import java.io.IOException;
 
-import org.lemma.ems.UI.dto.ExtendedSerialParameter;
+import org.lemma.ems.base.dao.dto.ExtendedSerialParameter;
 import org.lemma.ems.util.EMSUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

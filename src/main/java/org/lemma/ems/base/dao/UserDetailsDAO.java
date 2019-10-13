@@ -5,8 +5,8 @@ import java.sql.SQLException;
 
 import javax.inject.Inject;
 
-import org.lemma.ems.UI.dto.UserDetailsDTO;
 import org.lemma.ems.UI.model.ChangePasswordForm;
+import org.lemma.ems.base.dao.dto.UserDetailsDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

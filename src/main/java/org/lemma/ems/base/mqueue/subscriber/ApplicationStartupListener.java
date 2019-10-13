@@ -7,12 +7,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import org.lemma.ems.UI.dto.SchedulesDTO;
-import org.lemma.ems.UI.dto.SettingsDTO;
 import org.lemma.ems.base.cache.CacheEntryConstants;
 import org.lemma.ems.base.cache.CacheUtil;
 import org.lemma.ems.base.dao.SchedulesDAO;
 import org.lemma.ems.base.dao.SettingsDAO;
+import org.lemma.ems.base.dao.dto.SchedulesDTO;
+import org.lemma.ems.base.dao.dto.SettingsDTO;
 import org.lemma.ems.scheduler.jobs.SampleCronJob;
 import org.lemma.ems.scheduler.util.JobUtil;
 import org.quartz.JobDetail;

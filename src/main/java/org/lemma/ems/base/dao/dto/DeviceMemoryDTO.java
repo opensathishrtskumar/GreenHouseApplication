@@ -1,4 +1,4 @@
-package org.lemma.ems.UI.dto;
+package org.lemma.ems.base.dao.dto;
 
 import java.io.Serializable;
 
@@ -6,8 +6,12 @@ import java.io.Serializable;
  * @author Sathish Kumar
  *
  */
-public class DeviceMemoryDTO implements Serializable{
+public class DeviceMemoryDTO implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4855980619075790764L;
 	private long uniqueId;
 	private int deviceId;
 	private String memoryMapping;
