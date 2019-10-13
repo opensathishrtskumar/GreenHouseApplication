@@ -1,4 +1,4 @@
-	package org.lemma.ems.UI.dto;
+package org.lemma.ems.UI.dto;
 
 import java.io.Serializable;
 
@@ -6,14 +6,14 @@ import java.io.Serializable;
  * @author Sathish Kumar
  *
  */
-public class UserRolesDTO {
+public class UserRolesDTO implements Serializable {
 
 	private long uniqueId;
 	private String roleType;
 	private int privileges;
-	private String timeStamp;
+	private long createdTimeStamp;
 	private String hashKey;
-	
+
 	public long getUniqueId() {
 		return uniqueId;
 	}
@@ -37,19 +37,20 @@ public class UserRolesDTO {
 	public void setPrivileges(int privileges) {
 		this.privileges = privileges;
 	}
-	
-	public String getTimeStamp() {
-		return timeStamp;
+
+	public long getCreatedTimeStamp() {
+		return createdTimeStamp;
 	}
 
-	public void setTimeStamp(String timeStamp) {
-		this.timeStamp = timeStamp;
+	public void setCreatedTimeStamp(long createdTimeStamp) {
+		this.createdTimeStamp = createdTimeStamp;
 	}
+
 	public String getHashKey() {
 		return hashKey;
 	}
 
 	public void setHashKey(String hashKey) {
 		this.hashKey = hashKey;
-	}	
+	}
 }

@@ -1,4 +1,4 @@
-	package org.lemma.ems.UI.dto;
+package org.lemma.ems.UI.dto;
 
 import java.io.Serializable;
 
@@ -6,24 +6,20 @@ import java.io.Serializable;
  * @author Sathish Kumar
  *
  */
-public class DeviceGroupDTO implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class DeviceGroupDTO {
 
 	private long uniqueId;
 	private String deviceGroupName;
-	private String timeStamp;
+	private long createdTimeStamp;
 	private String deviceGroupStatus;
 	private int coulmnIndex;
 
-	public DeviceGroupDTO() {
+	public long getCreatedTimeStamp() {
+		return createdTimeStamp;
 	}
 
-	public String getTimeStamp() {
-		return timeStamp;
-	}
-
-	public void setTimeStamp(String timeStamp) {
-		this.timeStamp = timeStamp;
+	public void setCreatedTimeStamp(long createdTimeStamp) {
+		this.createdTimeStamp = createdTimeStamp;
 	}
 
 	public int getCoulmnIndex() {
@@ -57,5 +53,5 @@ public class DeviceGroupDTO implements Serializable {
 	public void setDeviceGroupStatus(String deviceGroupStatus) {
 		this.deviceGroupStatus = deviceGroupStatus;
 	}
-	
+
 }

@@ -1,4 +1,4 @@
-	package org.lemma.ems.UI.dto;
+package org.lemma.ems.UI.dto;
 
 import java.io.Serializable;
 
@@ -6,24 +6,12 @@ import java.io.Serializable;
  * @author Sathish Kumar
  *
  */
-public class DeviceMemoryDTO implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class DeviceMemoryDTO {
 
 	private long uniqueId;
 	private int deviceId;
 	private String memoryMapping;
-	private String timeStamp;
-
-	public DeviceMemoryDTO() {
-	}
-
-	public String getTimeStamp() {
-		return timeStamp;
-	}
-
-	public void setTimeStamp(String timeStamp) {
-		this.timeStamp = timeStamp;
-	}
+	private long createdTimeStamp;
 
 	public long getUniqueId() {
 		return uniqueId;
@@ -40,7 +28,7 @@ public class DeviceMemoryDTO implements Serializable {
 	public void setDeviceId(int deviceId) {
 		this.deviceId = deviceId;
 	}
-	
+
 	public String getMemoryMapping() {
 		return memoryMapping;
 	}
@@ -48,5 +36,13 @@ public class DeviceMemoryDTO implements Serializable {
 	public void setMemoryMapping(String memoryMapping) {
 		this.memoryMapping = memoryMapping;
 	}
-	
+
+	public long getCreatedTimeStamp() {
+		return createdTimeStamp;
+	}
+
+	public void setCreatedTimeStamp(long createdTimeStamp) {
+		this.createdTimeStamp = createdTimeStamp;
+	}
+
 }

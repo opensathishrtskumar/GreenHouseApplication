@@ -6,14 +6,13 @@ import java.io.Serializable;
  * @author Sathish Kumar
  *
  */
-public class PageAccessDetailsDTO implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class PageAccessDetailsDTO {
 
 	private long uniqueId;
 	private String resourceName;
 	private String resourceURL;
 	private int bitPosition;
-	private String timeStamp;
+	private long createdTimeStamp;
 
 	public PageAccessDetailsDTO() {
 	}
@@ -33,13 +32,13 @@ public class PageAccessDetailsDTO implements Serializable {
 	public void setResourceURL(String resourceURL) {
 		this.resourceURL = resourceURL;
 	}
-	
-	public String getTimeStamp() {
-		return timeStamp;
+
+	public long getCreatedTimeStamp() {
+		return createdTimeStamp;
 	}
 
-	public void setTimeStamp(String timeStamp) {
-		this.timeStamp = timeStamp;
+	public void setCreatedTimeStamp(long createdTimeStamp) {
+		this.createdTimeStamp = createdTimeStamp;
 	}
 
 	public long getUniqueId() {
@@ -57,5 +56,5 @@ public class PageAccessDetailsDTO implements Serializable {
 	public void setBitPosition(int bitPosition) {
 		this.bitPosition = bitPosition;
 	}
-	
+
 }

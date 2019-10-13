@@ -21,9 +21,13 @@ public abstract class QueryConstants {
 			+ "wordlength, stopbit,parity,memorymapping,status,createdtime,modifiedtime,registermapping,method,port "
 			+ "from setup.devicedetails where deviceuniqueid = ?";
 
-	public static final String INSERT_POLLING_DETAILS = "insert into polling.pollingdetails"
-			+ "(deviceuniqueid, polledon, unitresponse) values(?,?,?)";
-
+/*	public static final String INSERT_POLLING_DETAILS = "insert into polling.pollingdetails"
+			+ "(deviceuniqueid, polledon, unitresponse) values(?,?,?)";*/
+	public static final String INSERT_POLLING_DETAILS = "insert into setup.pollingdetails"
+			+ "(deviceuniqueid, polledon, voltage_bn,voltage_br,voltage_rn,voltage_ry,voltage_yb,voltage_yn,voltage_avg_ll,"
+			+ "voltage_avg_ln,r_current,y_current,b_current,current_avg,frequency,power_factor,w1,w2,w3,wh,w_avg,va1,va2,va3,vah,va_avg)" 
+			+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+	
 	public static final String RETRIEVE_DEVICE_STATE = new StringBuilder(
 			"SELECT " + "p.unitresponse,DATE_FORMAT(FROM_UNIXTIME(p.polledon/1000),'%d-%b-%y %h:%i%p') "
 					+ "AS formatteddate FROM polling.pollingdetails p "

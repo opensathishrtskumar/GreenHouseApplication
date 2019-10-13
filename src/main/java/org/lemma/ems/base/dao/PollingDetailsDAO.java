@@ -10,7 +10,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.lemma.ems.UI.dto.DeviceDetailsDTO;
-import org.lemma.ems.UI.dto.PollingDetailDTO;
+import org.lemma.ems.UI.dto.PollingDetailsDTO;
 import org.lemma.ems.UI.dto.SettingsDTO;
 import org.lemma.ems.base.dao.constants.QueryConstants;
 import org.lemma.ems.reports.summary.finder.SummaryFinder;
@@ -82,7 +82,6 @@ public class PollingDetailsDAO {
 						ps.setObject(count++, param);
 					}
 				}
-
 				return ps;
 			}
 		});
@@ -129,11 +128,11 @@ public class PollingDetailsDAO {
 		return this.jdbcTemplate.queryForObject(query, String.class);
 	}
 
-	public List<PollingDetailDTO> fetchMainIncomerDailySummary(String query, Object[] params) {
+	public List<PollingDetailsDTO> fetchMainIncomerDailySummary(String query, Object[] params) {
 
 		logger.trace(" entry ");
 
-		List<PollingDetailDTO> details = this.jdbcTemplate.query(new PreparedStatementCreator() {
+		List<PollingDetailsDTO> details = this.jdbcTemplate.query(new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 				con.setAutoCommit(false);
@@ -147,14 +146,14 @@ public class PollingDetailsDAO {
 				logger.debug(" prepared statement created {} ", Arrays.toString(params));
 				return statement;
 			}
-		}, new RowMapper<PollingDetailDTO>() {
+		}, new RowMapper<PollingDetailsDTO>() {
 
 			@Override
-			public PollingDetailDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-				PollingDetailDTO details = new PollingDetailDTO();
-				details.setDeviceuniqueid(rs.getLong("deviceuniqueid"));
-				details.setPolledon(rs.getLong("polledon"));
-				details.setUnitresponse(rs.getString("unitresponse"));
+			public PollingDetailsDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				PollingDetailsDTO details = new PollingDetailsDTO();
+				details.setDeviceUniqueId(rs.getLong("deviceuniqueid"));
+				details.setPolledOn(rs.getLong("polledon"));
+				//details.setUnitresponse(rs.getString("unitresponse"));
 
 				return details;
 			}
