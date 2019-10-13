@@ -13,7 +13,6 @@ import org.lemma.ems.UI.dto.DeviceDetailsDTO;
 import org.lemma.ems.UI.dto.PollingDetailsDTO;
 import org.lemma.ems.UI.dto.SettingsDTO;
 import org.lemma.ems.base.dao.constants.QueryConstants;
-import org.lemma.ems.reports.summary.finder.SummaryFinder;
 import org.lemma.ems.util.EMSUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,9 +60,9 @@ public class PollingDetailsDAO {
 				details.setRegisterMapping(resultSet.getString("registermapping"));// MSRF/LSRF
 				details.setPort(resultSet.getString("port"));
 				details.setMethod(resultSet.getString("method"));
-				
-				//Load Memory Mappings and its revers into Tree Map
-				
+
+				// Load Memory Mappings and its revers into Tree Map
+
 				return details;
 			}
 		}, params);
@@ -115,8 +114,10 @@ public class PollingDetailsDAO {
 			public SettingsDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 				SettingsDTO dto = new SettingsDTO();
 				dto.setId(rs.getLong("id"));
-				/*dto.setConfigName(rs.getString("configname"));
-				dto.setConfigValue(rs.getString("configvalue"));*/
+				/*
+				 * dto.setConfigName(rs.getString("configname"));
+				 * dto.setConfigValue(rs.getString("configvalue"));
+				 */
 
 				return dto;
 			}
@@ -153,7 +154,7 @@ public class PollingDetailsDAO {
 				PollingDetailsDTO details = new PollingDetailsDTO();
 				details.setDeviceUniqueId(rs.getLong("deviceuniqueid"));
 				details.setPolledOn(rs.getLong("polledon"));
-				//details.setUnitresponse(rs.getString("unitresponse"));
+				// details.setUnitresponse(rs.getString("unitresponse"));
 
 				return details;
 			}
@@ -164,7 +165,6 @@ public class PollingDetailsDAO {
 		return details;
 	}
 
-	
 	public List<String> loadFailedDevicesNames() {
 
 		return this.jdbcTemplate.query(new PreparedStatementCreator() {
@@ -179,44 +179,9 @@ public class PollingDetailsDAO {
 
 			@Override
 			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return rs.getString(1);//Load only device name to send mail
+				return rs.getString(1);// Load only device name to send mail
 			}
 		});
 	}
-	
-	public SummaryFinder calculateSummary(String query, Object[] params, SummaryFinder summary) {
 
-		logger.debug(" entry ");
-
-		this.jdbcTemplate.query(new PreparedStatementCreator() {
-
-			@Override
-			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-				con.setAutoCommit(false);
-				PreparedStatement ps = con.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY,
-						ResultSet.CONCUR_READ_ONLY);
-				int index = 1;
-				for (int i = 0; i < params.length; i++)
-					ps.setObject(index++, params[i]);
-				ps.setFetchSize(Integer.MIN_VALUE);
-
-				logger.trace(" prepared stmt created for {} ", query);
-				return ps;
-			}
-		}, new RowCallbackHandler() {
-
-			@Override
-			public void processRow(ResultSet rs) throws SQLException {
-				try {
-					summary.process(rs);
-				} catch (Exception e) {
-					logger.error("{}", e);
-				}
-			}
-		});
-
-		logger.debug(" exit ");
-
-		return summary;
-	}
 }

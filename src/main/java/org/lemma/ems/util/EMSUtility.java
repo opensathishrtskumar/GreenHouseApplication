@@ -23,7 +23,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import org.lemma.ems.UI.dto.DeviceDetailsDTO;
 import org.lemma.ems.UI.dto.ExtendedSerialParameter;
@@ -31,7 +30,6 @@ import org.lemma.ems.UI.dto.SplitJoinDTO;
 import org.lemma.ems.base.core.util.MemoryMappingParser;
 import org.lemma.ems.base.core.util.OrderedProperties;
 import org.lemma.ems.constants.EmsConstants;
-import org.lemma.ems.reports.summary.MeterSummary;
 import org.lemma.ems.scheduler.util.SchedulerConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,19 +117,18 @@ public abstract class EMSUtility {
 	 * @returns Properties with keys in order which it is loaded
 	 */
 	public static Properties loadProperties(String propertiesString) {
-		/*Properties mappings = new OrderedProperties();
-
-		try {
-			if (propertiesString != null)
-				mappings.load(new ByteArrayInputStream(propertiesString.getBytes()));
-		} catch (Exception e) {
-			logger.error("error loading memory mapping : {}", e.getLocalizedMessage());
-			logger.error("{}", e);
-		}*/
+		/*
+		 * Properties mappings = new OrderedProperties();
+		 * 
+		 * try { if (propertiesString != null) mappings.load(new
+		 * ByteArrayInputStream(propertiesString.getBytes())); } catch (Exception e) {
+		 * logger.error("error loading memory mapping : {}", e.getLocalizedMessage());
+		 * logger.error("{}", e); }
+		 */
 
 		return MemoryMappingParser.loadProperties(propertiesString);
 	}
-	
+
 	public static Map<Long, String> loadMemoryMappingDetails(String mappingDetails) {
 		long startingRegister = EmsConstants.DEFAULTREGISTER;
 		int count = EmsConstants.REGISTERCOUNT;
@@ -671,57 +668,6 @@ public abstract class EMSUtility {
 		return "0.0";
 	}
 
-	public static String createReportString(MeterSummary summary) {
-
-		StringBuilder builder = new StringBuilder();
-
-		if (summary != null && summary.getParamName() != null) {
-			builder.append(splitName(summary.getParamName()));
-			builder.append(" = ");
-			builder.append(summary.getMinValue());
-			builder.append(" on ");
-			builder.append(EMSUtility.getFormattedTime(summary.getMinTime(), SUMMARY_FMT1));
-			builder.append(getLineSeparator());
-
-			builder.append(splitName(summary.getParamName()));
-			builder.append(" = ");
-			builder.append(summary.getMaxValue());
-			builder.append(" on ");
-			builder.append(EMSUtility.getFormattedTime(summary.getMaxTime(), SUMMARY_FMT1));
-			builder.append(getLineSeparator());
-		}
-
-		return builder.toString();
-	}
-
-	public static String createReportStringMinMax(MeterSummary summary, boolean min, boolean max) {
-
-		StringBuilder builder = new StringBuilder();
-
-		if (summary != null && summary.getParamName() != null) {
-
-			if (min) {
-				builder.append(splitName(summary.getParamName()));
-				builder.append(" = ");
-				builder.append(summary.getMinValue());
-				builder.append(" on ");
-				builder.append(EMSUtility.getFormattedTime(summary.getMinTime(), SUMMARY_FMT1));
-				builder.append(getLineSeparator());
-			}
-
-			if (max) {
-				builder.append(splitName(summary.getParamName()));
-				builder.append(" = ");
-				builder.append(summary.getMaxValue());
-				builder.append(" on ");
-				builder.append(EMSUtility.getFormattedTime(summary.getMaxTime(), SUMMARY_FMT1));
-				builder.append(getLineSeparator());
-			}
-		}
-
-		return builder.toString();
-	}
-
 	public static String getLineSeparator() {
 		return System.lineSeparator();
 	}
@@ -733,120 +679,6 @@ public abstract class EMSUtility {
 			String[] params = paramName.split(" ");
 			return params.length > 1 ? params[1] : params[0];
 		}
-	}
-
-	public static String createReportString(MeterSummary... summary) {
-
-		StringBuilder builder = new StringBuilder();
-
-		if (summary != null) {
-			for (MeterSummary record : summary) {
-				builder.append(createReportString(record));
-			}
-		}
-
-		return builder.toString();
-	}
-
-	public static String createReportStringMinMax(boolean min, boolean max, MeterSummary... summary) {
-
-		StringBuilder builder = new StringBuilder();
-
-		if (summary != null) {
-			for (MeterSummary record : summary) {
-
-				builder.append(createReportStringMinMax(record, min, max));
-			}
-		}
-
-		return builder.toString();
-	}
-
-	// Assumption that this method will be invoked for only KXX values with minimum
-	// 3 parameters
-	public static String createReportStringSingleKXXMax(MeterSummary... summary) {
-
-		StringBuilder builder = new StringBuilder();
-
-		try {
-			BigDecimal value = new BigDecimal(summary[0].getMaxValue()).max(new BigDecimal(summary[1].getMaxValue()))
-					.max(new BigDecimal(summary[2].getMaxValue()));
-
-			builder.append(value.longValue() / 1000);
-			builder.append(" = ");
-			List<MeterSummary> filteredList = Arrays.asList(summary).stream()
-					.filter(sum -> sum.getMaxValue().equals(value.toString())).collect(Collectors.toList());
-
-			if (!filteredList.isEmpty()) {
-				builder.append(EMSUtility.getFormattedTime((filteredList.get(0).getMaxTime()), SUMMARY_FMT));
-
-			}
-		} catch (Exception e) {
-			logger.error("{}", e);
-		}
-
-		return builder.toString();
-
-	}
-
-	public static String createReportStringSingleKXXMax1(MeterSummary... summary) {
-
-		StringBuilder builder = new StringBuilder();
-
-		try {
-			BigDecimal value = new BigDecimal(summary[0].getMaxValue()).max(new BigDecimal(summary[1].getMaxValue()))
-					.max(new BigDecimal(summary[2].getMaxValue()));
-
-			builder.append(value.longValue() / 1000);
-			builder.append(" = ");
-
-			List<MeterSummary> filteredList = Arrays.asList(summary).stream()
-					.filter(sum -> sum.getMaxValue().equals(value.toString())).collect(Collectors.toList());
-
-			if (!filteredList.isEmpty()) {
-				builder.append(EMSUtility.getFormattedTime((filteredList.get(0).getMaxTime()), SUMMARY_FMT1));
-			}
-
-		} catch (Exception e) {
-			logger.error("{}", e);
-		}
-
-		return builder.toString();
-	}
-
-	// Assumption that this method will be invoked with minimum
-	// 3 parameters
-	public static String createReportStringMax(MeterSummary... summary) {
-
-		StringBuilder builder = new StringBuilder();
-
-		try {
-			long value = new BigDecimal(summary[0].getMaxValue()).max(new BigDecimal(summary[1].getMaxValue()))
-					.max(new BigDecimal(summary[2].getMaxValue())).longValue();
-			builder.append(value);
-		} catch (Exception e) {
-			logger.error("{}", e);
-		}
-
-		return builder.toString();
-	}
-
-	// Assumption that this method will be invoked with minimum
-	// 3 parameters
-	public static String createReportStringMin(MeterSummary... summary) {
-
-		StringBuilder builder = new StringBuilder();
-
-		try {
-			long value = new BigDecimal(summary[0].getMaxValue()).min(new BigDecimal(summary[1].getMaxValue()))
-					.min(new BigDecimal(summary[2].getMaxValue())).longValue();
-			builder.append(value);
-
-		} catch (Exception e) {
-			logger.error("{}", e);
-		}
-
-		return builder.toString();
 	}
 
 	public static long parseDateTime(String dateTime, String format) throws Exception {
