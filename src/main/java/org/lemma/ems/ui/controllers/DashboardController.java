@@ -13,11 +13,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * @author RTS Sathish  Kumar
+ *
+ */
 @Controller
 public class DashboardController {
 
 	private static final Logger logger = LoggerFactory.getLogger(DashboardController.class);
-
 
 	@RequestMapping(value = "/ems/dashboard/show", method = RequestMethod.GET)
 	public ModelAndView showReportsPage() {
@@ -35,9 +38,7 @@ public class DashboardController {
 	public @ResponseBody Map<String, String> getMemoryMappings(@PathVariable("deviceid") int deviceid) {
 		logger.trace("Memory mapping requested for deviceuniqueid {}", deviceid);
 
-
 		Map<String, String> memoryMapping = new LinkedHashMap<>();
-
 
 		return memoryMapping;
 	}

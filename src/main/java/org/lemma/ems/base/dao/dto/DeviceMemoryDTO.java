@@ -13,7 +13,7 @@ public class DeviceMemoryDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = -4855980619075790764L;
 	private long uniqueId;
-	private int deviceId;
+	private long deviceId;
 	private String memoryMapping;
 	private long createdTimeStamp;
 
@@ -25,11 +25,11 @@ public class DeviceMemoryDTO implements Serializable {
 		this.uniqueId = uniqueId;
 	}
 
-	public int getDeviceId() {
+	public long getDeviceId() {
 		return deviceId;
 	}
 
-	public void setDeviceId(int deviceId) {
+	public void setDeviceId(long deviceId) {
 		this.deviceId = deviceId;
 	}
 

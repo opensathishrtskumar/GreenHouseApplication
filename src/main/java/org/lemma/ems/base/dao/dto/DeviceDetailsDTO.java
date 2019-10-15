@@ -24,12 +24,11 @@ public class DeviceDetailsDTO implements Serializable {
 	private String method;
 	// Set default mapping as "MSRF" or "LSRF"
 	private String registerMapping;
-	private int enabled;
+	private int status;
 	/**
 	 * 1 for EMS Devices - READONLY 2 for BMS Devices - READ & WRITE
 	 */
 	private int type;
-	private int deleted;
 
 	private long createdTimeStamp;
 	private long modifiedTimeStamp;
@@ -121,12 +120,12 @@ public class DeviceDetailsDTO implements Serializable {
 		this.registerMapping = registerMapping;
 	}
 
-	public int getEnabled() {
-		return enabled;
+	public int getStatus() {
+		return status;
 	}
 
-	public void setEnabled(int enabled) {
-		this.enabled = enabled;
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	public int getType() {
@@ -135,14 +134,6 @@ public class DeviceDetailsDTO implements Serializable {
 
 	public void setType(int type) {
 		this.type = type;
-	}
-
-	public int getDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(int deleted) {
-		this.deleted = deleted;
 	}
 
 	public long getCreatedTimeStamp() {
