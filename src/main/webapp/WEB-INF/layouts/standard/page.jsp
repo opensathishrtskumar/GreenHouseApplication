@@ -18,7 +18,7 @@
 	<c:forEach var="meta" items="${metadata}">
 		<meta name="${meta.key}" content="${meta.value}"/> 
 	</c:forEach>
-	<script type="text/javascript" src="<c:url value="/resources/jquery/3.3.1/jquery-3.3.1.min.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/jquery/3.3.1/jquery-3.4.1.min.js" />"></script>
 	<script type="text/javascript" src="<c:url value="/resources/jquery-cookie/1.0/jquery-cookie.js" />"></script>
 </head>
 <body>

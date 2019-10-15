@@ -1,10 +1,7 @@
 package org.lemma.ems.base.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -14,10 +11,7 @@ import org.lemma.ems.base.dao.dto.DeviceMemoryDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCallback;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -29,10 +23,10 @@ import org.springframework.stereotype.Repository;
 public class DeviceDetailsDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(DeviceDetailsDAO.class);
-	
-	/* Queries  */
+
+	/* Queries */
 	public static final String RETRIEVE_EMS_DEVICES = "select * from setup.devicedetails where status != ? and type = ?";
-	
+
 	/* All Constants */
 	public static enum Status {
 
@@ -79,8 +73,8 @@ public class DeviceDetailsDAO {
 	}
 
 	/**
-	 * Loads all devices except {@link DeviceDetailsDAO.Status.DELETED} 
-	 * All columnns must be selected from table
+	 * Loads all devices except {@link DeviceDetailsDAO.Status.DELETED} All columnns
+	 * must be selected from table
 	 * 
 	 * @param query
 	 * @param params
@@ -115,47 +109,20 @@ public class DeviceDetailsDAO {
 						DeviceMemoryDAO.MAPPINGS_BY_DEVICEID, new Object[] { details.getUniqueId() });
 				details.setMemoryMappings(fetchAllMemoryMappings);
 
+				/* MemoryMappings are mandatory */
+				if (fetchAllMemoryMappings == null || fetchAllMemoryMappings.isEmpty())
+					return null;
+
 				return details;
 			}
 		}, params);
 	}
 
-	public int executeQuery(final String query, final Object[] params) {
-
-		return this.jdbcTemplate.update(new PreparedStatementCreator() {
-			@Override
-			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-				PreparedStatement ps = con.prepareStatement(query);
-				logger.trace("StmtCreator for query : {} with params : {}", query, Arrays.toString(params));
-				if (params != null) {
-					int count = 1;
-					for (Object param : params) {
-						ps.setObject(count++, param);
-					}
-				}
-				return ps;
-			}
-		});
+	public int executeQuery(final String query, Object[] params) {
+		return this.jdbcTemplate.update(query, params);
 	}
 
 	public void execute(final String query) {
 		jdbcTemplate.execute(query);
-	}
-
-	public int execute(final String query, Object[] params) {
-		jdbcTemplate.execute(query, new PreparedStatementCallback<Object>() {
-			@Override
-			public Object doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
-				if (params != null) {
-					int count = 1;
-					for (Object param : params) {
-						ps.setObject(count++, param);
-					}
-				}
-
-				return ps;
-			}
-		});
-		return 0;
 	}
 }

@@ -26,7 +26,7 @@ public class DeviceManagementService {
 
 		// List of devices not DELETED and Type EMS
 		List<DeviceDetailsDTO> deviceList = deviceDetailsDAO.fetchDeviceDetails(DeviceDetailsDAO.RETRIEVE_EMS_DEVICES,
-				new Object[] { DeviceDetailsDAO.Status.DELETED.getStatus(), DeviceDetailsDAO.Type.BMS.getType() });
+				new Object[] { DeviceDetailsDAO.Status.DELETED.getStatus(), DeviceDetailsDAO.Type.EMS.getType() });
 
 		modelAndView.addObject("deviceList", deviceList);
 		return modelAndView;
