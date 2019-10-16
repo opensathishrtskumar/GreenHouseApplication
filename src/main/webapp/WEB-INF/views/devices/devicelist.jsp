@@ -11,7 +11,7 @@
   <div class="group">
     <h3>Add New Device</h3>
     <div>
-	     <form:form id="addDevice" method="post" modelAttribute="deviceDetailsForm">
+	     <form:form id="addDevice" method="post"  modelAttribute="deviceDetailsForm">
 			<fieldset>
 				<form:label path="deviceName">Device Name / Description<form:errors path="deviceName" cssClass="error" /></form:label>
 				<form:input path="deviceName" htmlEscape="true" maxlength="50" />
@@ -42,10 +42,17 @@
 				
 				<form:label path="enabled">Enable/Disable<form:errors path="enabled" cssClass="error" /></form:label>
 				<form:checkbox path="enabled" title="Enable / Disable Device"/>
+				
+				
+				<label for="memorymapping">Memory Mapping Details</label>
+				<div id="memorymapping" name="memorymapping">
+					<form:textarea  title="Memory Mappings in Detail" rows="10" cols="50" path="memoryMappings[0].memoryMapping"/>
+					<form:textarea  title="Memory Mappings in Detail" rows="10" cols="50" path="memoryMappings[1].memoryMapping"/>
+				</div>
 		
 			</fieldset>
 			<p>
-				<input type="button" value="Add Device">
+				<input type="submit" value="Add Device">
 				<input type="button" value="Test Connection">
 			</p>
 		</form:form>

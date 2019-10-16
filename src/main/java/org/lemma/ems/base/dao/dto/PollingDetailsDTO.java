@@ -2,7 +2,16 @@ package org.lemma.ems.base.dao.dto;
 
 import java.io.Serializable;
 
+/**
+ * @author RTS Sathish Kumar
+ *
+ */
 public class PollingDetailsDTO implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7353069892688430105L;
 	private long deviceUniqueId;
 	private long polledOn;
 	private double voltage_bn;
