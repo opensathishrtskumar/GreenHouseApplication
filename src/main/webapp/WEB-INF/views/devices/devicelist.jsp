@@ -4,59 +4,60 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <h2>Device Manager</h2>
-<%-- 
-<form:form id="resetPassword" method="post" modelAttribute="changePasswordForm">
-	<div class="formInfo">
-		<h2>Add / Remove / Update - Devices</h2>
-	</div>
-	<fieldset>
-		<form:label path="oldPassword">Current Password<form:errors
-				path="oldPassword" cssClass="error" />
-		</form:label>
-		<form:password path="oldPassword" />
-
-		<form:label path="password">Password (at least 6 characters) <form:errors
-				path="password" cssClass="error" />
-		</form:label>
-		<form:password path="password" />
-		<form:label path="confirmPassword">Confirm Password<form:errors
-				path="confirmPassword" cssClass="error" /></form:label>
-		<form:password path="confirmPassword" />
-		<input type="hidden" value="${token}" />
-	</fieldset>
-	<p>
-		<button type="submit">Reset</button>
-	</p>
-</form:form> --%>
 
 <div id="accordion">
+	
+	<!-- First accordion with Form to Test and Add new device -->
   <div class="group">
-    <h3>Section 1</h3>
+    <h3>Add New Device</h3>
     <div>
-      <p>Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.</p>
+	     <form:form id="addDevice" method="post" modelAttribute="deviceDetailsForm">
+			<fieldset>
+				<form:label path="deviceName">Device Name / Description<form:errors path="deviceName" cssClass="error" /></form:label>
+				<form:input path="deviceName" htmlEscape="true" maxlength="50" />
+				
+				<form:label path="deviceId">Device Address / ID<form:errors path="deviceId" cssClass="error" /></form:label>
+				<form:input path="deviceId" title="Unique device identifier in given Group(Maximum can be 214)" htmlEscape="true" maxlength="3"/>
+				
+				<form:label path="baudRate">Baudrate<form:errors path="baudRate" cssClass="error" /></form:label>
+				<form:select path="baudRate" items="${formDetails.baudRateList}" title="Data transfer rate of Device" ></form:select>
+				
+				<form:label path="wordLength">Word Length<form:errors path="wordLength" cssClass="error" /></form:label>
+				<form:select path="wordLength" items="${formDetails.wordlengthList}" title="Word Length of Device" ></form:select>
+				
+				<form:label path="stopbit">Stop Bit<form:errors path="stopbit" cssClass="error" /></form:label>
+				<form:select path="stopbit" items="${formDetails.stopbitList}" title="Stop Bit of Device" ></form:select>
+				
+				<form:label path="parity">Parity<form:errors path="parity" cssClass="error" /></form:label>
+				<form:select path="parity" items="${formDetails.parityList}" title="Parity type of Device" ></form:select>
+				
+				<form:label path="method">Method<form:errors path="method" cssClass="error" /></form:label>
+				<form:select path="method" items="${formDetails.readMethodList}" title="Method of Device" ></form:select>
+				
+				<form:label path="registerMapping">Register Data Order<form:errors path="registerMapping" cssClass="error" /></form:label>
+				<form:select path="registerMapping" items="${formDetails.registerMappingList}" title="Register Data Order of Device" ></form:select>
+				
+				<form:label path="encoding">Encoding<form:errors path="encoding" cssClass="error" /></form:label>
+				<form:select path="encoding" items="${formDetails.encodingList}" title="Encoding type of Device" ></form:select>
+				
+				<form:label path="enabled">Enable/Disable<form:errors path="enabled" cssClass="error" /></form:label>
+				<form:checkbox path="enabled" title="Enable / Disable Device"/>
+		
+			</fieldset>
+			<p>
+				<input type="button" value="Add Device">
+				<input type="button" value="Test Connection">
+			</p>
+		</form:form>
     </div>
   </div>
+  
+  <!--Iterate existing devices in form, that can be updated/deleted(Soft delete)  -->
   <div class="group">
     <h3>Section 2</h3>
     <div>
       <p>Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In suscipit faucibus urna. </p>
     </div>
   </div>
-  <div class="group">
-    <h3>Section 3</h3>
-    <div>
-      <p>Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis. Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui. </p>
-      <ul>
-        <li>List item one</li>
-        <li>List item two</li>
-        <li>List item three</li>
-      </ul>
-    </div>
-  </div>
-  <div class="group">
-    <h3>Section 4</h3>
-    <div>
-      <p>Cras dictum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia mauris vel est. </p><p>Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
-    </div>
-  </div>
+  
 </div>

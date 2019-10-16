@@ -1,6 +1,5 @@
 package org.lemma.ems.util;
 
-import static org.lemma.ems.constants.EmsConstants.ENCODING;
 import static org.lemma.ems.constants.EmsConstants.RETRYCOUNT;
 import static org.lemma.ems.constants.EmsConstants.TIMEOUT;
 import static org.lemma.ems.constants.MessageConstants.REPORT_KEY_SEPARATOR;
@@ -24,6 +23,7 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.lemma.ems.base.core.constants.Core;
 import org.lemma.ems.base.core.util.MemoryMappingParser;
 import org.lemma.ems.base.core.util.OrderedProperties;
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
@@ -332,7 +332,7 @@ public abstract class EMSUtility {
 	}
 
 	public static List<ExtendedSerialParameter> mapDevicesToSerialParams(List<DeviceDetailsDTO> devices) {
-		List<ExtendedSerialParameter> paramList = new ArrayList<ExtendedSerialParameter>();
+		List<ExtendedSerialParameter> paramList = new ArrayList<>();
 
 		for (DeviceDetailsDTO device : devices) {
 			paramList.add(mapDeviceToSerialParam(device));
@@ -349,7 +349,7 @@ public abstract class EMSUtility {
 		parameters.setParity(devices.getParity());
 		parameters.setRetries(RETRYCOUNT);
 		parameters.setTimeout(TIMEOUT[1]);
-		parameters.setEncoding(ENCODING[1]);
+		parameters.setEncoding(Core.ENCODINGS[1]);
 		parameters.setUnitId(devices.getDeviceId());
 		parameters.setUniqueId(devices.getUniqueId());
 		parameters.setDeviceName(devices.getDeviceName());
@@ -394,7 +394,7 @@ public abstract class EMSUtility {
 	public static String convertToFloatWithOrder(byte[] bytes, String registeOrder) {
 		byte[] byteOrder = null;
 
-		if (registeOrder.equals(EmsConstants.REG_MAPPING[0])) {
+		if (registeOrder.equals(Core.REG_MAPPINGS[0])) {
 			byteOrder = bytes;
 		} else {
 			byteOrder = new byte[] { bytes[2], bytes[3], bytes[0], bytes[1] };

@@ -1,7 +1,10 @@
 $(document).ready(function() {
 	
 	$("#accordion").accordion({
-		header : "> div > h3"
+		header : "> div > h3",
+		animate: 200,
+		heightStyle: "content",
+		icons: { "header": "ui-icon-plus", "activeHeader": "ui-icon-minus" }
 	}).sortable({
 		axis : "y",
 		handle : "h3",
