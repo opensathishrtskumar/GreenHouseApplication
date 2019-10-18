@@ -34,11 +34,11 @@ public class DeviceManagementController {
 	/**
 	 * @return ModelAndView for Device Management page
 	 */
-	@RequestMapping(value = "/ems/device/add", method = RequestMethod.GET)
+	@RequestMapping(value = "/ems/device/add", method = RequestMethod.POST)
 	public ModelAndView checkDeviceConnection(@ModelAttribute("deviceDetailsForm") DeviceDetailsForm request) {
 
 		logger.debug("Device details add request {}", request);
 
-		return deviceManagementService.showReportsPage();
+		return deviceManagementService.addDevice(request);
 	}
 }

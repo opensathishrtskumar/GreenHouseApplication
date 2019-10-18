@@ -25,6 +25,8 @@ public class DeviceFormDetails extends Core implements Serializable {
 	private List<String> registerMappingList = Arrays.asList(REG_MAPPINGS);
 	private List<String> encodingList = Arrays.asList(ENCODINGS);
 	private List<String> readMethodList = Arrays.asList(READ_METHODS);
+	
+	private List<String> comPortList = new ArrayList<>();
 
 	/**
 	 * 
@@ -33,6 +35,9 @@ public class DeviceFormDetails extends Core implements Serializable {
 		addElements(baudRateList, BAUDRATES);
 		addElements(wordlengthList, WORDLENGTHS);
 		addElements(stopbitList, STOPBITS);
+		//FIXME: add available COM Ports
+		//comPortList.add()
+		
 	}
 
 	/**
@@ -99,5 +104,13 @@ public class DeviceFormDetails extends Core implements Serializable {
 
 	public void setReadMethodList(List<String> readMethodList) {
 		this.readMethodList = readMethodList;
+	}
+
+	public List<String> getComPortList() {
+		return comPortList;
+	}
+
+	public void setComPortList(List<String> comPortList) {
+		this.comPortList = comPortList;
 	}
 }

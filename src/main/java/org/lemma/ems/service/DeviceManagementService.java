@@ -41,4 +41,12 @@ public class DeviceManagementService {
 		return modelAndView;
 	}
 
+	public ModelAndView addDevice(DeviceDetailsForm request) {
+		
+		//TODO : validation
+		//Insert into DB
+		
+		return null;
+	}
+
 }

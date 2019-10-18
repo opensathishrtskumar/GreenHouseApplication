@@ -11,7 +11,8 @@
   <div class="group">
     <h3>Add New Device</h3>
     <div>
-	     <form:form id="addDevice" method="post"  modelAttribute="deviceDetailsForm">
+    	 <c:url var="postUrl" value="/ems/device/add" context="${pageContext.request.contextPath}" />
+	     <form:form id="addDevice" method="post" action="${postUrl}" modelAttribute="deviceDetailsForm">
 			<fieldset>
 				<form:label path="deviceName">Device Name / Description<form:errors path="deviceName" cssClass="error" /></form:label>
 				<form:input path="deviceName" htmlEscape="true" maxlength="50" />
@@ -39,6 +40,9 @@
 				
 				<form:label path="encoding">Encoding<form:errors path="encoding" cssClass="error" /></form:label>
 				<form:select path="encoding" items="${formDetails.encodingList}" title="Encoding type of Device" ></form:select>
+				
+				<form:label path="port">COM Port<form:errors path="port" cssClass="error" /></form:label>
+				<form:select path="port" items="${formDetails.comPortList}" title="COM Port in which Device connected" ></form:select>
 				
 				<form:label path="enabled">Enable/Disable<form:errors path="enabled" cssClass="error" /></form:label>
 				<form:checkbox path="enabled" title="Enable / Disable Device"/>
