@@ -18,4 +18,48 @@ $(document).ready(function() {
 		}
 	});
 	
+	$("#testconnection").on("click",function(e){
+		e.preventDefault();
+		var url = $("#testUrl").val();
+		var form = $(this).parent().closest("form");
+		var memoryMappings = [];
+		
+		$(form).find(".memoryMapping").each(function(index){
+			memoryMappings.push({"memoryMapping" : $(this).val()});
+		});
+		console.log(memoryMappings);
+		//create memory mapping array object for RestAPI invocation
+		
+		//Get current elements parent which is form and serialize
+		$(form).serializeObject().done(function(object){
+			object.memoryMappings = memoryMappings;
+			var data = JSON.stringify(object);
+			console.log(data);
+			var response = invokeAPI(url,'POST',data,true);
+		});
+	});
+	
+	
+	function invokeAPI(api,method,data,async = false,contentType = "application/json"){
+		var response = {};
+		$.ajax(api, {
+		    type: method,  // http method
+		    data: data,  // data to submit
+		    contentType : contentType,
+		    async : async,
+		    success: function (data, status, xhr) {
+		    	response.data = data;
+		    	response.status = status;
+		    	response.data = data;
+		    },
+		    error: function (jqXhr, textStatus, errorMessage) {
+		    	response.jqXhr = jqXhr;
+		    	response.textStatus = textStatus;
+		    	response.errorMessage = errorMessage;
+		    }
+		});
+		return response;
+	}
+	
+	
 });

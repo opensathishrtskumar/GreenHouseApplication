@@ -35,9 +35,9 @@ public class DeviceFormDetails extends Core implements Serializable {
 		addElements(baudRateList, BAUDRATES);
 		addElements(wordlengthList, WORDLENGTHS);
 		addElements(stopbitList, STOPBITS);
-		//FIXME: add available COM Ports
-		//comPortList.add()
 		
+		//FIXME: add available COM Ports
+		comPortList.addAll(Arrays.asList("COM3","COM4"));
 	}
 
 	/**

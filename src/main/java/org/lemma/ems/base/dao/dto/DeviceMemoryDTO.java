@@ -49,4 +49,10 @@ public class DeviceMemoryDTO implements Serializable {
 		this.createdTimeStamp = createdTimeStamp;
 	}
 
+	@Override
+	public String toString() {
+		return "DeviceMemoryDTO [uniqueId=" + uniqueId + ", deviceId=" + deviceId + ", memoryMapping=" + memoryMapping
+				+ "]";
+	}
+
 }

@@ -236,4 +236,13 @@ public class DeviceDetailsForm implements Serializable {
 		this.connectionVerified = connectionVerified;
 	}
 
+	@Override
+	public String toString() {
+		return "DeviceDetailsForm [uniqueId=" + uniqueId + ", deviceId=" + deviceId + ", deviceName=" + deviceName
+				+ ", baudRate=" + baudRate + ", wordLength=" + wordLength + ", stopbit=" + stopbit + ", parity="
+				+ parity + ", port=" + port + ", method=" + method + ", encoding=" + encoding + ", registerMapping="
+				+ registerMapping + ", status=" + status + ", type=" + type + ", enabled=" + enabled
+				+ ", createdTimeStamp=" + createdTimeStamp + ", modifiedTimeStamp=" + modifiedTimeStamp + ", hashKey="
+				+ hashKey + ", memoryMappings=" + memoryMappings + ", connectionVerified=" + connectionVerified + "]";
+	}
 }

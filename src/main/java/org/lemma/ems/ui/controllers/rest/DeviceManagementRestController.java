@@ -22,8 +22,10 @@ public class DeviceManagementRestController {
 	@ResponseBody
 	public DeviceConnectionResponse testDeviceConnection(@RequestBody DeviceDetailsForm request) {
 
+		logger.debug("Testing connection request {}", request);
+
 		DeviceConnectionResponse response = new DeviceConnectionResponse();
-		//FIXME : test connection of incoming device
+		// FIXME : test connection of incoming device
 
 		RequestResponseUtil.generateSuccessResponse(response);
 

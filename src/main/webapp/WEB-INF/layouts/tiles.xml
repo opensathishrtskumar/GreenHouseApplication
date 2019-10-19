@@ -15,6 +15,7 @@
 
 		<put-list-attribute name="scripts" inherit="true">
 			<add-attribute value="/resources/jquery/ui/js/jquery-ui.min.js"/>
+			<add-attribute value="/resources/jquery/serialize/jquery.serialize-object.js"/>
 		</put-list-attribute>
 	</definition>
 
