@@ -1,11 +1,14 @@
 package org.lemma.ems.ui.model;
 
 import java.io.Serializable;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.lemma.ems.base.dao.UserDetailsDAO;
+import org.lemma.ems.base.dao.DeviceDetailsDAO;
 //import org.lemma.ems.base.dao.dto.UserMemoryDTO;
 
 /**
@@ -28,6 +31,8 @@ public class UserDetailsForm implements Serializable {
 	private String password;
 	@NotNull
 	private int roleID;
+
+	Map<Integer,String> roleList = new LinkedHashMap<>();
 
 	/* COM1-N */
 	@NotNull
@@ -53,6 +58,9 @@ public class UserDetailsForm implements Serializable {
 
 	public UserDetailsForm() {
 		// NOOP
+
+		roleList.put(1,"ADMIN_PLUS");
+		roleList.put(2,"ADMIN");
 	}
 
 	public long getUniqueId() {
@@ -141,6 +149,14 @@ public class UserDetailsForm implements Serializable {
 
 	public void setHashKey(String hashKey) {
 		this.hashKey = hashKey;
+	}
+
+	public Map<Integer,String> getRoleList() {
+		return roleList;
+	}
+
+	public void setRoleList(Map<Integer,String> roleList) {
+		this.roleList = roleList;
 	}
 
 }

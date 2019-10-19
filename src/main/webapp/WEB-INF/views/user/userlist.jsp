@@ -13,23 +13,23 @@
     <div>
     	 <c:url var="postUrl" value="/ems/user/add" context="${pageContext.request.contextPath}" />
 	     <form:form id="addUser" method="post" action="${postUrl}" modelAttribute="userDetailsForm">
+			<c:if test="${param.msg != null}">
+				<div style="display: inline;float: left;width: 100%;align-content: center;" class="success">${param.msg}</div>
+			</c:if>			
 			<fieldset>
 				<form:label path="name">Name of the User<form:errors path="name" cssClass="error" /></form:label>
 				<form:input path="name" htmlEscape="true" maxlength="50" />
 				
-				<form:label path="userId">User ID<form:errors path="userId" cssClass="error" /></form:label>
-				<form:input path="userId" title="Unique user identifier in given Group(Maximum can be 214)" htmlEscape="true" maxlength="3"/>
-				
 				<form:label path="emailID">Email ID<form:errors path="emailID" cssClass="error" /></form:label>
 				<form:input path="emailID" 	htmlEscape="true" maxlength="50"/>
 				
-				<form:label path="password">Password<form:errors path="encoding" cssClass="error" /></form:label>
+				<form:label path="password">Password<form:errors path="password" cssClass="error" /></form:label>
 				<form:input path="password" htmlEscape="true" maxlength="50"/>
 				
-				<form:label path="roleType">Role Type<form:errors path="roleType" cssClass="error" /></form:label>
-				<form:select path="role" items="${formDetails.comRoleList}" title="Available Role Type listed" ></form:select>
+				<form:label path="roleID">Role Type<form:errors path="roleID" cssClass="error" /></form:label>
+				<form:select path="roleID" items="${roleList}" title="Available Role Type listed" ></form:select>
 				
-				<form:label path="mobileNumber">Mobile Number<form:errors path="enabled" cssClass="error" /></form:label>
+				<form:label path="mobileNumber">Mobile Number<form:errors path="mobileNumber" cssClass="error" /></form:label>
 				<form:input path="mobileNumber" htmlEscape="true" maxlength="50"/>
 				
 			</fieldset>
@@ -38,67 +38,6 @@
 			</p>
 		</form:form>
     </div>
-  </div>
-  
-  <!--Iterate existing devices in form, that can be updated/deleted(Soft delete)  -->
-  <div class="group">
-    <h3>View and Edit User</h3>
-    <div>
-    	 <c:url var="postUrl" value="/ems/user/edit" context="${pageContext.request.contextPath}" />
-	     <form:form id="editUser" method="post" action="${postUrl}" modelAttribute="userDetailsForm">
-			<fieldset>
-				<form:label path="name">Name of the User<form:errors path="name" cssClass="error" /></form:label>
-				<form:input path="name" htmlEscape="true" maxlength="50" />
-				
-				<form:label path="userId">User ID<form:errors path="userId" cssClass="error" /></form:label>
-				<form:input path="userId" title="Unique user identifier in given Group(Maximum can be 214)" htmlEscape="true" maxlength="3"/>
-				
-				<form:label path="emailID">Email ID<form:errors path="emailID" cssClass="error" /></form:label>
-				<form:input path="emailID" 	htmlEscape="true" maxlength="50"/>
-				
-				<form:label path="password">Password<form:errors path="encoding" cssClass="error" /></form:label>
-				<form:input path="password" htmlEscape="true" maxlength="50"/>
-				
-				<form:label path="roleType">Role Type<form:errors path="roleType" cssClass="error" /></form:label>
-				<form:select path="role" items="${formDetails.comRoleList}" title="Available Role Type listed" ></form:select>
-				
-				<form:label path="mobileNumber">Mobile Number<form:errors path="enabled" cssClass="error" /></form:label>
-				<form:input path="mobileNumber" htmlEscape="true" maxlength="50"/>
-				
-			</fieldset>
-			<p>
-				<input type="submit" value="Edit User">
-			</p>
-		</form:form>
-    </div>
-    <div>
-<%--     	 <c:url var="postUrl" value="/ems/user/view" context="${pageContext.request.contextPath}" />
-	     <form:form id="viewUser" method="post" action="${postUrl}" modelAttribute="userDetailsShow">
-			<fieldset>
-				<form:label path="name">Name of the User<form:errors path="name" cssClass="error" /></form:label>
-				<form:input path="name" htmlEscape="true" maxlength="50" />
-				
-				<form:label path="userId">User ID<form:errors path="userId" cssClass="error" /></form:label>
-				<form:input path="userId" title="Unique user identifier in given Group(Maximum can be 214)" htmlEscape="true" maxlength="3"/>
-				
-				<form:label path="emailID">Email ID<form:errors path="emailID" cssClass="error" /></form:label>
-				<form:input path="emailID" 	htmlEscape="true" maxlength="50"/>
-				
-				<form:label path="password">Password<form:errors path="encoding" cssClass="error" /></form:label>
-				<form:input path="password" htmlEscape="true" maxlength="50"/>
-				
-				<form:label path="roleType">Role Type<form:errors path="roleType" cssClass="error" /></form:label>
-				<form:select path="role" items="${formDetails.comRoleList}" title="Available Role Type listed" ></form:select>
-				
-				<form:label path="mobileNumber">Mobile Number<form:errors path="enabled" cssClass="error" /></form:label>
-				<form:input path="mobileNumber" htmlEscape="true" maxlength="50"/>
-				
-			</fieldset>
-			<p>
-				<input type="submit" value="Edit User">
-			</p>
-		</form:form> --%>
-    </div>    
   </div>
   
 </div>

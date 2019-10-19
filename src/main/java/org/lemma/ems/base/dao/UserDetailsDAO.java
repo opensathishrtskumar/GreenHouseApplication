@@ -21,11 +21,9 @@ import com.ems.security.Security;
  *
  */
 @Repository
-public class UserDetailsDAO {
+public class UserDetailsDAO extends BaseDAO{
 
 	private static final Logger logger = LoggerFactory.getLogger(UserDetailsDAO.class);
-
-	private final JdbcTemplate jdbcTemplate;
 	/* ALL STATUS details of UserDetails table */
 	public static final int ACTIVE = 1;
 
@@ -38,11 +36,6 @@ public class UserDetailsDAO {
 
 	@Autowired
 	private Security security;
-
-	@Inject
-	public UserDetailsDAO(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
 
 	public UserDetailsDTO authenticate(final String username, final String password, final int status)
 			throws Exception {

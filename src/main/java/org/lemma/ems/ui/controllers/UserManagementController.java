@@ -3,8 +3,9 @@ package org.lemma.ems.ui.controllers;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.lemma.ems.ui.model.DeviceDetailsForm;
+import org.lemma.ems.service.UserManagementService;
 import org.lemma.ems.ui.model.SignupForm;
+import org.lemma.ems.ui.model.UserDetailsForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class UserManagementController {
 
 	@Autowired
 	private Environment environment;
+	
+	@Autowired
+	UserManagementService userManagementService;
 
 	@RequestMapping(value = "/signin", method = RequestMethod.GET)
 	public void showSignIn() {
@@ -45,17 +49,15 @@ public class UserManagementController {
 		return new ModelAndView("homeSignedIn");
 	}
 
-/*	@RequestMapping(value = "/ems/user/show", method = RequestMethod.GET)
+	@RequestMapping(value = "/ems/user/show", method = RequestMethod.GET)
 	public ModelAndView showUsers() {
-		return userManagementService.showUsers();
+		return userManagementService.showUserDetailssPage();
 	}
 
 	@RequestMapping(value = "/ems/user/add", method = RequestMethod.POST)
-	public ModelAndView checkDeviceConnection(@ModelAttribute("deviceDetailsForm") UserDetailsForm request) {
-
+	public ModelAndView checkDeviceConnection(@ModelAttribute("userDetailsForm") UserDetailsForm request) {
 		logger.debug("User details add request {}", request);
-
-		return userManagementService.addUser(request);
-	}	*/
+		return userManagementService.addNewUser(request);
+	}
 	
 }
