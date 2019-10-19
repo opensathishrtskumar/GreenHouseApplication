@@ -41,10 +41,21 @@ $(document).ready(function() {
 		$(form).serializeObject().done(function(object){
 			object.memoryMappings = memoryMappings;
 			var data = JSON.stringify(object);
-			console.log(data);
-			var response = invokeAPI(url,'POST',data,true);
-			//TODO : update status in UI
+			var response = invokeAPI(url,'POST',data,false);
+			
+			// update status in UI - success or failure
+			$("#adddevice").attr("disabled", true);
+			if(response.code == 0)  {
+				$("#adddevice").attr("disabled", false);
+			} 
+			
 		});
+	});
+	
+	//When there is a change in form, disable Add Device button
+	$("#addDeviceForm :input").change(function() {
+		 console.log('change detected in the form, disabled until testconnection is succcessful');
+		 $("#adddevice").attr("disabled", true);
 	});
 	
 	
@@ -61,7 +72,7 @@ $(document).ready(function() {
 			var name = $(additional).attr('name').replace(regx,memoryMappings.length);
 			var id = $(additional).attr('id').replace(regx,memoryMappings.length);
 			
-			additional  = $(additional).attr('id',id).attr('name',name);
+			additional  = $(additional).attr('id',id).attr('name',name).val('');
 			
 			$(additional).appendTo(mappingParent);
 			console.log("additional txt area added");
@@ -86,24 +97,27 @@ $(document).ready(function() {
 	
 	function invokeAPI(api,method,data,async = false,contentType = "application/json"){
 		var response = {};
-		console.log("Invoking API " + api);
+		console.log("Invoking API " + api + " ,Data :" + data);
 		$.ajax(api, {
 		    type: method,  // http method
 		    data: data,  // data to submit
 		    contentType : contentType,
 		    async : async,
+		    //code 0 means success and non zero is failure
 		    success: function (data, status, xhr) {
-		    	response.data = data;
-		    	response.status = status;
-		    	response.data = data;
+		    	response['data'] = data;
+		    	response['status'] = status;
+		    	response['xhr'] = xhr;
+		    	response['code'] = 0;
 		    },
 		    error: function (jqXhr, textStatus, errorMessage) {
-		    	response.jqXhr = jqXhr;
-		    	response.textStatus = textStatus;
-		    	response.errorMessage = errorMessage;
+		    	response['code'] = -1;
+		    	response['jqXhr'] = jqXhr;
+		    	response['textStatus'] = textStatus;
+		    	response['errorMessage'] = errorMessage;
 		    }
 		});
-		console.log("Invoked APIs " + api);
+		console.log("Invoked APIs " + api + " ,Response : " + JSON.stringify(response));
 		return response;
 	}
 	

@@ -99,7 +99,7 @@
 				
 				<div style="display: inline;width: 100%">
 					<div style="display: inline;float: left;width: 30%">
-						<input type="submit" value="Add Device">
+						<input type="submit" id="adddevice" value="Add Device" disabled="disabled">
 					</div>
 					<div style="display: inline;float: left;width: 30%">	
 						<input type="button" id="testconnection" value="Test Connection">
