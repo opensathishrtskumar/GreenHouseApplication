@@ -3,12 +3,14 @@ package org.lemma.ems.ui.controllers;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.lemma.ems.ui.model.DeviceDetailsForm;
 import org.lemma.ems.ui.model.SignupForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -43,5 +45,17 @@ public class UserManagementController {
 		return new ModelAndView("homeSignedIn");
 	}
 
+/*	@RequestMapping(value = "/ems/user/show", method = RequestMethod.GET)
+	public ModelAndView showUsers() {
+		return userManagementService.showUsers();
+	}
+
+	@RequestMapping(value = "/ems/user/add", method = RequestMethod.POST)
+	public ModelAndView checkDeviceConnection(@ModelAttribute("deviceDetailsForm") UserDetailsForm request) {
+
+		logger.debug("User details add request {}", request);
+
+		return userManagementService.addUser(request);
+	}	*/
 	
 }
