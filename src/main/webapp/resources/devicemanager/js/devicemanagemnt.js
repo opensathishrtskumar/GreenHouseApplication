@@ -1,5 +1,12 @@
 $(document).ready(function() {
 	
+	//Constants
+	var regx = /\d+/g ;
+	
+	///to get min and max memorymapping text area
+	var minMemorymappingCount = $("#memorymappingcount").attr('min');
+	var maxMemorymappingCount = $("#memorymappingcount").attr('max');
+	
 	$("#accordion").accordion({
 		header : "> div > h3",
 		animate: 200,
@@ -36,12 +43,50 @@ $(document).ready(function() {
 			var data = JSON.stringify(object);
 			console.log(data);
 			var response = invokeAPI(url,'POST',data,true);
+			//TODO : update status in UI
 		});
+	});
+	
+	
+	//On click, add additional memory mapping text area with proper array index
+	$('.addmemorymapping').on('click',function(e){
+		var mappingParent = $(this).parent().closest('form').find("#mappingDetails");
+		var memoryMappings = $(this).parent().closest('form').find(".memoryMapping");
+		console.log("Current text area count : " + memoryMappings.length);
+		
+		//Add additional textarea when count not breached
+		if(memoryMappings.length < parseInt(maxMemorymappingCount)){
+			var additional = $(mappingParent).children(":first").clone();
+			//Updating array index
+			var name = $(additional).attr('name').replace(regx,memoryMappings.length);
+			var id = $(additional).attr('id').replace(regx,memoryMappings.length);
+			
+			additional  = $(additional).attr('id',id).attr('name',name);
+			
+			$(additional).appendTo(mappingParent);
+			console.log("additional txt area added");
+		} else {
+			console.log("Cann't add additional txt area, limit breached");
+		}
+	});
+	
+	//On click, remove additional memory mapping text area at the end
+	$('.removememorymapping').on('click',function(e){
+		var mappingParent = $(this).parent().closest('form').find("#mappingDetails");
+		var memoryMappings = $(this).parent().closest('form').find(".memoryMapping");
+		console.log("Current text area count : " + memoryMappings.length);
+		if(memoryMappings.length > parseInt(minMemorymappingCount)){
+			$(mappingParent).children(":last").remove();
+			console.log("additional txt area removed");
+		} else {
+			console.log("Cann't remove txt area, limit breached");
+		}
 	});
 	
 	
 	function invokeAPI(api,method,data,async = false,contentType = "application/json"){
 		var response = {};
+		console.log("Invoking API " + api);
 		$.ajax(api, {
 		    type: method,  // http method
 		    data: data,  // data to submit
@@ -58,6 +103,7 @@ $(document).ready(function() {
 		    	response.errorMessage = errorMessage;
 		    }
 		});
+		console.log("Invoked APIs " + api);
 		return response;
 	}
 	

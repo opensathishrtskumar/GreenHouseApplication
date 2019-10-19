@@ -15,6 +15,7 @@
     	 <c:url var="postUrl" value="/ems/device/add" context="${pageContext.request.contextPath}" />
     	 <c:url var="testUrl" value="/devicemanagement/connection/test" context="${pageContext.request.contextPath}" />
     	 <input type="hidden" id="testUrl" value="${testUrl}"> 
+    	 <input type="hidden" id="memorymappingcount" min="1" max="3">
     	 
 	     <form:form id="addDeviceForm" method="post" action="${postUrl}" modelAttribute="deviceDetailsForm">
 			<fieldset>
@@ -86,10 +87,13 @@
 				
 				<div style="display: inline;width: 100%">
 					<div style="display: inline;float: left;width: 100%">
-						<label for="memorymapping">Memory Mapping Details</label>
-						<div id="mappingDetails">
-							<form:textarea class="memoryMapping" htmlEscape="true"  title="Memory Mappings in Detail" rows="10" cols="50" path="memoryMappings[0].memoryMapping"/>
-						</div>
+						<label for="memorymapping" style="display: inline;float: left;width: 50%" >Memory Mapping Details</label>
+						<input type="button" value="+" class="addmemorymapping" title="Add memory mapping" style="display: inline;float: left;width: 10%">
+						<input type="button" value="-" class="removememorymapping" title="Remove memory mapping" style="display: inline;float: left;width: 10%">
+					</div>
+					
+					<div id="mappingDetails"  style="display: inline;float: left;width: 100%">
+						<form:textarea class="memoryMapping" htmlEscape="true"  title="Memory Mappings in Detail" rows="10" cols="50" path="memoryMappings[0].memoryMapping"/>
 					</div>
 				</div>	
 				

@@ -31,6 +31,10 @@ public class Core {
 	public static final String[] POINTYPES = { "01 - COIL STATUS", "02 - INPUT STATUS", "03 - HOLDING REGISTERS",
 			"04 - " + "INPUT REGISTERS" };
 
+	/**
+	 * valid memory mapping configuration values, used during devicemanagement
+	 *
+	 */
 	public static enum MemoryMapping {
 		VOLTAGE_BN("VOLTAGE_BN","Voltage BN"), 
 		VOLTAGE_BR("VOLTAGE_BR","Voltage BR"), 
@@ -55,7 +59,8 @@ public class Core {
 		VA2("VA2","VA2"), 
 		VA3("VA3","VA3"), 
 		VAH("VAH","VAH"), 
-		VA_AVG("VA_AVG","VA Average");
+		VA_AVG("VA_AVG","VA Average"),
+		EOM("EOM","End of Mapping");
 
 		String name;
 		String desc;
