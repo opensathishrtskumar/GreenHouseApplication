@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author RTS Sathish Kumar
  *
  */
-@Controller
+@Controller()
 public class DeviceManagementController {
 
 	private static final Logger logger = LoggerFactory.getLogger(DeviceManagementController.class);

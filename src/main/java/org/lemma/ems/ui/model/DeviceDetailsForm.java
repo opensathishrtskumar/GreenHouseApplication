@@ -77,6 +77,9 @@ public class DeviceDetailsForm implements Serializable {
 
 	private List<DeviceMemoryDTO> memoryMappings = new ArrayList<>();
 
+	/* Attributes required for validations */
+	private boolean connectionVerified;
+
 	public DeviceDetailsForm() {
 		// NOOP
 	}
@@ -224,4 +227,13 @@ public class DeviceDetailsForm implements Serializable {
 	public void setMemoryMappings(List<DeviceMemoryDTO> memoryMappings) {
 		this.memoryMappings = memoryMappings;
 	}
+
+	public boolean isConnectionVerified() {
+		return connectionVerified;
+	}
+
+	public void setConnectionVerified(boolean connectionVerified) {
+		this.connectionVerified = connectionVerified;
+	}
+
 }
