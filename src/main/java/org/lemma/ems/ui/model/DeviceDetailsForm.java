@@ -3,6 +3,7 @@ package org.lemma.ems.ui.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;

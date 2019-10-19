@@ -1,11 +1,17 @@
 package org.lemma.ems.ui.controllers;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.lemma.ems.service.DeviceManagementService;
 import org.lemma.ems.ui.model.DeviceDetailsForm;
+import org.lemma.ems.ui.model.DeviceFormDetails;
+import org.lemma.ems.ui.validator.DeviceDetailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,10 +41,21 @@ public class DeviceManagementController {
 	 * @return ModelAndView for Device Management page
 	 */
 	@RequestMapping(value = "/ems/device/add", method = RequestMethod.POST)
-	public ModelAndView checkDeviceConnection(@ModelAttribute("deviceDetailsForm") DeviceDetailsForm request) {
+	public ModelAndView checkDeviceConnection(@ModelAttribute("deviceDetailsForm") DeviceDetailsForm form,
+			BindingResult formBinding, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+		logger.debug("Device details add request {}", form);
+		
+		ModelAndView modelAndView = deviceManagementService.showReportsPage();
+		
+		DeviceDetailValidator validator = new DeviceDetailValidator(form, formBinding);
+		validator.validateDeviceDetailsForm();
+		
+		if(formBinding.hasErrors()) {
+			modelAndView.addObject("deviceDetailsForm", form);
+			modelAndView.addObject("memoryMappings", form.getMemoryMappings());
+			return modelAndView;
+		}
 
-		logger.debug("Device details add request {}", request);
-
-		return deviceManagementService.addDevice(request);
+		return deviceManagementService.addDevice(form);
 	}
 }

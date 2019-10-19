@@ -1,12 +1,14 @@
 package org.lemma.ems.service;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.lemma.ems.base.dao.DeviceDetailsDAO;
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
 import org.lemma.ems.ui.model.DeviceDetailsForm;
 import org.lemma.ems.ui.model.DeviceFormDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,6 +21,9 @@ public class DeviceManagementService {
 
 	@Autowired
 	private DeviceDetailsDAO deviceDetailsDAO;
+
+	@Autowired
+	ReloadableResourceBundleMessageSource msgSource;
 
 	/**
 	 * @return
@@ -42,11 +47,13 @@ public class DeviceManagementService {
 	}
 
 	public ModelAndView addDevice(DeviceDetailsForm request) {
-		
-		//TODO : validation
-		//Insert into DB
-		
-		return null;
+		// TODO : validation
+		// Insert into DB
+		// Reload the same page
+		ModelAndView modelAndView = new ModelAndView("redirect:/ems/devices/show");
+		// Load message from validation.props file
+		modelAndView.addObject("msg", msgSource.getMessage("device.added", null, Locale.getDefault()));
+		return modelAndView;
 	}
 
 }

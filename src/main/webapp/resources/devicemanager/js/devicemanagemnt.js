@@ -11,7 +11,9 @@ $(document).ready(function() {
 		header : "> div > h3",
 		animate: 200,
 		heightStyle: "content",
-		icons: { "header": "ui-icon-plus", "activeHeader": "ui-icon-minus" }
+		icons: { header: "ui-icon-circle-arrow-e", activeHeader: "ui-icon-circle-arrow-s"},
+		active: 0, 
+		collapsible: true
 	}).sortable({
 		axis : "y",
 		handle : "h3",
