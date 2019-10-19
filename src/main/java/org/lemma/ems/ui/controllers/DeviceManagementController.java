@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.lemma.ems.service.DeviceManagementService;
 import org.lemma.ems.ui.model.DeviceDetailsForm;
-import org.lemma.ems.ui.model.DeviceFormDetails;
 import org.lemma.ems.ui.validator.DeviceDetailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,12 +49,13 @@ public class DeviceManagementController {
 		DeviceDetailValidator validator = new DeviceDetailValidator(form, formBinding);
 		validator.validateDeviceDetailsForm();
 		
+		//Return errors if there is any, along with memoryMappings to iterate and Form Binding
 		if(formBinding.hasErrors()) {
 			modelAndView.addObject("deviceDetailsForm", form);
 			modelAndView.addObject("memoryMappings", form.getMemoryMappings());
 			return modelAndView;
 		}
 
-		return deviceManagementService.addDevice(form);
+		return deviceManagementService.addNewDevice(form);
 	}
 }

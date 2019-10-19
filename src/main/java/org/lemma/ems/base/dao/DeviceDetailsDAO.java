@@ -1,17 +1,18 @@
 package org.lemma.ems.base.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
 import org.lemma.ems.base.dao.dto.DeviceMemoryDTO;
+import org.lemma.ems.ui.model.DeviceDetailsForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -20,12 +21,16 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository("deviceDetailsDAO")
-public class DeviceDetailsDAO {
+public class DeviceDetailsDAO extends BaseDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(DeviceDetailsDAO.class);
 
 	/* Queries */
 	public static final String RETRIEVE_EMS_DEVICES = "select * from setup.devicedetails where status != ? and type = ?";
+
+	public static final String INSERT_DEVICES = "INSERT INTO setup.devicedetails(deviceid,devicedesc,baudrate,wordlength,stopbit,parity,"
+			+ "port,method,registermapping,status,type,createdtimestamp,modifiedtimestamp,hashkey) "
+			+ "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 	/* All Constants */
 	public static enum Status {
@@ -62,14 +67,11 @@ public class DeviceDetailsDAO {
 		}
 	}
 
-	@Autowired
 	private DeviceMemoryDAO deviceMemoryDAO;
 
-	private JdbcTemplate jdbcTemplate;
-
 	@Autowired
-	public void setDataSource(DataSource dataSource) {
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	public void setDeviceMemoryDAO(DeviceMemoryDAO deviceMemoryDAO) {
+		this.deviceMemoryDAO = deviceMemoryDAO;
 	}
 
 	/**
@@ -116,6 +118,25 @@ public class DeviceDetailsDAO {
 				return details;
 			}
 		}, params);
+	}
+
+	/**
+	 * @param device
+	 * @return
+	 */
+	public long insertDeviceDetails(DeviceDetailsDTO device) {
+
+		PreparedStatementCreator psc = new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		};
+
+		long deviceUniqueId = createNewRecord(psc, true);
+
+		return deviceUniqueId;
 	}
 
 	public int executeQuery(final String query, Object[] params) {

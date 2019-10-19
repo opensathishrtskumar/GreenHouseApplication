@@ -3,7 +3,6 @@ package org.lemma.ems.ui.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -239,11 +238,9 @@ public class DeviceDetailsForm implements Serializable {
 
 	@Override
 	public String toString() {
-		return "DeviceDetailsForm [uniqueId=" + uniqueId + ", deviceId=" + deviceId + ", deviceName=" + deviceName
-				+ ", baudRate=" + baudRate + ", wordLength=" + wordLength + ", stopbit=" + stopbit + ", parity="
-				+ parity + ", port=" + port + ", method=" + method + ", encoding=" + encoding + ", registerMapping="
-				+ registerMapping + ", status=" + status + ", type=" + type + ", enabled=" + enabled
-				+ ", createdTimeStamp=" + createdTimeStamp + ", modifiedTimeStamp=" + modifiedTimeStamp + ", hashKey="
-				+ hashKey + ", memoryMappings=" + memoryMappings + ", connectionVerified=" + connectionVerified + "]";
+		return "DeviceDetailsForm [deviceId=" + deviceId + ", deviceName=" + deviceName + ", baudRate=" + baudRate
+				+ ", wordLength=" + wordLength + ", stopbit=" + stopbit + ", parity=" + parity + ", port=" + port
+				+ ", method=" + method + ", encoding=" + encoding + ", registerMapping=" + registerMapping + ", status="
+				+ status + ", createdTimeStamp=" + createdTimeStamp + ", modifiedTimeStamp=" + modifiedTimeStamp + "]";
 	}
 }

@@ -46,10 +46,19 @@ public class DeviceManagementService {
 		return modelAndView;
 	}
 
-	public ModelAndView addDevice(DeviceDetailsForm request) {
-		// TODO : validation
-		// Insert into DB
-		// Reload the same page
+	/**
+	 * @param form
+	 * @return
+	 */
+	public ModelAndView addNewDevice(DeviceDetailsForm form) {
+		/**
+		 * On successfull insertion
+		 * 	1. publish reload event
+		 *  2. Redirect back to show devices page with success 
+		 */
+		//DeviceDetailsForm to DeviceDetailsDTO convertion and insert it
+		
+		
 		ModelAndView modelAndView = new ModelAndView("redirect:/ems/devices/show");
 		// Load message from validation.props file
 		modelAndView.addObject("msg", msgSource.getMessage("device.added", null, Locale.getDefault()));

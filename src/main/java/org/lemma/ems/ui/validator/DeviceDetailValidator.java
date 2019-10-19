@@ -27,19 +27,21 @@ public class DeviceDetailValidator {
 			return formBinding;
 		}
 		
-		/* TODO : 
-		 * 1. validate device name
-		 * 2. deviceid
-		 * 3. memory mapping details(name) - 
-		 */
-		
+		if(StringUtils.isEmpty(form.getDeviceId() <= 0)) {
+			formBinding.rejectValue("deviceName", "devicename.invalid");
+		}
 		
 		if(StringUtils.isEmpty(form.getDeviceName())) {
-			formBinding.rejectValue("deviceName", "devicename.invalid");
+			formBinding.rejectValue("deviceId", "deviceid.invalid");
+		}
+		
+		if(StringUtils.isEmpty(form.getDeviceName())) {
+			formBinding.rejectValue("port", "comport.invalid");
 		}
 		
 		List<DeviceMemoryDTO> memoryMappings = form.getMemoryMappings();
 		
+		//assumption that Test Connection API validates completly, so basic validation is alone implemented 
 		if(memoryMappings == null || memoryMappings.isEmpty()) {
 			formBinding.rejectValue("memoryMappings[0].memoryMapping", "memorymapping.invalid");
 		} else {
