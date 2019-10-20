@@ -9,7 +9,7 @@
 	
 	<!-- First accordion with Form to Test and Add new device -->
   <div class="group">
-    <h3>Add New Device</h3>
+    <h3>Add New User</h3>
     <div>
     	 <c:url var="postUrl" value="/ems/user/add" context="${pageContext.request.contextPath}" />
 	     <form:form id="addUser" method="post" action="${postUrl}" modelAttribute="userDetailsForm">

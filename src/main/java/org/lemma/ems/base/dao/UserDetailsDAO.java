@@ -79,4 +79,11 @@ public class UserDetailsDAO extends BaseDAO{
 		return jdbcTemplate.update(UPDATE_PASSWORD, new Object[] { form.getConfirmPassword(), form.getId() });
 	}
 
+	public int executeQuery(final String query, Object[] params) {
+		return this.jdbcTemplate.update(query, params);
+	}
+
+	public void execute(final String query) {
+		jdbcTemplate.execute(query);
+	}
 }
