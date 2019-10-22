@@ -39,9 +39,14 @@ import com.ghgande.j2mod.modbus.util.ModbusUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+/**
+ * @author RTS Sathish  Kumar
+ *
+ */
 public abstract class EMSUtility {
 
 	private static final Logger logger = LoggerFactory.getLogger(EMSUtility.class);
+	
 	public static final String hh_mma = "hh:mma";
 	public static final String DASHBOARD_FMT = "dd-MMM,yyyy";
 	public static final String DASHBOARD_POLLED_FMT = "dd-MMM,yy hh:mm a";
@@ -350,7 +355,7 @@ public abstract class EMSUtility {
 
 		if (device.isSplitJoin()) {
 			List<Properties> list = device.getSplitJoinDTO().getProps();
-			Map<String, String> map = new LinkedHashMap<String, String>();
+			Map<String, String> map = new LinkedHashMap<>();
 
 			for (Properties props : list) {
 				map.putAll(getOrderedProperties(props));
