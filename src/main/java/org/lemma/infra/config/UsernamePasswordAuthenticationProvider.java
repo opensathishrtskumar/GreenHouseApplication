@@ -51,7 +51,7 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
 		UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
 		try {
 			UserDetailsDTO userDetails = accountRepository.authenticate(token.getName(),
-					(String) token.getCredentials(), UserDetailsDAO.ACTIVE);
+					(String) token.getCredentials(), UserDetailsDAO.Status.ACTIVE.getStatus());
 			return authenticatedToken(userDetails, authentication);
 		} catch (Exception e) {
 			logger.error("{}", e);

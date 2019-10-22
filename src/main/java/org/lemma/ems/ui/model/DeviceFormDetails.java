@@ -3,7 +3,9 @@ package org.lemma.ems.ui.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.lemma.ems.base.core.constants.Core;
 
@@ -36,8 +38,10 @@ public class DeviceFormDetails extends Core implements Serializable {
 		addElements(wordlengthList, WORDLENGTHS);
 		addElements(stopbitList, STOPBITS);
 		
-		//FIXME: add available COM Ports
-		comPortList.addAll(Arrays.asList("COM3","COM4"));
+		Set<String> set = new HashSet<>();
+		set.addAll(Arrays.asList(Core.getAvailablePort()));
+		set.addAll(Arrays.asList("COM3"));
+		comPortList.addAll(set);
 	}
 
 	/**

@@ -1,7 +1,7 @@
 package org.lemma.ems.constants;
 
 /**
- * @author RTS Sathish  Kumar
+ * @author RTS Sathish Kumar
  *
  */
 public final class EmsConstants {
@@ -9,8 +9,6 @@ public final class EmsConstants {
 	private EmsConstants() {
 		// NOOP
 	}
-
-	public static final Object MUTEX = new Object();
 
 	public static final int[] TIMEOUT = { 500, 1000, 1500, 2000, 2500 };
 
@@ -22,8 +20,6 @@ public final class EmsConstants {
 	public static final int REGISTERCOUNT = 10;
 
 	public static final int GAP_BETWEEN_REQUEST = 150;
-
-	public static final String NO_MAP = "NoMap";
 
 	public static final String SPLIT_JOIN = "9999=split";
 }

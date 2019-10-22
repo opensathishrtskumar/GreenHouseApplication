@@ -6,13 +6,15 @@ $(document).ready(function() {
 	///to get min and max memorymapping text area
 	var minMemorymappingCount = $("#memorymappingcount").attr('min');
 	var maxMemorymappingCount = $("#memorymappingcount").attr('max');
+	var accordionIndex = $("#showaccordion").val();
+	console.log("Active accordion : " + accordionIndex);
 	
 	$("#accordion").accordion({
 		header : "> div > h3",
 		animate: 200,
 		heightStyle: "content",
 		icons: { header: "ui-icon-circle-arrow-e", activeHeader: "ui-icon-circle-arrow-s"},
-		active: 0, 
+		active: parseInt(accordionIndex), 
 		collapsible: true
 	}).sortable({
 		axis : "y",
@@ -47,9 +49,11 @@ $(document).ready(function() {
 			
 			// update status in UI - success or failure
 			$("#adddevice").attr("disabled", true);
-			if(response.code == 0)  {
+			if(response.code == 0 && response.data.statusCode == 0)  {
 				$("#adddevice").attr("disabled", false);
-			} 
+			} else {
+				alert(response.data.statusDescription);
+			}
 			
 		});
 	});
@@ -77,6 +81,7 @@ $(document).ready(function() {
 			additional  = $(additional).attr('id',id).attr('name',name).val('');
 			
 			$(additional).appendTo(mappingParent);
+			$("#adddevice").attr("disabled", true);//Disable when new memory mapping added
 			console.log("additional txt area added");
 		} else {
 			console.log("Cann't add additional txt area, limit breached");

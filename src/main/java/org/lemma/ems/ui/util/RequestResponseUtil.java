@@ -13,7 +13,7 @@ public class RequestResponseUtil {
 	 *
 	 */
 	public static enum ResponseCode {
-		SUCCESS(0);
+		SUCCESS(0), FAILURE(-1);
 		int code;
 
 		private ResponseCode(int code) {
@@ -26,7 +26,7 @@ public class RequestResponseUtil {
 	}
 
 	public static enum ResponseDesc {
-		SUCCESS("Success");
+		SUCCESS("Success"), FAILURE("Failure");
 		String desc;
 
 		private ResponseDesc(String desc) {
@@ -44,4 +44,14 @@ public class RequestResponseUtil {
 		return response;
 	}
 
+	public static BaseResponse generateFailureResponse(BaseResponse response, Exception e) {
+		response.setStatusCode(ResponseCode.FAILURE.getCode());
+
+		if (e == null)
+			response.setStatusDescription(ResponseDesc.FAILURE.getDesc());
+		else
+			response.setStatusDescription(e.getMessage());
+
+		return response;
+	}
 }

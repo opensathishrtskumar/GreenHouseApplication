@@ -6,23 +6,25 @@
 
 <h2>Device Manager</h2>
 
+<!-- Set required urls with context path -->
+ <c:url var="postUrl" value="/ems/device/add" context="${pageContext.request.contextPath}" />
+ <c:url var="testUrl" value="/devicemanagement/connection/test" context="${pageContext.request.contextPath}" />
+ <input type="hidden" id="testUrl" value="${testUrl}"> 
+ <input type="hidden" id="memorymappingcount" min="1" max="3">
+ 
+ <!-- Accordion index to keep open always -->
+ <input type="hidden" id="showaccordion" value="${deviceDetailsForm.accordionIndex}">
+
 <div id="accordion">
 
-	
 	<!-- First accordion with Form to Test and Add new device -->
   <div class="group">
     <h3>Add New Device</h3>
     <div>
-    	 <!-- Set required urls with context path -->
-    	 <c:url var="postUrl" value="/ems/device/add" context="${pageContext.request.contextPath}" />
-    	 <c:url var="testUrl" value="/devicemanagement/connection/test" context="${pageContext.request.contextPath}" />
-    	 <input type="hidden" id="testUrl" value="${testUrl}"> 
-    	 <input type="hidden" id="memorymappingcount" min="1" max="3">
     	 
-    	 <!-- All form validation errors -->
-		    	 
 	     <form:form id="addDeviceForm" method="post" action="${postUrl}" modelAttribute="deviceDetailsForm">
-	     
+			
+			<!-- All form validation errors and Success message -->	     
 	     	<spring:hasBindErrors name="deviceDetailsForm">
 	    	 	<div class="error">
 					<c:forEach var="error" items="${errors.allErrors}">
@@ -35,6 +37,9 @@
 			<c:if test="${param.msg != null}">
 				<div style="display: inline;float: left;width: 100%;align-content: center;" class="success">${param.msg}</div>
 			</c:if>
+	     
+	     	<!-- Keep accordion index to show same accordion post form submission -->
+	     	<input type="hidden" name="accordionIndex" value="0">
 	     
 			<fieldset>
 				<div style="display: inline;width: 100%">

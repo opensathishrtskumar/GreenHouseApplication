@@ -129,8 +129,11 @@ public class DeviceDetailsDAO extends BaseDAO {
 		PreparedStatementCreator psc = new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-				// TODO Auto-generated method stub
-				return null;
+				PreparedStatement ps = con.prepareStatement(INSERT_DEVICES);
+				//ps.set
+				
+				
+				return ps;
 			}
 		};
 

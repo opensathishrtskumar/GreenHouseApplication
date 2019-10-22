@@ -1,92 +1,97 @@
 package org.lemma.ems.base.core.util;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.lemma.ems.constants.EmsConstants;
+import org.lemma.ems.base.core.constants.Core;
+import org.lemma.ems.base.core.constants.Core.MemoryMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * @author RTS Sathish Kumar Parses memory mapping and returns as key=value pair
+ */
 public class MemoryMappingParser {
 
 	private static final Logger logger = LoggerFactory.getLogger(MemoryMappingParser.class);
 
 	public static final Pattern MEMORY_MAPPING_PAT = Pattern.compile("(.*)(=)(.*)");
 
-	public static final Pattern MARKER_MAPPPING_PAT = Pattern.compile("NoMap|split", Pattern.CASE_INSENSITIVE);
+	public static final Pattern MARKER_MAPPPING_PAT = Pattern.compile(Core.MemoryMapping.EOM.getName(),
+			Pattern.CASE_INSENSITIVE);
 
-	public static Map<String, String> parseMemoryMappingReverse(String memoryMappingReverse) {
-		LinkedHashMap<String, String> memoryMappingMap = new LinkedHashMap<>();
+	/**
+	 * @param memoryMappingReverse
+	 * @return
+	 */
+	public static Map<String, Integer> parseMappingDescAndAddress(String memoryMappingReverse) {
+		Map<String, Integer> memoryMappingMap = new LinkedHashMap<>();
 
 		Matcher matcher = MEMORY_MAPPING_PAT.matcher(memoryMappingReverse);
 		while (matcher.find()) {
-			memoryMappingMap.put(matcher.group(3), matcher.group(1));
+			memoryMappingMap.put(matcher.group(3), Integer.parseInt(matcher.group(1)));
 		}
 
 		return memoryMappingMap;
 	}
 
-	public static Map<String, String> parseMemoryMapping(String memoryMapping) {
-		LinkedHashMap<String, String> memoryMappingMap = new LinkedHashMap<>();
+	/**
+	 * Parse actual memory mapping to Map<Integer,String>
+	 * 
+	 * @param memoryMapping
+	 * @return
+	 */
+	public static Map<Integer, String> parseMappingAddressAndDesc(String memoryMapping) {
+		Map<Integer, String> memoryMappingMap = new LinkedHashMap<>();
 
 		Matcher matcher = MEMORY_MAPPING_PAT.matcher(memoryMapping);
 		while (matcher.find()) {
-			memoryMappingMap.put(matcher.group(1), matcher.group(3));
+			memoryMappingMap.put(Integer.parseInt(matcher.group(1)), matcher.group(3));
 		}
 
 		return memoryMappingMap;
 	}
 
-	public static Map<String, String> removeMemoryMarkers(Map<String, String> input) {
+	/**
+	 * Validates all Memory mapping desc against {@link Core.MemoryMapping} desc
+	 * Every memory mapping is expected as key=value pair, i.e 4001=R_CURRENT, along
+	 * with {@link Core.MemoryMapping.EOM} End of mapping pointer <b>NOTE :<b>
+	 * Maximum we have 25 param including EOM
+	 * 
+	 * @param mappings
+	 * @return
+	 */
+	public static boolean validateAddressAndDesc(Map<Integer, String> mappings) {
 
-		List<String> memoryAddress = new ArrayList<>();
+		if (mappings == null || mappings.size() == 0)
+			return false;
 
-		for (Entry<String, String> entry : input.entrySet()) {
-			if (MARKER_MAPPPING_PAT.matcher(entry.getValue()).find()) {
-				memoryAddress.add(entry.getKey());
-			}
+		// Every entry's value should exist against Core.MemoryMapping
+		for (Entry<Integer, String> entry : mappings.entrySet()) {
+			MemoryMapping valueOf = Core.MemoryMapping.valueOf(entry.getValue());
+
+			if (valueOf == null)
+				return false;
 		}
-		memoryAddress.forEach(address -> input.remove(address));
-		return input;
+
+		return true;
 	}
 
-	public static Properties loadProperties(String propertiesString) {
-		Properties mappings = new OrderedProperties();
-		if (propertiesString != null) {
-			Matcher matcher = MEMORY_MAPPING_PAT.matcher(propertiesString);
-			while (matcher.find()) {
-				mappings.put(matcher.group(1), matcher.group(3));
-			}
-		}
-		return mappings;
-	}
+	/**
+	 * @param memoryMappingTxt
+	 * @return
+	 */
+	public static Map<Integer, String> parseAndValidateMappings(String memoryMappingTxt) throws Exception {
+		Map<Integer, String> parsedMappingAddressAndDesc = parseMappingAddressAndDesc(memoryMappingTxt);
 
-	public static Map<Long, String> loadMemoryMappingDetails(String mappingDetails) {
-		long startingRegister = EmsConstants.DEFAULTREGISTER;
-		int count = EmsConstants.REGISTERCOUNT;
+		boolean validatedAddressAndDesc = validateAddressAndDesc(parsedMappingAddressAndDesc);
 
-		Map<Long, String> registerMapping = new TreeMap<Long, String>();
+		if (!validatedAddressAndDesc)
+			throw new Exception("Memory mapping validation failure");
 
-		try {
-
-			Matcher matcher = MEMORY_MAPPING_PAT.matcher(mappingDetails);
-			while (matcher.find()) {
-				registerMapping.put(Long.parseLong(matcher.group(1)), matcher.group(3));
-			}
-
-		} catch (Exception e) {
-			logger.error("{}", e);
-			registerMapping.put(startingRegister, "start");
-			registerMapping.put(startingRegister + count, "end");
-		}
-		logger.trace("Memory mapping details : {}", registerMapping);
-		return registerMapping;
+		return parsedMappingAddressAndDesc;
 	}
 }

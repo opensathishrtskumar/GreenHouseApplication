@@ -17,15 +17,26 @@ import org.springframework.stereotype.Repository;
 import com.ems.security.Security;
 
 /**
- * @author RTS Sathish  Kumar
+ * @author RTS Sathish Kumar
  *
  */
 @Repository
-public class UserDetailsDAO extends BaseDAO{
+public class UserDetailsDAO extends BaseDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserDetailsDAO.class);
 	/* ALL STATUS details of UserDetails table */
-	public static final int ACTIVE = 1;
+	public static enum Status {
+		ACTIVE(1), INACTIVE(2), DELETED(3);
+		int status;
+
+		private Status(int status) {
+			this.status = status;
+		}
+
+		public int getStatus() {
+			return status;
+		}
+	}
 
 	/* Queries related to UserDetails TABLE */
 	private static final String AUTHENTICATE_USER = "select ud.id,ud.name,ud.emailid,ud.password,ud.roleid,ud.mobilenumber,ud.status,ud.createdtimestamp,"
@@ -50,7 +61,7 @@ public class UserDetailsDAO extends BaseDAO{
 							logger.trace("row index in authenticate :  {}", rowNum);
 
 							UserDetailsDTO userDetails = new UserDetailsDTO();
-							
+
 							userDetails.setId(rs.getLong("id"));
 							userDetails.setName(rs.getString("name"));
 							userDetails.setEmailId(rs.getString("emailid"));

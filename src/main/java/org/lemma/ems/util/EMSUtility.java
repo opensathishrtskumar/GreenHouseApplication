@@ -24,17 +24,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.lemma.ems.base.core.constants.Core;
-import org.lemma.ems.base.core.util.MemoryMappingParser;
 import org.lemma.ems.base.core.util.OrderedProperties;
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
 import org.lemma.ems.base.dao.dto.ExtendedSerialParameter;
 import org.lemma.ems.base.dao.dto.SplitJoinDTO;
 import org.lemma.ems.constants.EmsConstants;
-import org.lemma.ems.scheduler.util.SchedulerConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fazecast.jSerialComm.SerialPort;
 import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.msg.ModbusRequest;
 import com.ghgande.j2mod.modbus.msg.ReadInputRegistersRequest;
@@ -47,7 +44,6 @@ import com.google.gson.GsonBuilder;
 public abstract class EMSUtility {
 
 	private static final Logger logger = LoggerFactory.getLogger(EMSUtility.class);
-	private static Pattern pattern = Pattern.compile("(COM)([0-9]){1,}");
 	public static final String hh_mma = "hh:mma";
 	public static final String DASHBOARD_FMT = "dd-MMM,yyyy";
 	public static final String DASHBOARD_POLLED_FMT = "dd-MMM,yy hh:mm a";
@@ -60,41 +56,6 @@ public abstract class EMSUtility {
 	public static final String DD_MM_YYYY_HH_MM_S = "dd/MM/yyyy HH:mm:s";
 	public static final String EXCEL_REPORTNAME_FORMAT = "ddMMMyyyyHHmm";
 
-	/**
-	 * return Available Serial ports as array
-	 */
-	public static String[] getAvailablePort() {
-		String[] availablePorts = {};
-
-		try {
-			SerialPort[] ports = SerialPort.getCommPorts();
-
-			if (ports != null) {
-				availablePorts = new String[ports.length];
-			}
-
-			for (int i = 0; i < ports.length; i++) {
-				availablePorts[i] = ports[i].getSystemPortName();
-			}
-		} catch (Exception e) {
-			StringBuilder builder = new StringBuilder();
-			builder.append("Failed to load Serial Ports" + e.getLocalizedMessage());
-			logger.error(builder.toString());
-		}
-
-		return availablePorts;
-	}
-
-	/**
-	 * @param portName
-	 * @return Extract only port name from descriptive name
-	 */
-	public static String extractPortName(String portName) {
-		Matcher matcher = pattern.matcher(portName);
-		if (matcher.find())
-			portName = matcher.group();
-		return portName;
-	}
 
 	public static Object[] convertObjectArray(int... arg) {
 		Object[] response = new Object[arg.length];
@@ -110,46 +71,6 @@ public abstract class EMSUtility {
 			response[i] = arg[i];
 		}
 		return response;
-	}
-
-	/**
-	 * @param propertiesString
-	 * @returns Properties with keys in order which it is loaded
-	 */
-	public static Properties loadProperties(String propertiesString) {
-		/*
-		 * Properties mappings = new OrderedProperties();
-		 * 
-		 * try { if (propertiesString != null) mappings.load(new
-		 * ByteArrayInputStream(propertiesString.getBytes())); } catch (Exception e) {
-		 * logger.error("error loading memory mapping : {}", e.getLocalizedMessage());
-		 * logger.error("{}", e); }
-		 */
-
-		return MemoryMappingParser.loadProperties(propertiesString);
-	}
-
-	public static Map<Long, String> loadMemoryMappingDetails(String mappingDetails) {
-		long startingRegister = EmsConstants.DEFAULTREGISTER;
-		int count = EmsConstants.REGISTERCOUNT;
-
-		Map<Long, String> registerMapping = new TreeMap<Long, String>();
-
-		try {
-			Properties memoryMappings = loadProperties(mappingDetails);
-
-			for (Entry<Object, Object> entry : memoryMappings.entrySet()) {
-				registerMapping.put(Long.parseLong(entry.getKey().toString()), entry.getValue().toString());
-			}
-		} catch (Exception e) {
-			logger.error("error extracting reference and count : {}", e.getLocalizedMessage());
-			logger.error("{}", e);
-
-			registerMapping.put(startingRegister, "start");
-			registerMapping.put(startingRegister + count, "end");
-		}
-		logger.trace("Memory mapping details : {}", registerMapping);
-		return registerMapping;
 	}
 
 	/**
@@ -225,7 +146,7 @@ public abstract class EMSUtility {
 	 */
 	public static Map<String, String> processRegistersForDashBoard(ExtendedSerialParameter parameters) {
 
-		Map<String, String> finalResponse = new LinkedHashMap<String, String>();
+		Map<String, String> finalResponse = new LinkedHashMap<>();
 
 		if (parameters.isSplitJoin()) {
 			finalResponse = convertSplitJoinResponse(parameters);
@@ -246,7 +167,7 @@ public abstract class EMSUtility {
 	 * @return merged Map of SplitJoin Response
 	 */
 	public static Map<String, String> convertSplitJoinResponse(ExtendedSerialParameter parameters) {
-		Map<String, String> finalResponse = new LinkedHashMap<String, String>();
+		Map<String, String> finalResponse = new LinkedHashMap<>();
 		SplitJoinDTO splitJoinDto = parameters.getSplitJoinDTO();
 		String msrfOrLsrf = parameters.getRegisterMapping();
 
@@ -286,7 +207,7 @@ public abstract class EMSUtility {
 	 */
 	public static Map<String, String> convertRegistersToMap(int base, int[] requiredRegisters,
 			InputRegister[] registers, String msrfOrLsrf) {
-		Map<String, String> finalResponse = new LinkedHashMap<String, String>();
+		Map<String, String> finalResponse = new LinkedHashMap<>();
 
 		for (int reg : requiredRegisters) {
 			int registerIndex = reg - (base + 1);
@@ -369,13 +290,13 @@ public abstract class EMSUtility {
 	 */
 	public static Map<String, List<ExtendedSerialParameter>> groupDeviceForPolling(
 			List<ExtendedSerialParameter> paramsList) {
-		Map<String, List<ExtendedSerialParameter>> groupedDevice = new HashMap<String, List<ExtendedSerialParameter>>();
+		Map<String, List<ExtendedSerialParameter>> groupedDevice = new HashMap<>();
 
 		for (ExtendedSerialParameter device : paramsList) {
 			List<ExtendedSerialParameter> group = groupedDevice.get(device.getGroupKey());
 			// Create group when doesn't exist
 			if (group == null) {
-				group = new ArrayList<ExtendedSerialParameter>();
+				group = new ArrayList<>();
 				groupedDevice.put(device.getGroupKey(), group);
 			}
 			// Add device in group
@@ -400,13 +321,11 @@ public abstract class EMSUtility {
 			byteOrder = new byte[] { bytes[2], bytes[3], bytes[0], bytes[1] };
 		}
 
-		String value = String.format("%.2f", ModbusUtil.registersToFloat(byteOrder));
-
-		return value;
+		return String.format("%.2f", ModbusUtil.registersToFloat(byteOrder));
 	}
 
 	public static Map<String, String> getOrderedProperties(Properties props) {
-		Map<String, String> map = new LinkedHashMap<String, String>();
+		Map<String, String> map = new LinkedHashMap<>();
 
 		if (props instanceof OrderedProperties) {
 			OrderedProperties orderProp = (OrderedProperties) props;
@@ -550,25 +469,6 @@ public abstract class EMSUtility {
 		}
 
 		return list;
-	}
-
-	public static String getForwarKWMappingRegister(String memoryMapping) {
-		return getRegisterByMappingName(memoryMapping, SchedulerConstants.FORWARD_KW);
-	}
-
-	public static String getRegisterByMappingName(String memoryMapping, String mappingName) {
-
-		Properties prop = loadProperties(memoryMapping);
-
-		String register = null;
-
-		for (Entry<Object, Object> entry : prop.entrySet()) {
-			if (String.valueOf(entry.getValue()).equals(mappingName)) {
-				register = String.valueOf(entry.getKey());
-			}
-		}
-
-		return register;
 	}
 
 	public static BigDecimal findSecondSmallest(BigDecimal[] a) {

@@ -80,6 +80,8 @@ public class DeviceDetailsForm implements Serializable {
 	/* Attributes required for validations */
 	private boolean connectionVerified;
 
+	private int accordionIndex;
+
 	public DeviceDetailsForm() {
 		// NOOP
 	}
@@ -234,6 +236,14 @@ public class DeviceDetailsForm implements Serializable {
 
 	public void setConnectionVerified(boolean connectionVerified) {
 		this.connectionVerified = connectionVerified;
+	}
+
+	public int getAccordionIndex() {
+		return accordionIndex;
+	}
+
+	public void setAccordionIndex(int accordionIndex) {
+		this.accordionIndex = accordionIndex;
 	}
 
 	@Override
