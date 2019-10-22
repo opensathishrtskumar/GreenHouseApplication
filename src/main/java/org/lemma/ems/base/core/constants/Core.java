@@ -33,7 +33,7 @@ public abstract class Core {
 		VOLTAGE_AVG_LN("VOLTAGE_AVG_LN","Voltage Average LN"), 
 		R_CURRENT("R_CURRENT","R Current"), 
 		Y_CURRENT("Y_CURRENT","Y Current"), 
-		B_CURRENT("Y_CURRENT","Y Current"), 
+		B_CURRENT("B_CURRENT","B Current"), 
 		CURRENT_AVG("CURRENT_AVG","Current Average"), 
 		FREQUENCY("FREQUENCY","Frequency"), 
 		POWER_FACTOR("POWER_FACTOR","Power Factor"), 

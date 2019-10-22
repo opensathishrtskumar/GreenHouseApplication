@@ -98,7 +98,7 @@ public class HelperController {
 		dtopoll.setVah(169.53);
 		dtopoll.setVa_avg(171.64);
 
-		int queryUpStatus = pollingDao.execute(QueryConstants.INSERT_POLLING_DETAILS,
+		int queryUpStatus = pollingDao.insertPollingDetails(QueryConstants.INSERT_POLLING_DETAILS,
 				new Object[] { dtopoll.getDeviceUniqueId(), dtopoll.getPolledOn(), dtopoll.getVoltage_bn(),
 						dtopoll.getVoltage_br(), dtopoll.getVoltage_rn(), dtopoll.getVoltage_ry(),
 						dtopoll.getVoltage_yb(), dtopoll.getVoltage_yn(), dtopoll.getVoltage_avg_ll(),

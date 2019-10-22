@@ -4,11 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
 import org.lemma.ems.base.dao.dto.DeviceMemoryDTO;
-import org.lemma.ems.ui.model.DeviceDetailsForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,18 +102,15 @@ public class DeviceDetailsDAO extends BaseDAO {
 				details.setRegisterMapping(resultSet.getString("registermapping"));// MSRF/LSRF
 				details.setStatus(resultSet.getInt("status"));
 				details.setType(resultSet.getInt("type"));
-				details.setCreatedTimeStamp(resultSet.getInt("createdtimestamp"));
-				details.setModifiedTimeStamp(resultSet.getInt("modifiedtimestamp"));
+				details.setCreatedTimeStamp(resultSet.getLong("createdtimestamp"));
+				details.setModifiedTimeStamp(resultSet.getLong("modifiedtimestamp"));
 				details.setHashKey(resultSet.getString("hashkey"));
 
 				// Load Memory Mappings of current device
 				List<DeviceMemoryDTO> fetchAllMemoryMappings = deviceMemoryDAO.fetchAllMemoryMappings(
-						DeviceMemoryDAO.MAPPINGS_BY_DEVICEID, new Object[] { details.getUniqueId() });
+						DeviceMemoryDAO.MAPPINGS_BY_DEVICEID,
+						new Object[] { details.getUniqueId(), DeviceMemoryDAO.Status.DELETED.getStatus() });
 				details.setMemoryMappings(fetchAllMemoryMappings);
-
-				/* MemoryMappings are mandatory */
-				if (fetchAllMemoryMappings == null || fetchAllMemoryMappings.isEmpty())
-					return null;
 
 				return details;
 			}
@@ -129,24 +126,33 @@ public class DeviceDetailsDAO extends BaseDAO {
 		PreparedStatementCreator psc = new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-				PreparedStatement ps = con.prepareStatement(INSERT_DEVICES);
-				//ps.set
-				
-				
+				PreparedStatement ps = con.prepareStatement(INSERT_DEVICES, Statement.RETURN_GENERATED_KEYS);
+				ps.setInt(1, device.getDeviceId());
+				ps.setString(2, device.getDeviceName());
+				ps.setInt(3, device.getBaudRate());
+				ps.setInt(4, device.getWordLength());
+				ps.setInt(5, device.getStopbit());
+				ps.setString(6, device.getParity());
+				ps.setString(7, device.getPort());
+				ps.setString(8, device.getMethod());
+				ps.setString(9, device.getRegisterMapping());
+				ps.setInt(10, device.getStatus());
+				ps.setInt(11, device.getType());
+				ps.setLong(12, device.getCreatedTimeStamp());
+				ps.setLong(13, device.getModifiedTimeStamp());
+				ps.setString(14, device.getHashKey());
 				return ps;
 			}
 		};
 
-		long deviceUniqueId = createNewRecord(psc, true);
+		long deviceUniqueId = super.createNewRecord(psc, true);
+
+		// insert DeviceMemoryMappings
+		for (DeviceMemoryDTO memory : device.getMemoryMappings()) {
+			memory.setDeviceId(deviceUniqueId);
+			deviceMemoryDAO.insertDeviceMemory(memory);
+		}
 
 		return deviceUniqueId;
-	}
-
-	public int executeQuery(final String query, Object[] params) {
-		return this.jdbcTemplate.update(query, params);
-	}
-
-	public void execute(final String query) {
-		jdbcTemplate.execute(query);
 	}
 }

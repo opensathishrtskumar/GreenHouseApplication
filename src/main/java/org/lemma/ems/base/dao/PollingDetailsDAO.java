@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.lemma.ems.base.dao.constants.QueryConstants;
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
 import org.lemma.ems.base.dao.dto.PollingDetailsDTO;
@@ -16,26 +14,20 @@ import org.lemma.ems.base.dao.dto.SettingsDTO;
 import org.lemma.ems.util.EMSUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository("pollingDetailsDAO")
-public class PollingDetailsDAO {
+public class PollingDetailsDAO extends BaseDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(PollingDetailsDAO.class);
 
-	private JdbcTemplate jdbcTemplate;
-
-	@Autowired
-	public void setDataSource(DataSource dataSource) {
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
-	}
-
+	/**
+	 * @param query
+	 * @param params
+	 * @return
+	 */
 	public List<DeviceDetailsDTO> fetchAllDeviceDetails(String query, Object[] params) {
 
 		return this.jdbcTemplate.query(query, new RowMapper<DeviceDetailsDTO>() {
@@ -62,43 +54,8 @@ public class PollingDetailsDAO {
 		}, params);
 	}
 
-	public int executeQuery(final String query, final Object[] params) {
-
-		return this.jdbcTemplate.update(new PreparedStatementCreator() {
-			@Override
-			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-				PreparedStatement ps = con.prepareStatement(query);
-				logger.trace("StmtCreator for query : {} with params : {}", query, Arrays.toString(params));
-				if (params != null) {
-					int count = 1;
-					for (Object param : params) {
-						ps.setObject(count++, param);
-					}
-				}
-				return ps;
-			}
-		});
-	}
-
-	public void execute(final String query) {
-		jdbcTemplate.execute(query);
-	}
-
-	public int execute(final String query, Object[] params) {
-		jdbcTemplate.execute(query, new PreparedStatementCallback<Object>() {
-			@Override
-			public Object doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
-				if (params != null) {
-					int count = 1;
-					for (Object param : params) {
-						ps.setObject(count++, param);
-					}
-				}
-
-				return ps;
-			}
-		});
-		return 0;
+	public int insertPollingDetails(String query, Object[] params) {
+		return super.executeQuery(query, params);
 	}
 
 	public List<SettingsDTO> fetchSettings() {
@@ -149,7 +106,6 @@ public class PollingDetailsDAO {
 				details.setDeviceUniqueId(rs.getLong("deviceuniqueid"));
 				details.setPolledOn(rs.getLong("polledon"));
 				// details.setUnitresponse(rs.getString("unitresponse"));
-
 				return details;
 			}
 		});

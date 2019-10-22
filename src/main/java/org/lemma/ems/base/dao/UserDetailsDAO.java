@@ -3,14 +3,11 @@ package org.lemma.ems.base.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.inject.Inject;
-
 import org.lemma.ems.base.dao.dto.UserDetailsDTO;
 import org.lemma.ems.ui.model.ChangePasswordForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +21,7 @@ import com.ems.security.Security;
 public class UserDetailsDAO extends BaseDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserDetailsDAO.class);
+
 	/* ALL STATUS details of UserDetails table */
 	public static enum Status {
 		ACTIVE(1), INACTIVE(2), DELETED(3);
@@ -86,15 +84,11 @@ public class UserDetailsDAO extends BaseDAO {
 		}
 	}
 
+	/**
+	 * @param form
+	 * @return
+	 */
 	public int updatePassword(ChangePasswordForm form) {
-		return jdbcTemplate.update(UPDATE_PASSWORD, new Object[] { form.getConfirmPassword(), form.getId() });
-	}
-
-	public int executeQuery(final String query, Object[] params) {
-		return this.jdbcTemplate.update(query, params);
-	}
-
-	public void execute(final String query) {
-		jdbcTemplate.execute(query);
+		return super.executeQuery(UPDATE_PASSWORD, new Object[] { form.getConfirmPassword(), form.getId() });
 	}
 }

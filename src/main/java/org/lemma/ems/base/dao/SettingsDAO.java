@@ -7,13 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.lemma.ems.base.dao.dto.SettingsDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -25,7 +22,7 @@ import com.ems.security.Security;
  *
  */
 @Repository
-public class SettingsDAO {
+public class SettingsDAO extends BaseDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(SettingsDAO.class);
 
@@ -58,8 +55,6 @@ public class SettingsDAO {
 		}
 
 	}
-
-	private final JdbcTemplate jdbcTemplate;
 	/* ALL details of SetttingsDAO table */
 
 	/* Queries related to SetttingsDAO TABLE */
@@ -67,11 +62,6 @@ public class SettingsDAO {
 
 	@Autowired
 	private Security security;
-
-	@Inject
-	public SettingsDAO(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
 
 	public List<SettingsDTO> fetchSettings() throws Exception {
 

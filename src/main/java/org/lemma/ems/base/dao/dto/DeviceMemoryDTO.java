@@ -15,6 +15,7 @@ public class DeviceMemoryDTO implements Serializable {
 	private long uniqueId;
 	private long deviceId;
 	private String memoryMapping;
+	private int status;
 	private long createdTimeStamp;
 
 	public long getUniqueId() {
@@ -39,6 +40,14 @@ public class DeviceMemoryDTO implements Serializable {
 
 	public void setMemoryMapping(String memoryMapping) {
 		this.memoryMapping = memoryMapping;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	public long getCreatedTimeStamp() {

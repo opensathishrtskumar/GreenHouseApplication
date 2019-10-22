@@ -51,7 +51,7 @@ public class ArchiveCleanupTask implements Callable<Object>, ApplicationContextA
 					" FIELDS TERMINATED BY ',' LINES TERMINATED BY '#' FROM archive.pollingdetails WHERE  polledon > ");
 			builder.append(timeStamp);
 
-			dao.execute(builder.toString());
+			dao.executeQuery(builder.toString());
 
 			int rowsDeleted = dao.executeQuery(QueryConstants.ARVHIVE_BACKUP_DELETE_QUERY, new Object[] { timeStamp });
 			logger.debug("Rows deleted from archive database is {}", rowsDeleted);

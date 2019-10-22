@@ -51,6 +51,7 @@ $(document).ready(function() {
 			$("#adddevice").attr("disabled", true);
 			if(response.code == 0 && response.data.statusCode == 0)  {
 				$("#adddevice").attr("disabled", false);
+				alert(response.data.statusDescription);
 			} else {
 				alert(response.data.statusDescription);
 			}

@@ -4,9 +4,14 @@ import java.util.List;
 import java.util.Locale;
 
 import org.lemma.ems.base.dao.DeviceDetailsDAO;
+import org.lemma.ems.base.dao.DeviceMemoryDAO;
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
+import org.lemma.ems.base.dao.dto.DeviceMemoryDTO;
+import org.lemma.ems.ui.controllers.DeviceManagementController;
 import org.lemma.ems.ui.model.DeviceDetailsForm;
 import org.lemma.ems.ui.model.DeviceFormDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Repository;
@@ -18,6 +23,8 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Repository("deviceManagementService")
 public class DeviceManagementService {
+
+	private static final Logger logger = LoggerFactory.getLogger(DeviceManagementService.class);
 
 	@Autowired
 	private DeviceDetailsDAO deviceDetailsDAO;
@@ -51,17 +58,34 @@ public class DeviceManagementService {
 	 * @return
 	 */
 	public ModelAndView addNewDevice(DeviceDetailsForm form) {
-		/**
-		 * On successfull insertion
-		 * 	1. publish reload event
-		 *  2. Redirect back to show devices page with success 
-		 */
-		//DeviceDetailsForm to DeviceDetailsDTO convertion and insert it
-		
-		
 		ModelAndView modelAndView = new ModelAndView("redirect:/ems/devices/show");
-		// Load message from validation.props file
 		modelAndView.addObject("msg", msgSource.getMessage("device.added", null, Locale.getDefault()));
+
+		/**
+		 * On successfull insertion 1. publish reload event 2. Redirect back to show
+		 * devices page with success
+		 */
+		long timeStamp = System.currentTimeMillis();
+		form.setCreatedTimeStamp(timeStamp);
+		form.setModifiedTimeStamp(timeStamp);
+		form.setStatus(form.isEnabled() ? DeviceDetailsDAO.Status.ACTIVE.getStatus()
+				: DeviceDetailsDAO.Status.DISABLED.getStatus());
+		form.setType(DeviceDetailsDAO.Type.EMS.getType());
+
+		for (DeviceMemoryDTO memory : form.getMemoryMappings()) {
+			memory.setCreatedTimeStamp(timeStamp);
+			memory.setStatus(DeviceMemoryDAO.Status.ACTIVE.getStatus());
+		}
+
+		DeviceDetailsDTO dto = DeviceMapper.mapForm2Dto(form);
+
+		try {
+			long insertDeviceDetails = deviceDetailsDAO.insertDeviceDetails(dto);
+		} catch (Exception e) {
+			logger.error("Failed to insert new device {}", e);
+			modelAndView.addObject("msg", msgSource.getMessage("device.added.error", null, Locale.getDefault()));
+		}
+
 		return modelAndView;
 	}
 

@@ -23,6 +23,7 @@ public class BaseDAO {
 
 	/**
 	 * Inserts into table
+	 * 
 	 * @param psc
 	 * @param autoGenerateKey
 	 * @return
@@ -43,4 +44,19 @@ public class BaseDAO {
 		return returnValue;
 	}
 
+	/**
+	 * @param query
+	 * @param params
+	 * @return
+	 */
+	public int executeQuery(final String query, Object[] params) {
+		return this.jdbcTemplate.update(query, params);
+	}
+
+	/**
+	 * @param query
+	 */
+	public void executeQuery(final String query) {
+		jdbcTemplate.execute(query);
+	}
 }

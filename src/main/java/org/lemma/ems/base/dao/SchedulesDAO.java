@@ -6,13 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.lemma.ems.base.dao.dto.SchedulesDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -22,7 +18,7 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository("schedulesDAO")
-public class SchedulesDAO {
+public class SchedulesDAO extends BaseDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(SchedulesDAO.class);
 
@@ -33,13 +29,6 @@ public class SchedulesDAO {
 	/* Queries */
 	public static final String SELECT_SCHEDULES_BY_STATUS = "select * from setup.schedules where status=?";
 	public static final String SELECT_ALL_SCHEDULES = "select * from setup.schedules";
-
-	private JdbcTemplate jdbcTemplate;
-
-	@Autowired
-	public void setDataSource(DataSource dataSource) {
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
-	}
 
 	public List<SchedulesDTO> fetchAllSchedulesByStatus() {
 		return fetchAllSchedulesByStatus(SELECT_SCHEDULES_BY_STATUS, ACTIVE);
@@ -103,20 +92,6 @@ public class SchedulesDAO {
 	 * @return
 	 */
 	public int executeQuery(final String query, final Object[] params) {
-
-		return this.jdbcTemplate.update(new PreparedStatementCreator() {
-			@Override
-			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-				PreparedStatement ps = con.prepareStatement(query);
-				if (params != null) {
-					int count = 1;
-					for (Object param : params) {
-						ps.setObject(count++, param);
-					}
-				}
-
-				return ps;
-			}
-		});
+		return super.executeQuery(query, params);
 	}
 }
