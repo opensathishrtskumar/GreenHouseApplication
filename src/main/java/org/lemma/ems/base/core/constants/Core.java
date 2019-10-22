@@ -15,39 +15,38 @@ import com.ghgande.j2mod.modbus.Modbus;
  */
 public abstract class Core {
 	private static final Logger logger = LoggerFactory.getLogger(Core.class);
-	
+
 	private static Pattern pattern = Pattern.compile("(COM)([0-9]){1,}");
-	
+
 	/**
 	 * valid memory mapping configuration values, used during devicemanagement
 	 *
 	 */
 	public static enum MemoryMapping {
-		VOLTAGE_BN("VOLTAGE_BN","Voltage BN"), 
-		VOLTAGE_BR("VOLTAGE_BR","Voltage BR"), 
-		VOLTAGE_RN("VOLTAGE_RN","Voltage RN"), 
-		VOLTAGE_RY("VOLTAGE_RY","Voltage RY"), 
-		VOLTAGE_YB("VOLTAGE_YB","Voltage YB"), 
-		VOLTAGE_YN("VOLTAGE_YN","Voltage YN"), 
-		VOLTAGE_AVG_LL("VOLTAGE_AVG_LL","Voltage Average LL"), 
-		VOLTAGE_AVG_LN("VOLTAGE_AVG_LN","Voltage Average LN"), 
-		R_CURRENT("R_CURRENT","R Current"), 
-		Y_CURRENT("Y_CURRENT","Y Current"), 
-		B_CURRENT("B_CURRENT","B Current"), 
-		CURRENT_AVG("CURRENT_AVG","Current Average"), 
-		FREQUENCY("FREQUENCY","Frequency"), 
-		POWER_FACTOR("POWER_FACTOR","Power Factor"), 
-		W1("W1","W1"), 
-		W2("W2","W2"), 
-		W3("W3","W3"), 
-		WH("WH","WH"), 
-		W_AVG("W_AVG","W Average"), 
-		VA1("VA1","VA1"), 
-		VA2("VA2","VA2"), 
-		VA3("VA3","VA3"), 
-		VAH("VAH","VAH"), 
-		VA_AVG("VA_AVG","VA Average"),
-		EOM("EOM","End of Mapping");
+		VOLTAGE_BN("VOLTAGE_BN", "Voltage BN"), VOLTAGE_BR("VOLTAGE_BR", "Voltage BR"), VOLTAGE_RN("VOLTAGE_RN",
+				"Voltage RN"), VOLTAGE_RY("VOLTAGE_RY", "Voltage RY"), VOLTAGE_YB("VOLTAGE_YB",
+						"Voltage YB"), VOLTAGE_YN("VOLTAGE_YN", "Voltage YN"), VOLTAGE_AVG_LL("VOLTAGE_AVG_LL",
+								"Voltage Average LL"), VOLTAGE_AVG_LN("VOLTAGE_AVG_LN",
+										"Voltage Average LN"), R_CURRENT("R_CURRENT", "R Current"), Y_CURRENT(
+												"Y_CURRENT",
+												"Y Current"), B_CURRENT("B_CURRENT", "B Current"), CURRENT_AVG(
+														"CURRENT_AVG", "Current Average"), FREQUENCY("FREQUENCY",
+																"Frequency"), POWER_FACTOR("POWER_FACTOR",
+																		"Power Factor"), W1("W1", "W1"), W2("W2",
+																				"W2"), W3("W3", "W3"), WH("WH",
+																						"WH"), W_AVG("W_AVG",
+																								"W Average"), VA1("VA1",
+																										"VA1"), VA2(
+																												"VA2",
+																												"VA2"), VA3(
+																														"VA3",
+																														"VA3"), VAH(
+																																"VAH",
+																																"VAH"), VA_AVG(
+																																		"VA_AVG",
+																																		"VA Average"), EOM(
+																																				"EOM",
+																																				"End of Mapping");
 
 		String name;
 		String desc;
@@ -60,7 +59,7 @@ public abstract class Core {
 		public String getName() {
 			return name;
 		}
-		
+
 		/**
 		 * @return pollingdetails table column name - same as enum but lowercase
 		 */
@@ -68,7 +67,7 @@ public abstract class Core {
 			return name.toLowerCase();
 		}
 	}
-	
+
 	/**
 	 * Supported Baudrates
 	 */
@@ -91,9 +90,22 @@ public abstract class Core {
 
 	public static final String[] POINTYPES = { "01 - COIL STATUS", "02 - INPUT STATUS", "03 - HOLDING REGISTERS",
 			"04 - " + "INPUT REGISTERS" };
-	
-	public static final String[] MEMORY_MAPPINGS = new String[] {};
-	
+
+	/**
+	 * Constant gap between every request per connection, i.e COM3 & COM4 will have
+	 * different connection altogether
+	 */
+	public static final int GAP_BETWEEN_REQUEST = 150;
+
+	public static final int[] TIMEOUTS = { 500, 1000, 1500, 2000, 2500 };
+	/**
+	 * Connetion timeout value
+	 */
+	public static final int TIMEOUT = TIMEOUTS[1];
+
+	// Keep always zero, otherwise request invalid thread will block
+	public static final int RETRYCOUNT = 0;
+
 	/**
 	 * return Available Serial ports as array
 	 */

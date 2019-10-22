@@ -1,7 +1,5 @@
 package org.lemma.ems.util;
 
-import static org.lemma.ems.constants.EmsConstants.RETRYCOUNT;
-import static org.lemma.ems.constants.EmsConstants.TIMEOUT;
 import static org.lemma.ems.constants.MessageConstants.REPORT_KEY_SEPARATOR;
 import static org.lemma.ems.constants.MessageConstants.REPORT_RECORD_SEPARATOR;
 
@@ -55,7 +53,6 @@ public abstract class EMSUtility {
 
 	public static final String DD_MM_YYYY_HH_MM_S = "dd/MM/yyyy HH:mm:s";
 	public static final String EXCEL_REPORTNAME_FORMAT = "ddMMMyyyyHHmm";
-
 
 	public static Object[] convertObjectArray(int... arg) {
 		Object[] response = new Object[arg.length];
@@ -268,8 +265,8 @@ public abstract class EMSUtility {
 				devices.getWordLength(), devices.getStopbit(), 0, false);
 
 		parameters.setParity(devices.getParity());
-		parameters.setRetries(RETRYCOUNT);
-		parameters.setTimeout(TIMEOUT[1]);
+		parameters.setRetries(Core.RETRYCOUNT);
+		parameters.setTimeout(Core.TIMEOUT);
 		parameters.setEncoding(Core.ENCODINGS[1]);
 		parameters.setUnitId(devices.getDeviceId());
 		parameters.setUniqueId(devices.getUniqueId());
@@ -382,13 +379,8 @@ public abstract class EMSUtility {
 		}
 	}
 
-	public static boolean isSplitJoin(String memoryMappings) {
-		return memoryMappings != null && memoryMappings.trim().length() > 0
-				&& memoryMappings.contains(EmsConstants.SPLIT_JOIN);
-	}
-
 	public static Map<String, String> convertProp2Map(Properties prop) {
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap<String, String> map = new HashMap<>();
 		map.putAll((Map) prop);
 		return map;
 	}
@@ -453,7 +445,7 @@ public abstract class EMSUtility {
 	 *         Splits given source list into count number of sublist
 	 */
 	public static List<ArrayList<DeviceDetailsDTO>> split(int count, List<DeviceDetailsDTO> source) {
-		List<ArrayList<DeviceDetailsDTO>> list = new ArrayList<ArrayList<DeviceDetailsDTO>>();
+		List<ArrayList<DeviceDetailsDTO>> list = new ArrayList<>();
 
 		if (source != null && count > 0) {
 
