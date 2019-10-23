@@ -2,6 +2,7 @@ package org.lemma.ems.base.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.lemma.ems.base.dao.dto.UserDetailsDTO;
 import org.lemma.ems.ui.model.ChangePasswordForm;
@@ -43,6 +44,9 @@ public class UserDetailsDAO extends BaseDAO {
 
 	private static final String UPDATE_PASSWORD = "update setup.user_credential set credential = ? where id=?";
 
+	public static final String RETRIEVE_USERS = "select * from setup.userdetails";
+	
+	
 	@Autowired
 	private Security security;
 
@@ -88,6 +92,24 @@ public class UserDetailsDAO extends BaseDAO {
 	 * @param form
 	 * @return
 	 */
+	public List<UserDetailsDTO> fetchUserDetails(String query) {
+		
+		return this.jdbcTemplate.query(query, new RowMapper<UserDetailsDTO>() {
+
+			@Override
+			public UserDetailsDTO mapRow(ResultSet resultSet, int rowIndex) throws SQLException {
+				UserDetailsDTO details = new UserDetailsDTO();
+
+				details.setName(resultSet.getString("name"));
+				details.setEmailId(resultSet.getString("emailid"));
+				details.setRoleId(resultSet.getInt("roleid"));
+				details.setMobileNumber(resultSet.getString("mobilenumber"));
+				//Select all columns
+				return details;
+			}
+		});
+	}
+	
 	public int updatePassword(ChangePasswordForm form) {
 		return super.executeQuery(UPDATE_PASSWORD, new Object[] { form.getConfirmPassword(), form.getId() });
 	}

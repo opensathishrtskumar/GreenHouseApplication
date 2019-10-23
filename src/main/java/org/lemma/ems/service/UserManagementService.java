@@ -34,6 +34,7 @@ public class UserManagementService {
 
 	@Autowired
 	ReloadableResourceBundleMessageSource msgSource;
+	
 	@Autowired
 	private Security security;
 
@@ -43,11 +44,15 @@ public class UserManagementService {
 			+ "(name, emailid, password, roleid, mobilenumber,status,createdtimestamp,modifiedtimestamp,hashkey)"
 			+ " values(?,?,?,?,?,?,?,?,?)";
 
+	public static final String VIEW_USER = "select * from setup.userdetails ";	
+	
 	public ModelAndView showUserDetailssPage() {
 		ModelAndView modelAndView = new ModelAndView("userlist");
 		UserDetailsForm userDetailsForm = new UserDetailsForm();
 		modelAndView.addObject("userDetailsForm", userDetailsForm);
 		modelAndView.addObject("roleList", userDetailsForm.getRoleList());
+		List<UserDetailsDTO> userList = userDetailsDAO.fetchUserDetails(VIEW_USER);
+		modelAndView.addObject("fetchUserDetails", userList);			
 		return modelAndView;
 	}
 
@@ -88,10 +93,12 @@ public class UserManagementService {
 		logger.info("updating DB. Result=" + result);
 		// TODO : insert New User using DAO
 
+		
 		ModelAndView modelAndView = new ModelAndView("redirect:/ems/user/show");
+
 		// Load message from validation.props file
 		modelAndView.addObject("msg", msgSource.getMessage("user.added", null, Locale.getDefault()));
 		return modelAndView;
 	}
-
+	
 }

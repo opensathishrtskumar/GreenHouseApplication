@@ -24,7 +24,7 @@
 				<form:input path="emailID" 	htmlEscape="true" maxlength="50"/>
 				
 				<form:label path="password">Password<form:errors path="password" cssClass="error" /></form:label>
-				<form:input path="password" htmlEscape="true" maxlength="50"/>
+				<form:input path="password" type="password" htmlEscape="true" maxlength="50"/>
 				
 				<form:label path="roleID">Role Type<form:errors path="roleID" cssClass="error" /></form:label>
 				<form:select path="roleID" items="${roleList}" title="Available Role Type listed" ></form:select>
@@ -37,6 +37,20 @@
 				<input type="submit" value="Add User">
 			</p>
 		</form:form>
+
+			<c:forEach items="${userList}" var="user" varStatus="index">
+	     <form:form class="updateUserForm" id="updateUser${index.count}" method="post" action="${postUrl}" modelAttribute="userDetailsForm">
+				<form:hidden value="" path="uniqueid" />
+				<form:textarea class="memoryMapping" value="${user.name}" htmlEscape="true" path="name" />
+				<form:input class="memoryMapping" value="${user.email}" htmlEscape="true" path="email" />
+				<form:input class="memoryMapping" value="${user.mobile}" htmlEscape="true" path="mobile" />
+				<form:select class="memoryMapping" value="${user.mobile}" htmlEscape="true" path="role" />
+			<p>
+				<input type="submit" value="Update User">
+			</p>
+		</form:form>
+			</c:forEach>
+
     </div>
   </div>
   
