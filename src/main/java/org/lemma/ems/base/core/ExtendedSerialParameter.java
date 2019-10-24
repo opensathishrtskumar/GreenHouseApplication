@@ -4,47 +4,42 @@ import static org.lemma.ems.util.EMSUtility.getPersistRegisters;
 import static org.lemma.ems.util.EMSUtility.getRegisterCount;
 import static org.lemma.ems.util.EMSUtility.getRegisterReference;
 
-import java.util.Arrays;
+import java.io.Serializable;
 import java.util.Map;
-import java.util.Properties;
 
-import javax.swing.JScrollPane;
-
-import org.lemma.ems.base.dao.dto.SplitJoinDTO;
 import org.lemma.ems.util.EMSUtility;
 
 import com.ghgande.j2mod.modbus.procimg.InputRegister;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
 
-public class ExtendedSerialParameter extends SerialParameters {
+public class ExtendedSerialParameter extends SerialParameters implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8541523235063705005L;
 	private int unitId;
-	private int retries;
-	private int timeout;
+	// Default retry is 0
+	private int retries = 0;
 	private int reference;
 	private int count;
 	private int pointType;
 	private int pollDelay;
 	private long uniqueId;
-	private int rowIndex;
 	private Map<Long, String> memoryMappings;
 	private int[] requiredRegisters;
 	private String deviceName;
 	private InputRegister[] registeres;
 	private boolean status;
-	private JScrollPane panel;
-	private Properties props;
 	private String registerMapping;
 	private String port;
 	private String method;
-	private boolean splitJoin;
-	private SplitJoinDTO splitJoinDTO;
 
 	private Map<String, String> headers;
 
 	public ExtendedSerialParameter(String portName, int baudRate, int flowControlIn, int flowControlOut, int databits,
-			int stopbits, int parity, boolean echo) {
-		super(portName, baudRate, flowControlIn, flowControlOut, databits, stopbits, parity, echo);
+			int stopbits, int parity) {
+		super(portName, baudRate, flowControlIn, flowControlOut, databits, stopbits, parity, false);
 	}
 
 	public ExtendedSerialParameter() {
@@ -73,14 +68,6 @@ public class ExtendedSerialParameter extends SerialParameters {
 
 	public void setRetries(int retries) {
 		this.retries = retries;
-	}
-
-	public int getTimeout() {
-		return timeout;
-	}
-
-	public void setTimeout(int timeout) {
-		this.timeout = timeout;
 	}
 
 	public int getReference() {
@@ -123,14 +110,6 @@ public class ExtendedSerialParameter extends SerialParameters {
 		this.uniqueId = uniqueId;
 	}
 
-	public int getRowIndex() {
-		return rowIndex;
-	}
-
-	public void setRowIndex(int rowIndex) {
-		this.rowIndex = rowIndex;
-	}
-
 	public Map<Long, String> getMemoryMappings() {
 		return memoryMappings;
 	}
@@ -146,7 +125,11 @@ public class ExtendedSerialParameter extends SerialParameters {
 		setRequiredRegisters(EMSUtility.convertWrapper2Int(registerList));
 	}
 
-	// Creates key for grouped polling - single connection with multiple requests
+	/**
+	 * Creates key for grouped polling - single connection with multiple requests
+	 * 
+	 * @return
+	 */
 	public String getGroupKey() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(getPort());
@@ -181,28 +164,12 @@ public class ExtendedSerialParameter extends SerialParameters {
 		this.registeres = registeres;
 	}
 
-	public JScrollPane getPanel() {
-		return panel;
-	}
-
-	public void setPanel(JScrollPane panel) {
-		this.panel = panel;
-	}
-
 	public boolean isStatus() {
 		return status;
 	}
 
 	public void setStatus(boolean status) {
 		this.status = status;
-	}
-
-	public Properties getProps() {
-		return props;
-	}
-
-	public void setProps(Properties props) {
-		this.props = props;
 	}
 
 	public String getRegisterMapping() {
@@ -229,31 +196,5 @@ public class ExtendedSerialParameter extends SerialParameters {
 
 	public void setMethod(String method) {
 		this.method = method;
-	}
-
-	public boolean isSplitJoin() {
-		return splitJoin;
-	}
-
-	public void setSplitJoin(boolean splitJoin) {
-		this.splitJoin = splitJoin;
-	}
-
-	public SplitJoinDTO getSplitJoinDTO() {
-		return splitJoinDTO;
-	}
-
-	public void setSplitJoinDTO(SplitJoinDTO splitJoinDTO) {
-		this.splitJoinDTO = splitJoinDTO;
-	}
-
-	@Override
-	public String toString() {
-		return "ExtendedSerialParameter [unitId=" + unitId + ", retries=" + retries + ", timeout=" + timeout
-				+ ", reference=" + reference + ", count=" + count + ", pointType=" + pointType + ", pollDelay="
-				+ pollDelay + ", uniqueId=" + uniqueId + ", rowIndex=" + rowIndex + ", requiredRegisters="
-				+ Arrays.toString(requiredRegisters) + ", deviceName=" + deviceName + ", registeres="
-				+ Arrays.toString(registeres) + ", status=" + status + ", props=" + props + ", registerMapping="
-				+ registerMapping + ", port=" + port + ", method=" + method + "]";
 	}
 }

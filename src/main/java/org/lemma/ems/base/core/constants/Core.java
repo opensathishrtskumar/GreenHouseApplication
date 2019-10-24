@@ -1,13 +1,23 @@
 package org.lemma.ems.base.core.constants;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.lemma.ems.base.core.ExtendedSerialParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fazecast.jSerialComm.SerialPort;
 import com.ghgande.j2mod.modbus.Modbus;
+import com.ghgande.j2mod.modbus.msg.ModbusRequest;
+import com.ghgande.j2mod.modbus.msg.ModbusResponse;
+import com.ghgande.j2mod.modbus.msg.ReadInputRegistersRequest;
+import com.ghgande.j2mod.modbus.msg.ReadInputRegistersResponse;
+import com.ghgande.j2mod.modbus.msg.ReadMultipleRegistersRequest;
+import com.ghgande.j2mod.modbus.msg.ReadMultipleRegistersResponse;
+import com.ghgande.j2mod.modbus.net.SerialConnection;
+import com.ghgande.j2mod.modbus.procimg.InputRegister;
 
 /**
  * @author RTS Sathish Kumar
@@ -21,7 +31,8 @@ public abstract class Core {
 	/**
 	 * valid memory mapping configuration values, used during devicemanagement
 	 * 
-	 * TODO: add value repsresentation like Hz , Voltage and so on against all mapping
+	 * TODO: add value repsresentation like Hz , Voltage and so on against all
+	 * mapping
 	 */
 	public static enum MemoryMapping {
 		VOLTAGE_BN("VOLTAGE_BN", "Voltage BN"), 
@@ -141,5 +152,47 @@ public abstract class Core {
 		if (matcher.find())
 			portName = matcher.group();
 		return portName;
+	}
+
+	/**
+	 * @param method
+	 * @param reference
+	 * @param count
+	 * @return
+	 */
+	protected ModbusRequest createModbusRequest(String method, int reference, int count, int unitID) {
+		ModbusRequest request = null;
+		if (method.equals(String.valueOf(Modbus.READ_MULTIPLE_REGISTERS))) {
+			request = new ReadMultipleRegistersRequest(reference, count);
+		} else {
+			request = new ReadInputRegistersRequest(reference, count);
+		}
+
+		request.setUnitID(unitID);
+		return request;
+	}
+
+	/**
+	 * @param response
+	 * @returns <tt>InputRegister</tt> obtained from ModbusResposne
+	 */
+	protected InputRegister[] getResponseRegisters(ModbusResponse response) {
+		if (response instanceof ReadMultipleRegistersResponse) {
+			return ((ReadMultipleRegistersResponse) response).getRegisters();
+		} else {
+			return ((ReadInputRegistersResponse) response).getRegisters();
+		}
+	}
+	
+	
+	/**
+	 * @param parameters
+	 * @return
+	 * @throws IOException 
+	 */
+	public SerialConnection getConnection(ExtendedSerialParameter parameters) throws IOException {
+		SerialConnection connection = new SerialConnection(parameters);
+		connection.open();
+		return connection;
 	}
 }

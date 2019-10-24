@@ -30,23 +30,19 @@ import org.lemma.ems.constants.EmsConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.msg.ModbusRequest;
-import com.ghgande.j2mod.modbus.msg.ReadInputRegistersRequest;
-import com.ghgande.j2mod.modbus.msg.ReadMultipleRegistersRequest;
 import com.ghgande.j2mod.modbus.procimg.InputRegister;
 import com.ghgande.j2mod.modbus.util.ModbusUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 /**
- * @author RTS Sathish  Kumar
+ * @author RTS Sathish Kumar
  *
  */
 public abstract class EMSUtility {
 
 	private static final Logger logger = LoggerFactory.getLogger(EMSUtility.class);
-	
+
 	public static final String hh_mma = "hh:mma";
 	public static final String DASHBOARD_FMT = "dd-MMM,yyyy";
 	public static final String DASHBOARD_POLLED_FMT = "dd-MMM,yy hh:mm a";
@@ -144,63 +140,6 @@ public abstract class EMSUtility {
 	}
 
 	/**
-	 * returns memory address and its value in Map structure
-	 */
-	public static Map<String, String> processRegistersForDashBoard(ExtendedSerialParameter parameters) {
-
-		Map<String, String> finalResponse = new LinkedHashMap<>();
-
-		if (parameters.isSplitJoin()) {
-			finalResponse = convertSplitJoinResponse(parameters);
-		} else {
-			int[] requiredRegisters = parameters.getRequiredRegisters();
-			int base = parameters.getReference();
-			InputRegister[] registers = parameters.getRegisteres();
-			finalResponse = convertRegistersToMap(base, requiredRegisters, registers, parameters.getRegisterMapping());
-		}
-
-		logger.trace("Uniqueid {}'s final Response map is {}", parameters.getUniqueId(), finalResponse);
-
-		return finalResponse;
-	}
-
-	/**
-	 * @param parameters
-	 * @return merged Map of SplitJoin Response
-	 */
-	public static Map<String, String> convertSplitJoinResponse(ExtendedSerialParameter parameters) {
-		Map<String, String> finalResponse = new LinkedHashMap<>();
-		SplitJoinDTO splitJoinDto = parameters.getSplitJoinDTO();
-		String msrfOrLsrf = parameters.getRegisterMapping();
-
-		if (splitJoinDto != null) {
-			if (validateSplitJoinDtoValues(splitJoinDto)) {
-
-				List<Integer[]> requiredRegisters = splitJoinDto.getRequiredRegisters();// All the required registers
-				List<Integer> reference = splitJoinDto.getReferencce();// Base register
-				List<InputRegister[]> registers = splitJoinDto.getRegisteres();// Response registers
-				List<Boolean> status = splitJoinDto.getStatus();// Subset execution status
-
-				int index = 0;
-				for (int base : reference) {
-
-					if (status.get(index)) {
-						Map<String, String> subSetResponse = convertRegistersToMap(base,
-								convertWrapper2Int(requiredRegisters.get(index)), registers.get(index), msrfOrLsrf);
-						logger.debug(" SplitJoin partial response map {} ", subSetResponse);
-						finalResponse.putAll(subSetResponse);
-						index++;
-					}
-				}
-			} else {
-				logger.info("Split Join DTO values size is different {} ", convertObjectToJSONString(splitJoinDto));
-			}
-		}
-
-		return finalResponse;
-	}
-
-	/**
 	 * @param base
 	 * @param requiredRegisters
 	 * @param registers
@@ -226,13 +165,6 @@ public abstract class EMSUtility {
 		}
 
 		return finalResponse;
-	}
-
-	public static String processRequiredRegister(ExtendedSerialParameter parameters) {
-		Map<String, String> responseMap = processRegistersForDashBoard(parameters);
-		String resonse = convertMapToUnitResponse(responseMap);
-		logger.trace("Response for device {} is {}", parameters.getUnitId(), resonse);
-		return resonse;
 	}
 
 	private static String getRegisterValue(int index, InputRegister[] registers, String registerMapping) {
@@ -267,11 +199,10 @@ public abstract class EMSUtility {
 	public static ExtendedSerialParameter mapDeviceToSerialParam(DeviceDetailsDTO devices) {
 
 		ExtendedSerialParameter parameters = new ExtendedSerialParameter(devices.getPort(), devices.getBaudRate(), 0, 0,
-				devices.getWordLength(), devices.getStopbit(), 0, false);
+				devices.getWordLength(), devices.getStopbit(), 0);
 
 		parameters.setParity(devices.getParity());
 		parameters.setRetries(Core.RETRYCOUNT);
-		parameters.setTimeout(Core.TIMEOUT);
 		parameters.setEncoding(Core.ENCODINGS[1]);
 		parameters.setUnitId(devices.getDeviceId());
 		parameters.setUniqueId(devices.getUniqueId());
@@ -351,22 +282,6 @@ public abstract class EMSUtility {
 		return map;
 	}
 
-	public static Map<String, String> getOrderedProperties(ExtendedSerialParameter device) {
-
-		if (device.isSplitJoin()) {
-			List<Properties> list = device.getSplitJoinDTO().getProps();
-			Map<String, String> map = new LinkedHashMap<>();
-
-			for (Properties props : list) {
-				map.putAll(getOrderedProperties(props));
-			}
-
-			return map;
-		} else {
-			return getOrderedProperties(device.getProps());
-		}
-	}
-
 	public static Object convertJson2Object(String json, Class type) {
 		Gson gson = new GsonBuilder().create();
 		return (Object) gson.fromJson(json, type);
@@ -374,14 +289,6 @@ public abstract class EMSUtility {
 
 	public static boolean isNullEmpty(String value) {
 		return value == null || value.trim().isEmpty();
-	}
-
-	public static ModbusRequest getRequest(String method, int reference, int count) {
-		if (method.equals(String.valueOf(Modbus.READ_MULTIPLE_REGISTERS))) {
-			return new ReadMultipleRegistersRequest(reference, count);
-		} else {
-			return new ReadInputRegistersRequest(reference, count);
-		}
 	}
 
 	public static Map<String, String> convertProp2Map(Properties prop) {
