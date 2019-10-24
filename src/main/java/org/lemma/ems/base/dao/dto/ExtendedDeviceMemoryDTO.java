@@ -1,16 +1,14 @@
 package org.lemma.ems.base.dao.dto;
 
+import static org.lemma.ems.base.core.util.MemoryMappingParser.loadMemoryMappingDetails;
 import static org.lemma.ems.util.EMSUtility.getPersistRegisters;
 import static org.lemma.ems.util.EMSUtility.getRegisterCount;
 import static org.lemma.ems.util.EMSUtility.getRegisterReference;
 
-import java.util.TreeMap;
+import java.util.Map;
 
-import org.lemma.ems.util.EMSUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.ghgande.j2mod.modbus.procimg.InputRegister;
 
 /**
  * @author Sathish Kumar
@@ -28,32 +26,33 @@ public class ExtendedDeviceMemoryDTO extends DeviceMemoryDTO {
 	private int reference;
 	private int[] registersRequired;
 	private boolean status;
-	private TreeMap<Long, String> memoryMappings;
+	private Map<Long, String> memoryMappings;
 
 	private boolean paramsCalculated = false;
 
 	@Override
 	public void calculatePollingParams() {
 
-		// Calculate params once
-		if (!paramsCalculated) {
+		// Calculate params only once
+		synchronized (this) {
+			if (!paramsCalculated) {
 
-			try {
+				try {
+					// Parse mapping string to SortedMap to find other parameters
+					memoryMappings = loadMemoryMappingDetails(getMemoryMapping());
+					// Get the Starting register address from where to begin read
+					reference = (int) getRegisterReference(memoryMappings);
+					// Total number of registers to be read from Reference register
+					count = getRegisterCount(memoryMappings);
+					//All the registers required
+					registersRequired = getPersistRegisters(memoryMappings.keySet());
+				} catch (Exception e) {
+					logger.error(" Failed to calculatePollingParams : {}", e);
+				}
 
-				setReference((int) getRegisterReference(memoryMappings));
-				// Total number of registers to be read from Reference register
-				//setCount(getRegisterCount(memoryMappings));
-				
-				Integer[] registerList = getPersistRegisters(memoryMappings.keySet());
-				//setRequiredRegisters(EMSUtility.convertWrapper2Int(registerList));
-
-			} catch (Exception e) {
-				logger.error(" Failed to calculatePollingParams : {}", e);
+				paramsCalculated = true;
 			}
-
-			paramsCalculated = true;
 		}
-
 	}
 
 	public void enableParamRecalculation() {
@@ -83,9 +82,4 @@ public class ExtendedDeviceMemoryDTO extends DeviceMemoryDTO {
 	public int getReference() {
 		return reference;
 	}
-
-	public void setReference(int reference) {
-		this.reference = reference;
-	}
-
 }

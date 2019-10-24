@@ -30,7 +30,13 @@ public interface ResponseHandler extends Serializable {
 	 * 
 	 */
 	public void pollStart(ExtendedSerialParameter device);
-
+	
+	
+	/**
+	 * @returns actual time of poll
+	 */
+	public long getTimeOfPoll();
+	
 	/**
 	 * @param parameter
 	 */

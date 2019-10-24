@@ -3,6 +3,8 @@ package org.lemma.ems.base.core.util;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +24,19 @@ public class MemoryMappingParser {
 
 	public static final Pattern MARKER_MAPPPING_PAT = Pattern.compile(Core.MemoryMapping.EOM.getName(),
 			Pattern.CASE_INSENSITIVE);
+
+	public enum Temp {
+		START("START_TEMP"), END("END_TEMP");
+		String desc;
+
+		private Temp(String desc) {
+			this.desc = desc;
+		}
+
+		public String getDesc() {
+			return desc;
+		}
+	}
 
 	/**
 	 * @param memoryMappingReverse
@@ -93,5 +108,29 @@ public class MemoryMappingParser {
 			throw new Exception("Memory mapping validation failure");
 
 		return parsedMappingAddressAndDesc;
+	}
+
+	/**
+	 * @param mappingDetails
+	 * @return
+	 */
+	public static SortedMap<Long, String> loadMemoryMappingDetails(String mappingDetails) {
+		///Sets default value for register and count
+		long startingRegister = Core.DEFAULTREGISTER;
+		int count = Core.REGISTERCOUNT;
+
+		TreeMap<Long, String> registerMapping = new TreeMap<>();
+
+		try {
+			Matcher matcher = MEMORY_MAPPING_PAT.matcher(mappingDetails);
+			while (matcher.find()) {
+				registerMapping.put(Long.parseLong(matcher.group(1)), matcher.group(3));
+			}
+		} catch (Exception e) {
+			logger.error(" Error creating SortedMemory Map {}", e);
+			registerMapping.put(startingRegister, Temp.START.getDesc());
+			registerMapping.put(startingRegister + count, Temp.END.getDesc());
+		}
+		return registerMapping;
 	}
 }

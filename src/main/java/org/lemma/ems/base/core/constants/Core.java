@@ -1,6 +1,8 @@
 package org.lemma.ems.base.core.constants;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +20,7 @@ import com.ghgande.j2mod.modbus.msg.ReadMultipleRegistersRequest;
 import com.ghgande.j2mod.modbus.msg.ReadMultipleRegistersResponse;
 import com.ghgande.j2mod.modbus.net.SerialConnection;
 import com.ghgande.j2mod.modbus.procimg.InputRegister;
+import com.ghgande.j2mod.modbus.util.ModbusUtil;
 
 /**
  * @author RTS Sathish Kumar
@@ -118,6 +121,22 @@ public abstract class Core {
 
 	// Keep always zero, otherwise request invalid thread will block
 	public static final int RETRYCOUNT = 0;
+	
+	/**
+	 * 
+	 */
+	public static final long DEFAULTREGISTER = 3900;
+
+	/**
+	 * 
+	 */
+	public static final int REGISTERCOUNT = 10;
+	
+	/**
+	 * 
+	 */
+	public static final String DEFAULT_REG_VALUE = "00.00";
+	
 
 	/**
 	 * @returns Available Serial ports as array
@@ -172,6 +191,73 @@ public abstract class Core {
 		return request;
 	}
 
+	
+	/**
+	 * @param bytes
+	 *            - read from Modbus slave
+	 * @param order
+	 *            - the order of which registeres to be processed
+	 * @return
+	 */
+	public static String convertToFloatWithOrder(byte[] bytes, String registeOrder) {
+		byte[] byteOrder = null;
+
+		if (registeOrder.equals(Core.REG_MAPPINGS[0])) {
+			byteOrder = bytes;
+		} else {
+			byteOrder = new byte[] { bytes[2], bytes[3], bytes[0], bytes[1] };
+		}
+
+		return String.format("%.2f", ModbusUtil.registersToFloat(byteOrder));
+	}
+	
+	public static String getRegisterValue(int index, InputRegister[] registers, String registerMapping) {
+
+		byte[] bytes = new byte[] { 0, 0, 0, 0 };
+		if (registers != null && index < registers.length) {
+			byte[] registerBytes = registers[index].toBytes();
+
+			bytes[0] = registerBytes[0];
+			bytes[1] = registerBytes[1];
+
+			if (index + 1 < registers.length) {
+				registerBytes = registers[index + 1].toBytes();
+				bytes[2] = registerBytes[0];
+				bytes[3] = registerBytes[1];
+			}
+		}
+		// register ordering MSRF/LSRF
+		return convertToFloatWithOrder(bytes, registerMapping);
+	}
+	
+	/**
+	 * @param base
+	 * @param requiredRegisters
+	 * @param registers
+	 * @param msrfOrLsrf
+	 * @return Converts InputResgister[] to Map based on base register and MSRF/LSRF
+	 */
+	public static Map<String, String> convertRegistersToMap(int base, int[] requiredRegisters,
+			InputRegister[] registers, String msrfOrLsrf) {
+		Map<String, String> finalResponse = new LinkedHashMap<>();
+
+		for (int reg : requiredRegisters) {
+			int registerIndex = reg - (base + 1);
+			String value = DEFAULT_REG_VALUE;
+
+			try {
+				value = getRegisterValue(registerIndex, registers, msrfOrLsrf);
+			} catch (Exception e) {
+				logger.error("Setting default value for register {}", e);
+				value = DEFAULT_REG_VALUE;
+			}
+
+			finalResponse.put(String.valueOf(reg), value);
+		}
+
+		return finalResponse;
+	}
+	
 	/**
 	 * @param response
 	 * @returns <tt>InputRegister</tt> obtained from ModbusResposne
@@ -195,4 +281,5 @@ public abstract class Core {
 		connection.open();
 		return connection;
 	}
+	
 }

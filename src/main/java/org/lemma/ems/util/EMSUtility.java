@@ -1,13 +1,8 @@
 package org.lemma.ems.util;
 
-import static org.lemma.ems.constants.MessageConstants.REPORT_KEY_SEPARATOR;
-import static org.lemma.ems.constants.MessageConstants.REPORT_RECORD_SEPARATOR;
-
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -25,13 +20,9 @@ import org.lemma.ems.base.core.ExtendedSerialParameter;
 import org.lemma.ems.base.core.constants.Core;
 import org.lemma.ems.base.core.util.OrderedProperties;
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
-import org.lemma.ems.base.dao.dto.SplitJoinDTO;
-import org.lemma.ems.constants.EmsConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ghgande.j2mod.modbus.procimg.InputRegister;
-import com.ghgande.j2mod.modbus.util.ModbusUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -42,18 +33,6 @@ import com.google.gson.GsonBuilder;
 public abstract class EMSUtility {
 
 	private static final Logger logger = LoggerFactory.getLogger(EMSUtility.class);
-
-	public static final String hh_mma = "hh:mma";
-	public static final String DASHBOARD_FMT = "dd-MMM,yyyy";
-	public static final String DASHBOARD_POLLED_FMT = "dd-MMM,yy hh:mm a";
-	public static final String REPORTNAME_FORMAT = "ddMMyyHHmm";
-
-	public static final String SUMMARY_FMT1 = "dd-MM-yy : HH:mm";
-	public static final String SUMMARY_FMT = "HH:mm";
-	public static final String DD_MM_YY = "dd/MMM/yy";
-
-	public static final String DD_MM_YYYY_HH_MM_S = "dd/MM/yyyy HH:mm:s";
-	public static final String EXCEL_REPORTNAME_FORMAT = "ddMMMyyyyHHmm";
 
 	public static Object[] convertObjectArray(int... arg) {
 		Object[] response = new Object[arg.length];
@@ -76,12 +55,11 @@ public abstract class EMSUtility {
 	 * @returns Starting register - Initial required register - 1 is the reference
 	 */
 	public static long getRegisterReference(Map<Long, String> mappings) {
-		long startingRegister = EmsConstants.DEFAULTREGISTER;
+		long startingRegister = Core.DEFAULTREGISTER;
 
 		try {
 			TreeMap<Long, String> tMap = (TreeMap<Long, String>) mappings;
 			NavigableMap<Long, String> nMap = tMap.descendingMap();
-			logger.trace("{}", nMap);
 			startingRegister = nMap.lastKey() - 1;
 		} catch (Exception e) {
 			logger.error("{}", e);
@@ -92,14 +70,13 @@ public abstract class EMSUtility {
 	}
 
 	public static int getRegisterCount(Map<Long, String> mappings) {
-		int count = EmsConstants.REGISTERCOUNT;
+		int count = Core.REGISTERCOUNT;
 		try {
 			TreeMap<Long, String> tMap = (TreeMap<Long, String>) mappings;
 			NavigableMap<Long, String> nMap = tMap.descendingMap();
 			long countLong = nMap.firstKey() - nMap.lastKey();
-			count = (int) (countLong + 1);
 			// Make count is even , so that floating point value calculated
-
+			count = (int) (countLong + 1);
 			logger.trace("Register Map : {} - Count : {}", nMap, countLong);
 		} catch (Exception e) {
 			logger.error("{}", e);
@@ -109,22 +86,12 @@ public abstract class EMSUtility {
 		return count;
 	}
 
-	public static String getHHmm() {
-		return getFormattedDate("hh:mm a");
-	}
-
-	public static String getFormattedDate(String format) {
-		SimpleDateFormat formater = new SimpleDateFormat(format);
-		return formater.format(new Date(System.currentTimeMillis()));
-	}
-
-	public static String getFormattedTime(long timeInMilli, String dateFormat) {
-		SimpleDateFormat format = new SimpleDateFormat(dateFormat);
-		return format.format(new Date(timeInMilli));
-	}
-
-	public static Integer[] getPersistRegisters(Set<Long> set) {
-		Integer[] registers = new Integer[set.size()];
+	/**
+	 * @param set
+	 * @return
+	 */
+	public static int[] getPersistRegisters(Set<Long> set) {
+		int[] registers = new int[set.size()];
 		try {
 			int index = 0;
 			for (Long register : set) {
@@ -139,52 +106,6 @@ public abstract class EMSUtility {
 		return registers;
 	}
 
-	/**
-	 * @param base
-	 * @param requiredRegisters
-	 * @param registers
-	 * @param msrfOrLsrf
-	 * @return Converts InputResgister[] to Map based on base register and MSRF/LSRF
-	 */
-	public static Map<String, String> convertRegistersToMap(int base, int[] requiredRegisters,
-			InputRegister[] registers, String msrfOrLsrf) {
-		Map<String, String> finalResponse = new LinkedHashMap<>();
-
-		for (int reg : requiredRegisters) {
-			int registerIndex = reg - (base + 1);
-			String value = "00.00";
-
-			try {
-				value = getRegisterValue(registerIndex, registers, msrfOrLsrf);
-			} catch (Exception e) {
-				logger.error("Setting default value for register {}", e);
-				value = "00.00";
-			}
-
-			finalResponse.put(String.valueOf(reg), value);
-		}
-
-		return finalResponse;
-	}
-
-	private static String getRegisterValue(int index, InputRegister[] registers, String registerMapping) {
-
-		byte[] bytes = new byte[] { 0, 0, 0, 0 };
-		if (registers != null && index < registers.length) {
-			byte[] registerBytes = registers[index].toBytes();
-
-			bytes[0] = registerBytes[0];
-			bytes[1] = registerBytes[1];
-
-			if (index + 1 < registers.length) {
-				registerBytes = registers[index + 1].toBytes();
-				bytes[2] = registerBytes[0];
-				bytes[3] = registerBytes[1];
-			}
-		}
-		// register ordering MSRF/LSRF
-		return convertToFloatWithOrder(bytes, registerMapping);
-	}
 
 	public static List<ExtendedSerialParameter> mapDevicesToSerialParams(List<DeviceDetailsDTO> devices) {
 		List<ExtendedSerialParameter> paramList = new ArrayList<>();
@@ -238,25 +159,6 @@ public abstract class EMSUtility {
 		return groupedDevice;
 	}
 
-	/**
-	 * @param bytes
-	 *            - read from Modbus slave
-	 * @param order
-	 *            - the order of which registeres to be processed
-	 * @return
-	 */
-	public static String convertToFloatWithOrder(byte[] bytes, String registeOrder) {
-		byte[] byteOrder = null;
-
-		if (registeOrder.equals(Core.REG_MAPPINGS[0])) {
-			byteOrder = bytes;
-		} else {
-			byteOrder = new byte[] { bytes[2], bytes[3], bytes[0], bytes[1] };
-		}
-
-		return String.format("%.2f", ModbusUtil.registersToFloat(byteOrder));
-	}
-
 	public static Map<String, String> getOrderedProperties(Properties props) {
 		Map<String, String> map = new LinkedHashMap<>();
 
@@ -282,6 +184,7 @@ public abstract class EMSUtility {
 		return map;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static Object convertJson2Object(String json, Class type) {
 		Gson gson = new GsonBuilder().create();
 		return (Object) gson.fromJson(json, type);
@@ -307,49 +210,6 @@ public abstract class EMSUtility {
 	}
 
 	/**
-	 * @param splitJoinDto
-	 * @return boolean Checks all the values size of SplitJoinDTO are same
-	 */
-	private static boolean validateSplitJoinDtoValues(SplitJoinDTO splitJoinDto) {
-
-		return (splitJoinDto.getRequiredRegisters().size() == splitJoinDto.getReferencce().size()
-				&& splitJoinDto.getRegisteres().size() == splitJoinDto.getStatus().size());
-	}
-
-	/**
-	 * @param map
-	 * @return String
-	 * 
-	 *         converts Map to UnitResponse String
-	 */
-	public static String convertMapToUnitResponse(Map<String, String> map) {
-		StringBuilder builder = new StringBuilder();
-
-		for (Entry<String, String> e : map.entrySet()) {
-			builder.append(String.valueOf(e.getKey()));
-			builder.append(REPORT_KEY_SEPARATOR);
-			builder.append(String.valueOf(e.getValue()));
-			builder.append(REPORT_RECORD_SEPARATOR);
-		}
-
-		return builder.toString();
-	}
-
-	/**
-	 * @param list
-	 * @return
-	 */
-	public static boolean splitJoinStatus(List<Boolean> list) {
-		boolean status = true;
-
-		for (boolean subSet : list) {
-			status = status & subSet;
-		}
-
-		return status;
-	}
-
-	/**
 	 * @param count
 	 * @param source
 	 * @return List which contains sublist of 'count' items
@@ -369,7 +229,6 @@ public abstract class EMSUtility {
 				}
 				sublist.add(source.get(index));
 			}
-
 		}
 
 		return list;
@@ -437,10 +296,5 @@ public abstract class EMSUtility {
 			String[] params = paramName.split(" ");
 			return params.length > 1 ? params[1] : params[0];
 		}
-	}
-
-	public static long parseDateTime(String dateTime, String format) throws Exception {
-		SimpleDateFormat formatter = new SimpleDateFormat(format);
-		return formatter.parse(dateTime).getTime();
 	}
 }

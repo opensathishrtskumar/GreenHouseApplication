@@ -18,6 +18,7 @@ public class EMSDeviceResponseHolder implements ResponseHandler {
 	private List<InputRegister[]> responseRegisters = null;
 	private Exception exception;
 	private ExtendedSerialParameter device = null;
+	private long timeOfPoll = System.currentTimeMillis();
 
 	public EMSDeviceResponseHolder() {
 		responseRegisters = new ArrayList<>();
@@ -31,7 +32,6 @@ public class EMSDeviceResponseHolder implements ResponseHandler {
 	@Override
 	public void setException(Exception exception) {
 		this.exception = exception;
-
 	}
 
 	@Override
@@ -42,6 +42,7 @@ public class EMSDeviceResponseHolder implements ResponseHandler {
 	@Override
 	public void handleResponse(InputRegister[] responseRegisteres) {
 		responseRegisters.add(responseRegisteres);
+		timeOfPoll = System.currentTimeMillis();
 	}
 
 	@Override
@@ -52,6 +53,11 @@ public class EMSDeviceResponseHolder implements ResponseHandler {
 	@Override
 	public boolean isError() {
 		return exception != null;
+	}
+
+	@Override
+	public long getTimeOfPoll() {
+		return timeOfPoll;
 	}
 
 }

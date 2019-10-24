@@ -47,28 +47,23 @@ public class EMSDeviceConnectionManager extends Core {
 
 	/**
 	 * @param connection
-	 * @param method
-	 * @param reference
-	 * @param count
-	 * @param unitId
-	 * @param uniqueId
-	 * @param retries
+	 * @param device
 	 * @return
-	 * @throws IllegalAccessException
 	 * @throws InstantiationException
-	 * @throws ModbusException
+	 * @throws IllegalAccessException
 	 */
 	private ResponseHandler execute(SerialConnection connection, ExtendedSerialParameter device)
 			throws InstantiationException, IllegalAccessException {
 
 		ResponseHandler handler = device.getResponseHandler().newInstance();
 
+		// Callback handlers events
+		handler.pollStart(device);
+
 		// Every transaction is mutually locked, needless to create additional MUTEX
 		ModbusSerialTransaction tran = new ModbusSerialTransaction(connection);
 		// Atleast minimum gap between every request is required even in same connection
 		tran.setTransDelayMS(GAP_BETWEEN_REQUEST);
-		// Callback handlers events
-		handler.pollStart(device);
 
 		for (ExtendedDeviceMemoryDTO mapping : device.getDeviceMemoryList()) {
 
