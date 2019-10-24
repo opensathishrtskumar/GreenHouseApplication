@@ -32,8 +32,10 @@
 				path="confirmPassword" cssClass="error" /></form:label>
 		<form:password path="confirmPassword" />
 		<input type="hidden" value="${token}" />
+		
+		<p>
+			<button type="submit">Reset</button>
+		</p>
 	</fieldset>
-	<p>
-		<button type="submit">Reset</button>
-	</p>
+
 </form:form>

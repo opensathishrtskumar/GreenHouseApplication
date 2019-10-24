@@ -106,36 +106,6 @@ public abstract class EMSUtility {
 		return registers;
 	}
 
-
-	public static List<ExtendedSerialParameter> mapDevicesToSerialParams(List<DeviceDetailsDTO> devices) {
-		List<ExtendedSerialParameter> paramList = new ArrayList<>();
-
-		for (DeviceDetailsDTO device : devices) {
-			paramList.add(mapDeviceToSerialParam(device));
-		}
-
-		return paramList;
-	}
-
-	public static ExtendedSerialParameter mapDeviceToSerialParam(DeviceDetailsDTO devices) {
-
-		ExtendedSerialParameter parameters = new ExtendedSerialParameter(devices.getPort(), devices.getBaudRate(), 0, 0,
-				devices.getWordLength(), devices.getStopbit(), 0);
-
-		parameters.setParity(devices.getParity());
-		parameters.setRetries(Core.RETRYCOUNT);
-		parameters.setEncoding(Core.ENCODINGS[1]);
-		parameters.setUnitId(devices.getDeviceId());
-		parameters.setUniqueId(devices.getUniqueId());
-		parameters.setDeviceName(devices.getDeviceName());
-		parameters.setRegisterMapping(devices.getRegisterMapping());
-		parameters.setPort(devices.getPort());// PortName property should be set
-		// to create SerialConnection
-		parameters.setMethod(devices.getMethod());
-
-		return parameters;
-	}
-
 	/**
 	 * Group device by connection param, so that single connection can be reused to
 	 * set of devices

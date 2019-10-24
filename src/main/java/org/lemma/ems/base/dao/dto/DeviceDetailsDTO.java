@@ -29,6 +29,7 @@ public class DeviceDetailsDTO implements Serializable {
 	 * 1 for EMS Devices - READONLY 2 for BMS Devices - READ & WRITE
 	 */
 	private int type;
+	private String encoding;
 
 	private long createdTimeStamp;
 	private long modifiedTimeStamp;
@@ -166,6 +167,14 @@ public class DeviceDetailsDTO implements Serializable {
 
 	public void setMemoryMappings(List<DeviceMemoryDTO> memoryMappings) {
 		this.memoryMappings = memoryMappings;
+	}
+	
+	public String getEncoding() {
+		return encoding;
+	}
+
+	public void setEncoding(String encoding) {
+		this.encoding = encoding;
 	}
 
 	/**

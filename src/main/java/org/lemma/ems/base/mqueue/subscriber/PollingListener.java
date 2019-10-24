@@ -1,8 +1,10 @@
 package org.lemma.ems.base.mqueue.subscriber;
 
 import org.lemma.ems.base.cache.CacheUtil;
+import org.lemma.ems.base.core.EMSDeviceResponseHolder;
 import org.lemma.ems.base.dao.PollingDetailsDAO;
 import org.lemma.ems.base.dao.dto.PollingDetailsDTO;
+import org.lemma.ems.base.mqueue.publisher.Sender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +28,20 @@ public class PollingListener {
 
 	@Autowired
 	private ApplicationContext context;
+	
+	@Autowired
+	private Sender sender;
 
 	@Autowired
 	PollingDetailsDAO pollingDao;
 
 	/* constants */
 	private static final String PERSIST_DB_POLLING_TXT = "PERSIST_POLLING.RESPONSE.TOPIC";
+	private static final String POLLING_COMPLETED_TXT = "POLLING.COMPLETED.TOPIC";
 
 	public enum Topics {
-		PERSIST_POLLING_RESPONSE(PERSIST_DB_POLLING_TXT);
+		PERSIST_POLLING_RESPONSE(PERSIST_DB_POLLING_TXT),
+		POLLING_COMPLETED(POLLING_COMPLETED_TXT);
 		String topic;
 
 		private Topics(String topic) {
@@ -64,4 +71,24 @@ public class PollingListener {
 		//TODO : update latest value in cache, Keep last 10 records. Dashboard live monitoring and other usage
 	}
 
+	/**
+	 * @param message
+	 * @throws Exception
+	 */
+	@JmsListener(destination = POLLING_COMPLETED_TXT, containerFactory = "topicSubscriberConfig")
+	public void parsePollingResponse(EMSDeviceResponseHolder dtopoll) throws Exception {
+		//TODO : 
+		/**
+		 * 1. Parse polling response
+		 * 2. Place in Queue for Persisting and other subscribers
+		 * 
+		 */
+		
+		PollingDetailsDTO dto = new PollingDetailsDTO();
+		
+		sender.publishEvent(Topics.PERSIST_POLLING_RESPONSE.getTopic(), dto);
+	}
+	
+	
+	
 }

@@ -29,8 +29,8 @@ public class DeviceDetailsDAO extends BaseDAO {
 	public static final String RETRIEVE_EMS_DEVICES = "select * from setup.devicedetails where status != ? and type = ?";
 
 	public static final String INSERT_DEVICES = "INSERT INTO setup.devicedetails(deviceid,devicedesc,baudrate,wordlength,stopbit,parity,"
-			+ "port,method,registermapping,status,type,createdtimestamp,modifiedtimestamp,hashkey) "
-			+ "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			+ "port,method,registermapping,encoding,status,type,createdtimestamp,modifiedtimestamp,hashkey) "
+			+ "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 	/* All Constants */
 	public static enum Status {
@@ -136,11 +136,12 @@ public class DeviceDetailsDAO extends BaseDAO {
 				ps.setString(7, device.getPort());
 				ps.setString(8, device.getMethod());
 				ps.setString(9, device.getRegisterMapping());
-				ps.setInt(10, device.getStatus());
-				ps.setInt(11, device.getType());
-				ps.setLong(12, device.getCreatedTimeStamp());
-				ps.setLong(13, device.getModifiedTimeStamp());
-				ps.setString(14, device.getHashKey());
+				ps.setString(10, device.getEncoding());
+				ps.setInt(11, device.getStatus());
+				ps.setInt(12, device.getType());
+				ps.setLong(13, device.getCreatedTimeStamp());
+				ps.setLong(14, device.getModifiedTimeStamp());
+				ps.setString(15, device.getHashKey());
 				return ps;
 			}
 		};
