@@ -8,6 +8,6 @@
 
 <ul id="connectedAccounts" class="listings">
 	<li class="listing">
-		<a href="<c:url value="/ems/dashboard/chartview" />">Chart View</a>	
+		<a href="<c:url value="/ems/dashboard/chartview" />">Live Monitor</a>	
 	</li>
 </ul>

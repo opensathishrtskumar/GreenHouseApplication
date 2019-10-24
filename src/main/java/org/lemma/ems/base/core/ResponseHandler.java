@@ -1,9 +1,22 @@
-package org.lemma.ems.response.handlers;
+package org.lemma.ems.base.core;
 
-import org.lemma.ems.base.dao.dto.ExtendedSerialParameter;
-
+/**
+ * @author RTS Sathish Kumar
+ *
+ */
 public interface ResponseHandler {
+	/**
+	 * 
+	 */
 	public void preStart();
+
+	/**
+	 * @param parameter
+	 */
 	public void handleResponse(ExtendedSerialParameter parameter);
+
+	/**
+	 * 
+	 */
 	public void postStop();
 }

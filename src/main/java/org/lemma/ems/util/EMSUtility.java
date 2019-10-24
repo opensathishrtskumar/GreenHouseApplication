@@ -21,10 +21,10 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.lemma.ems.base.core.ExtendedSerialParameter;
 import org.lemma.ems.base.core.constants.Core;
 import org.lemma.ems.base.core.util.OrderedProperties;
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
-import org.lemma.ems.base.dao.dto.ExtendedSerialParameter;
 import org.lemma.ems.base.dao.dto.SplitJoinDTO;
 import org.lemma.ems.constants.EmsConstants;
 import org.slf4j.Logger;

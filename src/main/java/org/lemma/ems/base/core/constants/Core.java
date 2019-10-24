@@ -20,33 +20,35 @@ public abstract class Core {
 
 	/**
 	 * valid memory mapping configuration values, used during devicemanagement
-	 *
+	 * 
+	 * TODO: add value repsresentation like Hz , Voltage and so on against all mapping
 	 */
 	public static enum MemoryMapping {
-		VOLTAGE_BN("VOLTAGE_BN", "Voltage BN"), VOLTAGE_BR("VOLTAGE_BR", "Voltage BR"), VOLTAGE_RN("VOLTAGE_RN",
-				"Voltage RN"), VOLTAGE_RY("VOLTAGE_RY", "Voltage RY"), VOLTAGE_YB("VOLTAGE_YB",
-						"Voltage YB"), VOLTAGE_YN("VOLTAGE_YN", "Voltage YN"), VOLTAGE_AVG_LL("VOLTAGE_AVG_LL",
-								"Voltage Average LL"), VOLTAGE_AVG_LN("VOLTAGE_AVG_LN",
-										"Voltage Average LN"), R_CURRENT("R_CURRENT", "R Current"), Y_CURRENT(
-												"Y_CURRENT",
-												"Y Current"), B_CURRENT("B_CURRENT", "B Current"), CURRENT_AVG(
-														"CURRENT_AVG", "Current Average"), FREQUENCY("FREQUENCY",
-																"Frequency"), POWER_FACTOR("POWER_FACTOR",
-																		"Power Factor"), W1("W1", "W1"), W2("W2",
-																				"W2"), W3("W3", "W3"), WH("WH",
-																						"WH"), W_AVG("W_AVG",
-																								"W Average"), VA1("VA1",
-																										"VA1"), VA2(
-																												"VA2",
-																												"VA2"), VA3(
-																														"VA3",
-																														"VA3"), VAH(
-																																"VAH",
-																																"VAH"), VA_AVG(
-																																		"VA_AVG",
-																																		"VA Average"), EOM(
-																																				"EOM",
-																																				"End of Mapping");
+		VOLTAGE_BN("VOLTAGE_BN", "Voltage BN"), 
+		VOLTAGE_BR("VOLTAGE_BR", "Voltage BR"), 
+		VOLTAGE_RN("VOLTAGE_RN", "Voltage RN"), 
+		VOLTAGE_RY("VOLTAGE_RY", "Voltage RY"), 
+		VOLTAGE_YB("VOLTAGE_YB", "Voltage YB"), 
+		VOLTAGE_YN("VOLTAGE_YN", "Voltage YN"), 
+		VOLTAGE_AVG_LL("VOLTAGE_AVG_LL", "Voltage Average LL"), 
+		VOLTAGE_AVG_LN("VOLTAGE_AVG_LN", "Voltage Average LN"), 
+		R_CURRENT("R_CURRENT", "R Current"),
+		Y_CURRENT("Y_CURRENT", "Y Current"), 
+		B_CURRENT("B_CURRENT", "B Current"), 
+		CURRENT_AVG("CURRENT_AVG", "Current Average"), 
+		FREQUENCY("FREQUENCY", "Frequency"), 
+		POWER_FACTOR("POWER_FACTOR", "Power Factor"),
+		W1("W1", "W1"),
+		W2("W2","W2"),
+		W3("W3", "W3"), 
+		WH("WH", "WH"), 
+		W_AVG("W_AVG", "W Average"), 
+		VA1("VA1", "VA1"), 
+		VA2("VA2", "VA2"), 
+		VA3("VA3","VA3"),
+		VAH("VAH","VAH"), 
+		VA_AVG("VA_AVG","VA Average"),
+		EOM("EOM","End of Mapping");
 
 		String name;
 		String desc;
@@ -107,7 +109,7 @@ public abstract class Core {
 	public static final int RETRYCOUNT = 0;
 
 	/**
-	 * return Available Serial ports as array
+	 * @returns Available Serial ports as array
 	 */
 	public static String[] getAvailablePort() {
 		String[] availablePorts = {};

@@ -1,4 +1,4 @@
-package org.lemma.ems.base.dao.dto;
+package org.lemma.ems.base.core;
 
 import static org.lemma.ems.util.EMSUtility.getPersistRegisters;
 import static org.lemma.ems.util.EMSUtility.getRegisterCount;
@@ -10,6 +10,7 @@ import java.util.Properties;
 
 import javax.swing.JScrollPane;
 
+import org.lemma.ems.base.dao.dto.SplitJoinDTO;
 import org.lemma.ems.util.EMSUtility;
 
 import com.ghgande.j2mod.modbus.procimg.InputRegister;

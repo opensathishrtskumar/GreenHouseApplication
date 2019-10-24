@@ -1,11 +1,8 @@
 package org.lemma.ems.base.core;
 
-import static org.lemma.ems.base.core.constants.Core.GAP_BETWEEN_REQUEST;
-
 import java.io.IOException;
 
 import org.lemma.ems.base.core.constants.Core;
-import org.lemma.ems.base.dao.dto.ExtendedSerialParameter;
 import org.lemma.ems.util.EMSUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +21,7 @@ import com.ghgande.j2mod.modbus.util.SerialParameters;
  * @author RTS Sathish Kumar
  *
  */
-public abstract class ConnectionManager {
+public abstract class ConnectionManager extends Core {
 	
 	/**
 	 * 
@@ -37,7 +34,7 @@ public abstract class ConnectionManager {
 	 */
 	public static SerialConnection getConnection(SerialParameters parameters) {
 		SerialConnection connection = new SerialConnection(parameters);
-		connection.setTimeout(Core.TIMEOUT);
+		connection.setTimeout(TIMEOUT);
 		try {
 			connection.open();
 		} catch (IOException e) {
