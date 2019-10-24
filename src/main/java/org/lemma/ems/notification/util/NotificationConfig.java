@@ -43,7 +43,7 @@ public class NotificationConfig {
 	public JavaMailSenderImpl createJavaMailSenderImpl() {
 		JavaMailSenderImpl bean = new JavaMailSenderImpl();
 
-		/* actual values are replaced during APP_STARTUP_EVENT */
+		/* actual values are replaced during Application startup */
 		String host = "smtp.host.com";
 		int port = 587;
 		String userName = "username@domain.com";

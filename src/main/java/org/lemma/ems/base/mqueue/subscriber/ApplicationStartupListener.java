@@ -13,10 +13,8 @@ import org.lemma.ems.base.dao.SchedulesDAO;
 import org.lemma.ems.base.dao.SettingsDAO;
 import org.lemma.ems.base.dao.dto.SchedulesDTO;
 import org.lemma.ems.base.dao.dto.SettingsDTO;
-import org.lemma.ems.scheduler.jobs.SampleCronJob;
 import org.lemma.ems.scheduler.util.JobUtil;
 import org.quartz.JobDetail;
-import org.quartz.JobKey;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
 import org.quartz.TriggerKey;
@@ -62,15 +60,32 @@ public class ApplicationStartupListener {
 
 	@Autowired
 	private ApplicationContext context;
-
+	
 	/* constants */
-	public static final String APP_STARTUP = "APP.INIT.TOPIC";
+	private static final String LOAD_SETTINGS_TXT = "LOAD.SETTINGS.TOPIC";
+	private static final String LOAD_DEVICES_TXT = "LOAD.DEVICES.TOPIC";
+	private static final String TRIGGER_SCHEDULES_TXT = "TRIGGER.SCCHEDULES.TOPIC";
+	
+	public enum Topics {
+		LOAD_SETTINGS(LOAD_SETTINGS_TXT),
+		LOAD_DEVICES(LOAD_DEVICES_TXT), 
+		TRIGGER_SCHEDULES(TRIGGER_SCHEDULES_TXT);
+		String topic;
+
+		private Topics(String topic) {
+			this.topic = topic;
+		}
+
+		public String getTopic() {
+			return topic;
+		}
+	}
 
 	/**
 	 * @param message
 	 * @throws Exception
 	 */
-	@JmsListener(destination = APP_STARTUP, containerFactory = "topicSubscriberConfig")
+	@JmsListener(destination = LOAD_SETTINGS_TXT, containerFactory = "topicSubscriberConfig")
 	public void loadSettings2Cache(Object message) throws Exception {
 		List<SettingsDTO> settings = settingsDao.fetchSettings();
 
@@ -120,24 +135,25 @@ public class ApplicationStartupListener {
 		mailSender.setPassword(password);
 	}
 
+	
 	/**
 	 * @param message
 	 */
-	@JmsListener(destination = APP_STARTUP, containerFactory = "topicSubscriberConfig")
+	@JmsListener(destination = LOAD_DEVICES_TXT, containerFactory = "topicSubscriberConfig")
 	public void loadDeviceDetails2Cache(Object message) {
 		logger.info("loadDeviceDetails2Cache Loading Settings into Cache {}", message);
-		// TODO:
+		// TODO: Load active devices for Polling
 	}
 
+	
 	/**
-	 * When {@link scheduler.enabled} true 
-	 * 1. loads all schedules  
-	 * 2. Active schedules are scheduled / rescheduled
-	 * 3. Inactive schedule are unscheduled / stopped
+	 * When {@link scheduler.enabled} true 1. loads all schedules 2. Active
+	 * schedules are scheduled / rescheduled 3. Inactive schedule are unscheduled /
+	 * stopped
 	 * 
 	 * @param message
 	 */
-	@JmsListener(destination = APP_STARTUP, containerFactory = "topicSubscriberConfig")
+	@JmsListener(destination = TRIGGER_SCHEDULES_TXT, containerFactory = "topicSubscriberConfig")
 	public void triggerSchedules(Object message) {
 		logger.info("triggerSchedules Scheduler status {}", schedulerEnabled);
 
@@ -158,8 +174,11 @@ public class ApplicationStartupListener {
 					Trigger cronTriggerBean = JobUtil.createCronTrigger(schedule.getJobKey() + schedule.getGroupKey(),
 							new Date(), schedule.getCronExpression(), jobDetail,
 							SimpleTrigger.MISFIRE_INSTRUCTION_FIRE_NOW);
-					
-					/* Get job existance status - unschedule all task and schedule if status is active */
+
+					/*
+					 * Get job existance status - unschedule all task and schedule if status is
+					 * active
+					 */
 					boolean checkExists = schedulerFactory.getScheduler().checkExists(triggerKey);
 
 					logger.debug("{} job existane {}", schedule.getClassName(), checkExists);

@@ -22,6 +22,12 @@ import org.springframework.stereotype.Repository;
 public class PollingDetailsDAO extends BaseDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(PollingDetailsDAO.class);
+	
+	/* All Queries constants*/
+	public static final String INSERT_POLLING_DETAILS = "insert into setup.pollingdetails"
+			+ "(deviceuniqueid, polledon, voltage_bn,voltage_br,voltage_rn,voltage_ry,voltage_yb,voltage_yn,voltage_avg_ll,"
+			+ "voltage_avg_ln,r_current,y_current,b_current,current_avg,frequency,power_factor,w1,w2,w3,wh,w_avg,va1,va2,va3,vah,va_avg)"
+			+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 	/**
 	 * @param query
@@ -132,6 +138,20 @@ public class PollingDetailsDAO extends BaseDAO {
 				return rs.getString(1);// Load only device name to send mail
 			}
 		});
+	}
+
+	/**
+	 * @param dtopoll
+	 * @return
+	 */
+	public int insertPollingDetails(PollingDetailsDTO dtopoll) {
+		return super.executeQuery(INSERT_POLLING_DETAILS, new Object[] { dtopoll.getDeviceUniqueId(),
+				dtopoll.getPolledOn(), dtopoll.getVoltage_bn(), dtopoll.getVoltage_br(), dtopoll.getVoltage_rn(),
+				dtopoll.getVoltage_ry(), dtopoll.getVoltage_yb(), dtopoll.getVoltage_yn(), dtopoll.getVoltage_avg_ll(),
+				dtopoll.getVoltage_avg_ln(), dtopoll.getR_current(), dtopoll.getY_current(), dtopoll.getB_current(),
+				dtopoll.getCurrent_avg(), dtopoll.getFrequency(), dtopoll.getPower_factor(), dtopoll.getW1(),
+				dtopoll.getW2(), dtopoll.getW3(), dtopoll.getWh(), dtopoll.getW_avg(), dtopoll.getVa1(),
+				dtopoll.getVa2(), dtopoll.getVa3(), dtopoll.getVah(), dtopoll.getVa_avg() });
 	}
 
 }

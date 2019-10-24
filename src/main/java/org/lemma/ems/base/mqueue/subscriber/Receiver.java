@@ -17,13 +17,24 @@ public class Receiver {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Receiver.class);
 
-	@JmsListener(destination = "${startup.notification}", containerFactory = "topicSubscriberConfig")
-	public void receive1(DeviceDetailsDTO message) {
-		LOGGER.info("'subscriber1' received message='{}' time={}", message, System.currentTimeMillis());
+	/* constants */
+	private static final String STARTUP_TXT = "STARTUP.TOPIC";
+
+	public enum Topics {
+		STARTUP(STARTUP_TXT);
+		String topic;
+
+		private Topics(String topic) {
+			this.topic = topic;
+		}
+
+		public String getTopic() {
+			return topic;
+		}
 	}
 
-	@JmsListener(destination = "${startup.notification}", containerFactory = "topicSubscriberConfig")
-	public void receive2(DeviceDetailsDTO message) {
-		LOGGER.info("'subscriber2' received message='{}' time={}", message, System.currentTimeMillis());
+	@JmsListener(destination = STARTUP_TXT, containerFactory = "topicSubscriberConfig")
+	public void sampleReceiver1(String message) {
+		LOGGER.info("'subscriber1' received message='{}' time={}", message, System.currentTimeMillis());
 	}
 }
