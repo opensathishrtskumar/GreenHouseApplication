@@ -50,12 +50,12 @@ public class DeviceMemoryDAO extends BaseDAO {
 	 * @param params
 	 * @return
 	 */
-	public List<DeviceMemoryDTO> fetchAllMemoryMappings(String query, Object[] params) {
+	public List<ExtendedDeviceMemoryDTO> fetchAllMemoryMappings(String query, Object[] params) {
 
-		return this.jdbcTemplate.query(query, new RowMapper<DeviceMemoryDTO>() {
+		return this.jdbcTemplate.query(query, new RowMapper<ExtendedDeviceMemoryDTO>() {
 
 			@Override
-			public DeviceMemoryDTO mapRow(ResultSet resultSet, int rowIndex) throws SQLException {
+			public ExtendedDeviceMemoryDTO mapRow(ResultSet resultSet, int rowIndex) throws SQLException {
 				ExtendedDeviceMemoryDTO details = new ExtendedDeviceMemoryDTO();
 				details.setUniqueId(resultSet.getLong("id"));
 				details.setDeviceId(resultSet.getLong("deviceid"));

@@ -35,7 +35,7 @@ public class DeviceManagementService {
 	/**
 	 * @return
 	 */
-	public ModelAndView showReportsPage() {
+	public ModelAndView showDeviceReportsPage() {
 		ModelAndView modelAndView = new ModelAndView("devicelist");
 
 		// List of devices not DELETED and Type EMS

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.lemma.ems.base.core.constants.Core;
 import org.lemma.ems.base.dao.dto.DeviceMemoryDTO;
+import org.lemma.ems.base.dao.dto.ExtendedDeviceMemoryDTO;
 import org.lemma.ems.ui.model.DeviceDetailsForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,7 @@ public class DeviceConnectionValidator {
 	 */
 	public boolean validateForm(DeviceDetailsForm device) throws Exception {
 
-		List<DeviceMemoryDTO> memoryMappings = null;
+		List<ExtendedDeviceMemoryDTO> memoryMappings = null;
 
 		if (device == null || (memoryMappings = device.getMemoryMappings()) == null || memoryMappings.isEmpty())
 			throw new Exception("Invalid DeviceDetails Found for validation");

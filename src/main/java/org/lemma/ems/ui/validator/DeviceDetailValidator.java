@@ -3,6 +3,7 @@ package org.lemma.ems.ui.validator;
 import java.util.List;
 
 import org.lemma.ems.base.dao.dto.DeviceMemoryDTO;
+import org.lemma.ems.base.dao.dto.ExtendedDeviceMemoryDTO;
 import org.lemma.ems.ui.model.DeviceDetailsForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +40,7 @@ public class DeviceDetailValidator {
 			formBinding.rejectValue("port", "comport.invalid");
 		}
 		
-		List<DeviceMemoryDTO> memoryMappings = form.getMemoryMappings();
+		List<ExtendedDeviceMemoryDTO> memoryMappings = form.getMemoryMappings();
 		
 		//assumption that Test Connection API validates completly, so basic validation is alone implemented 
 		if(memoryMappings == null || memoryMappings.isEmpty()) {

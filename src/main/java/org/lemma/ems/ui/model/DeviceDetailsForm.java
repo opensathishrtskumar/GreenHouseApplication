@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 
 import org.lemma.ems.base.dao.DeviceDetailsDAO;
 import org.lemma.ems.base.dao.dto.DeviceMemoryDTO;
+import org.lemma.ems.base.dao.dto.ExtendedDeviceMemoryDTO;
 
 /**
  * @author RTS Sathish Kumar
@@ -75,7 +76,7 @@ public class DeviceDetailsForm implements Serializable {
 	 */
 	private String hashKey;
 
-	private List<DeviceMemoryDTO> memoryMappings = new ArrayList<>();
+	private List<ExtendedDeviceMemoryDTO> memoryMappings = new ArrayList<>();
 
 	/* Attributes required for validations */
 	private boolean connectionVerified;
@@ -222,11 +223,11 @@ public class DeviceDetailsForm implements Serializable {
 		this.hashKey = hashKey;
 	}
 
-	public List<DeviceMemoryDTO> getMemoryMappings() {
+	public List<ExtendedDeviceMemoryDTO> getMemoryMappings() {
 		return memoryMappings;
 	}
 
-	public void setMemoryMappings(List<DeviceMemoryDTO> memoryMappings) {
+	public void setMemoryMappings(List<ExtendedDeviceMemoryDTO> memoryMappings) {
 		this.memoryMappings = memoryMappings;
 	}
 

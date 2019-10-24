@@ -33,7 +33,7 @@ public class DeviceManagementController {
 	 */
 	@RequestMapping(value = "/ems/devices/show", method = RequestMethod.GET)
 	public ModelAndView showReportsPage() {
-		return deviceManagementService.showReportsPage();
+		return deviceManagementService.showDeviceReportsPage();
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class DeviceManagementController {
 			BindingResult formBinding, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
 		logger.debug("Device details add request {}", form);
 		
-		ModelAndView modelAndView = deviceManagementService.showReportsPage();
+		ModelAndView modelAndView = deviceManagementService.showDeviceReportsPage();
 		
 		DeviceDetailValidator validator = new DeviceDetailValidator(form, formBinding);
 		validator.validateDeviceDetailsForm();

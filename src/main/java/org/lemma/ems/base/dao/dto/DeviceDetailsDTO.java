@@ -35,7 +35,7 @@ public class DeviceDetailsDTO implements Serializable {
 	private long modifiedTimeStamp;
 	private String hashKey;
 
-	private List<DeviceMemoryDTO> memoryMappings;
+	private List<ExtendedDeviceMemoryDTO> memoryMappings;
 
 	public DeviceDetailsDTO() {
 		//
@@ -161,11 +161,11 @@ public class DeviceDetailsDTO implements Serializable {
 		this.hashKey = hashKey;
 	}
 
-	public List<DeviceMemoryDTO> getMemoryMappings() {
+	public List<ExtendedDeviceMemoryDTO> getMemoryMappings() {
 		return memoryMappings;
 	}
 
-	public void setMemoryMappings(List<DeviceMemoryDTO> memoryMappings) {
+	public void setMemoryMappings(List<ExtendedDeviceMemoryDTO> memoryMappings) {
 		this.memoryMappings = memoryMappings;
 	}
 	

@@ -21,6 +21,11 @@ public class ExtendedSerialParameter extends SerialParameters implements Seriali
 	private String registerMapping;
 	private String port;
 	private String method;
+	
+	/**
+	 * EMS/BMS
+	 */
+	private int type;
 
 	private List<ExtendedDeviceMemoryDTO> deviceMemoryList;
 	private Class<? extends ResponseHandler> responseHandler;
@@ -101,6 +106,14 @@ public class ExtendedSerialParameter extends SerialParameters implements Seriali
 
 	public void setMethod(String method) {
 		this.method = method;
+	}
+	
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 
 	public List<ExtendedDeviceMemoryDTO> getDeviceMemoryList() {

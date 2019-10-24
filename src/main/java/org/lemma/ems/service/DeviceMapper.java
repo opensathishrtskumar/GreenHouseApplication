@@ -6,6 +6,8 @@ import java.util.List;
 import org.lemma.ems.base.core.ExtendedSerialParameter;
 import org.lemma.ems.base.core.constants.Core;
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
+import org.lemma.ems.base.dao.dto.DeviceMemoryDTO;
+import org.lemma.ems.base.dao.dto.ExtendedDeviceMemoryDTO;
 import org.lemma.ems.ui.model.DeviceDetailsForm;
 
 /**
@@ -59,15 +61,18 @@ public class DeviceMapper {
 				devices.getWordLength(), devices.getStopbit(), 0);
 		
 		parameters.setUniqueId(devices.getUniqueId());
-		parameters.setUnitId(devices.getDeviceId());
 		parameters.setDeviceName(devices.getDeviceName());
-		
+		parameters.setUnitId(devices.getDeviceId());
 		parameters.setParity(devices.getParity());
-		parameters.setRetries(Core.RETRYCOUNT);
-		parameters.setEncoding(Core.ENCODINGS[1]);
-		parameters.setRegisterMapping(devices.getRegisterMapping());
-		parameters.setPort(devices.getPort());
 		parameters.setMethod(devices.getMethod());
+		parameters.setRegisterMapping(devices.getRegisterMapping());
+		parameters.setEncoding(devices.getEncoding());
+		parameters.setPort(devices.getPort());
+		
+		parameters.setRetries(Core.RETRYCOUNT);
+		parameters.setType(devices.getType());
+		
+		parameters.setDeviceMemoryList(devices.getMemoryMappings());
 
 		return parameters;
 	}

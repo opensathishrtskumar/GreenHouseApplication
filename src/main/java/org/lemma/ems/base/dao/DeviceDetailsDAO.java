@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
 import org.lemma.ems.base.dao.dto.DeviceMemoryDTO;
+import org.lemma.ems.base.dao.dto.ExtendedDeviceMemoryDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,7 +108,7 @@ public class DeviceDetailsDAO extends BaseDAO {
 				details.setHashKey(resultSet.getString("hashkey"));
 
 				// Load Memory Mappings of current device
-				List<DeviceMemoryDTO> fetchAllMemoryMappings = deviceMemoryDAO.fetchAllMemoryMappings(
+				List<ExtendedDeviceMemoryDTO> fetchAllMemoryMappings = deviceMemoryDAO.fetchAllMemoryMappings(
 						DeviceMemoryDAO.MAPPINGS_BY_DEVICEID,
 						new Object[] { details.getUniqueId(), DeviceMemoryDAO.Status.DELETED.getStatus() });
 				details.setMemoryMappings(fetchAllMemoryMappings);
