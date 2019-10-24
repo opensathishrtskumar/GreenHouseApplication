@@ -14,6 +14,8 @@ public class PollingDetailsDTO implements Serializable {
 	private static final long serialVersionUID = 7353069892688430105L;
 	private long deviceUniqueId;
 	private long polledOn;
+	// FIXME: check float and double compatibility, since we convert registers to
+	// fload {@link ModbusUtil}
 	private double voltage_bn;
 	private double voltage_br;
 	private double voltage_rn;

@@ -57,11 +57,18 @@ public class DeviceMemoryDTO implements Serializable {
 	public void setCreatedTimeStamp(long createdTimeStamp) {
 		this.createdTimeStamp = createdTimeStamp;
 	}
-
+	
+	
+	/**
+	 * Concrete sub class will have actual implementation
+	 */
+	public void calculatePollingParams() {
+		//NOOP
+	}
+	
 	@Override
 	public String toString() {
 		return "DeviceMemoryDTO [uniqueId=" + uniqueId + ", deviceId=" + deviceId + ", memoryMapping=" + memoryMapping
 				+ "]";
 	}
-
 }

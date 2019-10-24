@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.List;
 
 import org.lemma.ems.base.dao.dto.DeviceMemoryDTO;
+import org.lemma.ems.base.dao.dto.ExtendedDeviceMemoryDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -55,7 +56,7 @@ public class DeviceMemoryDAO extends BaseDAO {
 
 			@Override
 			public DeviceMemoryDTO mapRow(ResultSet resultSet, int rowIndex) throws SQLException {
-				DeviceMemoryDTO details = new DeviceMemoryDTO();
+				ExtendedDeviceMemoryDTO details = new ExtendedDeviceMemoryDTO();
 				details.setUniqueId(resultSet.getLong("id"));
 				details.setDeviceId(resultSet.getLong("deviceid"));
 				details.setMemoryMapping(resultSet.getString("memorymapping"));
