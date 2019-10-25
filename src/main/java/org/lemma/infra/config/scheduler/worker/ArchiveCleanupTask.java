@@ -5,7 +5,7 @@ import java.util.concurrent.Callable;
 import org.joda.time.LocalDate;
 import org.lemma.ems.base.dao.PollingDetailsDAO;
 import org.lemma.ems.base.dao.constants.QueryConstants;
-import org.lemma.ems.util.Helper;
+import org.lemma.ems.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -34,7 +34,7 @@ public class ArchiveCleanupTask implements Callable<Object>, ApplicationContextA
 		try {
 			// Keep last 5 month data
 			LocalDate date = LocalDate.now().plusMonths(-5).withDayOfMonth(1);
-			long timeStamp = Helper.getStartOfDay(date.toDate().getTime());
+			long timeStamp = DateUtil.getStartOfDay(date.toDate().getTime());
 
 			String path = dao.fetchVariable("SELECT @@GLOBAL.secure_file_priv AS path");
 			String backUpPath = path + System.currentTimeMillis() + ".txt";

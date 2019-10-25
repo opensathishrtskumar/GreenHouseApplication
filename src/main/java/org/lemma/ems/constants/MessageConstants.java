@@ -13,7 +13,7 @@ public abstract class MessageConstants {
 	public static final String REPORT_RECORD_SEPARATOR = System.lineSeparator();
 	public static final String SEMICOLON = ";";
 
-	// Main config keys
+	// MainSlave config keys
 	public static final String USERNAME_KEY = "username";
 	public static final String PASSWORD_KEY = "security";
 	public static final String DASHBOARD_DEVICESCOUNT_KEY = "dashboardevicecount";

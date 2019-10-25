@@ -1,5 +1,9 @@
 package org.lemma.ems.constants;
 
+/**
+ * @author RTS Sathish Kumar
+ *
+ */
 public abstract class SettingsConstants {
 
 	public static final String bccEmail = "bccEmail";

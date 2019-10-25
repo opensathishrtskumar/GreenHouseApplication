@@ -5,7 +5,7 @@ import java.util.concurrent.Callable;
 import org.joda.time.LocalDate;
 import org.lemma.ems.base.dao.PollingDetailsDAO;
 import org.lemma.ems.base.dao.constants.QueryConstants;
-import org.lemma.ems.util.Helper;
+import org.lemma.ems.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -32,7 +32,7 @@ public class DailyBackUpTask implements Callable<Object>,ApplicationContextAware
 
 		try {
 			LocalDate date = LocalDate.now().plusDays(-2);
-			long timeStamp = Helper.getEndOfDay(date.toDate().getTime());
+			long timeStamp = DateUtil.getEndOfDay(date.toDate().getTime());
 
 			int rowsBackedUp = dao.executeQuery(QueryConstants.DAILY_2_MONTHLY_BACKUP_QUERY,
 					new Object[] { timeStamp });

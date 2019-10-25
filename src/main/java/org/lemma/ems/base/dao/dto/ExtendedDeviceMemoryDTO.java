@@ -41,18 +41,22 @@ public class ExtendedDeviceMemoryDTO extends DeviceMemoryDTO {
 					// Parse mapping string to SortedMap to find other parameters
 					memoryMappings = loadMemoryMappingDetails(getMemoryMapping());
 					// Get the Starting register address from where to begin read
-					reference = (int) getRegisterReference(memoryMappings);
+					reference = (int) getRegisterReference(getMemoryMappings());
 					// Total number of registers to be read from Reference register
-					count = getRegisterCount(memoryMappings);
-					//All the registers required
-					registersRequired = getPersistRegisters(memoryMappings.keySet());
+					count = getRegisterCount(getMemoryMappings());
+					// All the registers required
+					registersRequired = getPersistRegisters(getMemoryMappings().keySet());
+
+					paramsCalculated = true;
 				} catch (Exception e) {
 					logger.error(" Failed to calculatePollingParams : {}", e);
 				}
-
-				paramsCalculated = true;
 			}
 		}
+	}
+
+	public Map<Long, String> getMemoryMappings() {
+		return memoryMappings;
 	}
 
 	public void enableParamRecalculation() {

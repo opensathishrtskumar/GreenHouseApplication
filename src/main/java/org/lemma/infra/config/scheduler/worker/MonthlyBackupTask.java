@@ -5,7 +5,7 @@ import java.util.concurrent.Callable;
 import org.joda.time.LocalDate;
 import org.lemma.ems.base.dao.PollingDetailsDAO;
 import org.lemma.ems.base.dao.constants.QueryConstants;
-import org.lemma.ems.util.Helper;
+import org.lemma.ems.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -31,7 +31,7 @@ public class MonthlyBackupTask implements Callable<Object>,ApplicationContextAwa
 		try {
 			// go to last month 1st and backup data older that that
 			LocalDate date = LocalDate.now().plusMonths(-1).withDayOfMonth(1);
-			long timeStamp = Helper.getStartOfDay(date.toDate().getTime());
+			long timeStamp = DateUtil.getStartOfDay(date.toDate().getTime());
 
 			int rowsBackedUp = dao.executeQuery(QueryConstants.MONTHLY_2_ARVHIVE_BACKUP_QUERY,
 					new Object[] { timeStamp });
