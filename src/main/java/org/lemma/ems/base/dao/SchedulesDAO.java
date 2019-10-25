@@ -23,15 +23,28 @@ public class SchedulesDAO extends BaseDAO {
 	private static final Logger logger = LoggerFactory.getLogger(SchedulesDAO.class);
 
 	/* All STATUS configuration */
-	public static final int ACTIVE = 1;
-	public static final int INACTIVE = 2;
+	
+	public enum Status{
+		ACTIVE(1),INACTIVE(2),ONETIMEJOB(3);
+		
+		int status;
+		
+		private Status(int status) {
+			this.status = status;
+		}
+
+		public int getStatus() {
+			return status;
+		}
+	}
+	
 
 	/* Queries */
 	public static final String SELECT_SCHEDULES_BY_STATUS = "select * from setup.schedules where status=?";
 	public static final String SELECT_ALL_SCHEDULES = "select * from setup.schedules";
 
 	public List<SchedulesDTO> fetchAllSchedulesByStatus() {
-		return fetchAllSchedulesByStatus(SELECT_SCHEDULES_BY_STATUS, ACTIVE);
+		return fetchAllSchedulesByStatus(SELECT_SCHEDULES_BY_STATUS, Status.ACTIVE.getStatus());
 	}
 
 	public List<SchedulesDTO> fetchAllSchedules() {
