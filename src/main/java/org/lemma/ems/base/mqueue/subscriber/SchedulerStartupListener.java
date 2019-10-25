@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.lemma.ems.base.dao.SchedulesDAO;
 import org.lemma.ems.base.dao.dto.SchedulesDTO;
+import org.lemma.ems.base.mqueue.ReceiverConfig;
 import org.lemma.ems.scheduler.util.JobUtil;
 import org.quartz.JobDetail;
 import org.quartz.SimpleTrigger;
@@ -66,7 +67,7 @@ public class SchedulerStartupListener {
 	 * 
 	 * @param message
 	 */
-	@JmsListener(destination = TRIGGER_SCHEDULES_TXT, containerFactory = "topicSubscriberConfig")
+	@JmsListener(destination = TRIGGER_SCHEDULES_TXT, containerFactory = ReceiverConfig.SUBSCRIBER_NAME)
 	public void triggerSchedules(Object message) {
 		logger.info("triggerSchedules Scheduler status {}", schedulerEnabled);
 

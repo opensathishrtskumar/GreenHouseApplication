@@ -8,12 +8,14 @@ import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 
 /**
- * @author RTS Sathish  Kumar
+ * @author RTS Sathish Kumar
  *
  */
 @Configuration
 @EnableJms
 public class ReceiverConfig {
+
+	public static final String SUBSCRIBER_NAME = "topicSubscriberConfig";
 
 	/**
 	 * vm connector gives better performance since workds inside the same VM
@@ -41,7 +43,7 @@ public class ReceiverConfig {
 	/**
 	 * @return
 	 */
-	@Bean(name = "topicSubscriberConfig")
+	@Bean(name = SUBSCRIBER_NAME)
 	public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
 		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
 		factory.setSessionAcknowledgeMode(javax.jms.Session.DUPS_OK_ACKNOWLEDGE);

@@ -1,6 +1,6 @@
 package org.lemma.ems.base.mqueue.subscriber;
 
-import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
+import org.lemma.ems.base.mqueue.ReceiverConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jms.annotation.EnableJms;
@@ -33,7 +33,7 @@ public class Receiver {
 		}
 	}
 
-	@JmsListener(destination = STARTUP_TXT, containerFactory = "topicSubscriberConfig")
+	@JmsListener(destination = STARTUP_TXT, containerFactory = ReceiverConfig.SUBSCRIBER_NAME)
 	public void sampleReceiver1(String message) {
 		LOGGER.info("'subscriber1' received message='{}' time={}", message, System.currentTimeMillis());
 	}

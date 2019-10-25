@@ -15,6 +15,7 @@ import org.lemma.ems.base.dao.SettingsDAO;
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
 import org.lemma.ems.base.dao.dto.ExtendedDeviceMemoryDTO;
 import org.lemma.ems.base.dao.dto.SettingsDTO;
+import org.lemma.ems.base.mqueue.ReceiverConfig;
 import org.lemma.ems.base.mqueue.publisher.Sender;
 import org.lemma.ems.service.DeviceMapper;
 import org.lemma.ems.util.EMSUtility;
@@ -72,7 +73,7 @@ public class ApplicationStartupListener {
 	 * @param message
 	 * @throws Exception
 	 */
-	@JmsListener(destination = LOAD_SETTINGS_TXT, containerFactory = "topicSubscriberConfig")
+	@JmsListener(destination = LOAD_SETTINGS_TXT, containerFactory = ReceiverConfig.SUBSCRIBER_NAME)
 	public void loadSettings2Cache(Object message) throws Exception {
 
 		List<SettingsDTO> settings = settingsDao.fetchSettings();
@@ -125,7 +126,7 @@ public class ApplicationStartupListener {
 	/**
 	 * @param message
 	 */
-	@JmsListener(destination = LOAD_DEVICES_TXT, containerFactory = "topicSubscriberConfig")
+	@JmsListener(destination = LOAD_DEVICES_TXT, containerFactory = ReceiverConfig.SUBSCRIBER_NAME)
 	public void loadDeviceDetails2Cache(Object message) {
 		logger.info("loadDeviceDetails2Cache Loading DeviceDetails into Cache {}", message);
 
