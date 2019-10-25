@@ -29,14 +29,5 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
 		sender.publishEvent(ApplicationStartupListener.Topics.LOAD_SETTINGS.getTopic(),
 				ApplicationStartupListener.Topics.LOAD_SETTINGS.getTopic());
 
-		sender.publishEvent(ApplicationStartupListener.Topics.LOAD_DEVICES.getTopic(),
-				ApplicationStartupListener.Topics.LOAD_DEVICES.getTopic());
-		
-		
-		
-		
-		//Trigger schedules at the END
-		sender.publishEvent(ApplicationStartupListener.Topics.TRIGGER_SCHEDULES.getTopic(),
-				ApplicationStartupListener.Topics.TRIGGER_SCHEDULES.getTopic());
 	}
 }
