@@ -61,13 +61,17 @@ public class ExtendedSerialParameter extends SerialParameters implements Seriali
 	}
 
 	/**
-	 * Creates key for grouped polling - single connection with multiple requests
-	 * 
-	 * @return
+	 * @returns key consists of some configuration parameter
+	 *          {@literal port,baudrate,wordlength,parity and stopbit}
 	 */
-	public String getGroupKey() {
-		return new StringBuilder().append(getPort()).append(getBaudRate()).append(getDatabits()).append(getParity())
-				.append(getStopbits()).toString();
+	public String getGroupByKey() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(getPort());
+		builder.append(getBaudRate());
+		builder.append(getDatabits());
+		builder.append(getParity());
+		builder.append(getStopbits());
+		return builder.toString();
 	}
 
 	public String getDeviceName() {

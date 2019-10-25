@@ -33,6 +33,9 @@ public class DeviceDetailsDAO extends BaseDAO {
 			+ "port,method,registermapping,encoding,status,type,createdtimestamp,modifiedtimestamp,hashkey) "
 			+ "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
+	
+	public static final String RETRIEVE_EMS_ACTIVE_DEVICES = "select * from setup.devicedetails where status = ? and type = ?";
+	
 	/* All Constants */
 	public static enum Status {
 
@@ -75,6 +78,11 @@ public class DeviceDetailsDAO extends BaseDAO {
 		this.deviceMemoryDAO = deviceMemoryDAO;
 	}
 
+	public List<DeviceDetailsDTO> fetchEMSActiveDevices(){
+		return fetchDeviceDetails(RETRIEVE_EMS_ACTIVE_DEVICES, new Object[] {Status.ACTIVE.getStatus(), Type.EMS.getType() });
+	}
+	
+	
 	/**
 	 * Loads all devices except {@link DeviceDetailsDAO.Status.DELETED} All columnns
 	 * must be selected from table

@@ -9,11 +9,18 @@ import java.util.stream.Collectors;
 
 import org.lemma.ems.base.cache.CacheEntryConstants;
 import org.lemma.ems.base.cache.CacheUtil;
+import org.lemma.ems.base.cache.Caches;
+import org.lemma.ems.base.core.ExtendedSerialParameter;
+import org.lemma.ems.base.dao.DeviceDetailsDAO;
 import org.lemma.ems.base.dao.SchedulesDAO;
 import org.lemma.ems.base.dao.SettingsDAO;
+import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
+import org.lemma.ems.base.dao.dto.ExtendedDeviceMemoryDTO;
 import org.lemma.ems.base.dao.dto.SchedulesDTO;
 import org.lemma.ems.base.dao.dto.SettingsDTO;
 import org.lemma.ems.scheduler.util.JobUtil;
+import org.lemma.ems.service.DeviceMapper;
+import org.lemma.ems.util.EMSUtility;
 import org.quartz.JobDetail;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
@@ -61,6 +68,9 @@ public class ApplicationStartupListener {
 	@Autowired
 	private ApplicationContext context;
 	
+	@Autowired
+	private DeviceDetailsDAO deviceDetailsDAO;
+	
 	/* constants */
 	private static final String LOAD_SETTINGS_TXT = "LOAD.SETTINGS.TOPIC";
 	private static final String LOAD_DEVICES_TXT = "LOAD.DEVICES.TOPIC";
@@ -87,15 +97,11 @@ public class ApplicationStartupListener {
 	 */
 	@JmsListener(destination = LOAD_SETTINGS_TXT, containerFactory = "topicSubscriberConfig")
 	public void loadSettings2Cache(Object message) throws Exception {
+		
 		List<SettingsDTO> settings = settingsDao.fetchSettings();
 
 		Map<String, List<SettingsDTO>> collect = settings.stream()
 				.collect(Collectors.groupingBy(SettingsDTO::getGroupName));
-
-		/*
-		 * FIXME : 1. validate hashkey of settings 2. decrypt settings
-		 * 
-		 */
 
 		/* Segregates by GROUP and Config keys to access easily */
 		Map<String, Map<String, List<SettingsDTO>>> settingsCollection = new HashMap<>();
@@ -110,7 +116,7 @@ public class ApplicationStartupListener {
 			settingsCollection.put(entry.getKey(), configElements);
 		}
 
-		cacheUtil.putCacheEntry(CacheEntryConstants.SETTINGS.getName(), settingsCollection);
+		cacheUtil.putCacheEntry(CacheEntryConstants.EmsEntryConstants.SETTINGS.getName(), settingsCollection);
 
 		logger.info("loadSettings2Cache Loading Settings into Cache Completed ");
 
@@ -142,7 +148,27 @@ public class ApplicationStartupListener {
 	@JmsListener(destination = LOAD_DEVICES_TXT, containerFactory = "topicSubscriberConfig")
 	public void loadDeviceDetails2Cache(Object message) {
 		logger.info("loadDeviceDetails2Cache Loading Settings into Cache {}", message);
-		// TODO: Load active devices for Polling
+
+		// Load active EMS Devices and place in cache
+		List<DeviceDetailsDTO> emsActiveDevices = deviceDetailsDAO.fetchEMSActiveDevices();
+
+		// calculatePolling params for all device and its memory mappings
+		for (DeviceDetailsDTO device : emsActiveDevices) {
+
+			List<ExtendedDeviceMemoryDTO> memoryMappings = device.getMemoryMappings();
+
+			for (ExtendedDeviceMemoryDTO memory : memoryMappings) {
+				memory.calculatePollingParams();
+			}
+		}
+		
+		//1.All ems actives persisted directly
+		cacheUtil.putCacheEntry(Caches.DEVICECACHE, CacheEntryConstants.DeviceEntryConstants.ACTIVE_DEVICES.getName(), emsActiveDevices);
+		
+		//2.All ems actives are converted to ExtendedSerialParameter and persisted as group for better polling
+		List<ExtendedSerialParameter> mapDevicesToSerialParams = DeviceMapper.mapDevicesToSerialParams(emsActiveDevices);
+		Map<String, List<ExtendedSerialParameter>> groupDevicesForPolling = EMSUtility.groupDevicesForPolling(mapDevicesToSerialParams);
+		cacheUtil.putCacheEntry(Caches.DEVICECACHE, CacheEntryConstants.DeviceEntryConstants.GROUPED_ACTIVE_DEVICES.getName(), groupDevicesForPolling);
 	}
 
 	

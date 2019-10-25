@@ -1,13 +1,12 @@
 package org.lemma.ems.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.lemma.ems.base.core.ExtendedSerialParameter;
 import org.lemma.ems.base.core.constants.Core;
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
-import org.lemma.ems.base.dao.dto.DeviceMemoryDTO;
-import org.lemma.ems.base.dao.dto.ExtendedDeviceMemoryDTO;
 import org.lemma.ems.ui.model.DeviceDetailsForm;
 
 /**
@@ -45,21 +44,27 @@ public class DeviceMapper {
 		return dto;
 	}
 
+	/**
+	 * @param devices
+	 * @return
+	 */
 	public static List<ExtendedSerialParameter> mapDevicesToSerialParams(List<DeviceDetailsDTO> devices) {
-		List<ExtendedSerialParameter> paramList = new ArrayList<>();
+		Function<DeviceDetailsDTO, ExtendedSerialParameter> mapper = (device) -> {
+			return mapDeviceDetailToExtSerialParam(device);
+		};
 
-		for (DeviceDetailsDTO device : devices) {
-			paramList.add(mapDeviceDetailToExtSerialParam(device));
-		}
-
-		return paramList;
+		return devices.stream().map(mapper).collect(Collectors.toList());
 	}
 
+	/**
+	 * @param devices
+	 * @return
+	 */
 	public static ExtendedSerialParameter mapDeviceDetailToExtSerialParam(DeviceDetailsDTO devices) {
 
 		ExtendedSerialParameter parameters = new ExtendedSerialParameter(devices.getPort(), devices.getBaudRate(), 0, 0,
 				devices.getWordLength(), devices.getStopbit(), 0);
-		
+
 		parameters.setUniqueId(devices.getUniqueId());
 		parameters.setDeviceName(devices.getDeviceName());
 		parameters.setUnitId(devices.getDeviceId());
@@ -68,10 +73,10 @@ public class DeviceMapper {
 		parameters.setRegisterMapping(devices.getRegisterMapping());
 		parameters.setEncoding(devices.getEncoding());
 		parameters.setPort(devices.getPort());
-		
+
 		parameters.setRetries(Core.RETRYCOUNT);
 		parameters.setType(devices.getType());
-		
+
 		parameters.setDeviceMemoryList(devices.getMemoryMappings());
 
 		return parameters;

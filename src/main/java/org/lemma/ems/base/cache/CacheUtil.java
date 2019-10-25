@@ -5,6 +5,10 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author RTS Sathish  Kumar
+ *
+ */
 @Component
 public final class CacheUtil {
 
@@ -16,14 +20,14 @@ public final class CacheUtil {
 	}
 	
 	/**
-	 * {@link Caches.ETERNAL} is the default instance
+	 * {@link Caches.EMSCACHE} is the default instance
 	 * 
 	 * @param key
 	 * @param value
 	 * 
 	 */
 	public void putCacheEntry(String key, Object value) {
-		getCache(Caches.ETERNAL).put(key, value);
+		getCache(Caches.EMSCACHE).put(key, value);
 	}
 	
 	/**
@@ -32,7 +36,7 @@ public final class CacheUtil {
 	 * @return
 	 */
 	public <T> T getCacheEntry(String key, Class<T> className) {
-		return getCache(Caches.ETERNAL).get(key, className);
+		return getCache(Caches.EMSCACHE).get(key, className);
 	}
 	
 	/**

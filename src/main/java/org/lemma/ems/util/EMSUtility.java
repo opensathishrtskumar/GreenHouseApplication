@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.lemma.ems.base.core.ExtendedSerialParameter;
 import org.lemma.ems.base.core.constants.Core;
@@ -112,21 +113,9 @@ public abstract class EMSUtility {
 	 * 
 	 * Keys are created in DeviceDetailsDTO & ExtendedSerialParameter
 	 */
-	public static Map<String, List<ExtendedSerialParameter>> groupDeviceForPolling(
+	public static Map<String, List<ExtendedSerialParameter>> groupDevicesForPolling(
 			List<ExtendedSerialParameter> paramsList) {
-		Map<String, List<ExtendedSerialParameter>> groupedDevice = new HashMap<>();
-
-		for (ExtendedSerialParameter device : paramsList) {
-			List<ExtendedSerialParameter> group = groupedDevice.get(device.getGroupKey());
-			// Create group when doesn't exist
-			if (group == null) {
-				group = new ArrayList<>();
-				groupedDevice.put(device.getGroupKey(), group);
-			}
-			// Add device in group
-			group.add(device);
-		}
-		return groupedDevice;
+		return paramsList.stream().collect(Collectors.groupingBy(ExtendedSerialParameter::getGroupByKey));
 	}
 
 	public static Map<String, String> getOrderedProperties(Properties props) {

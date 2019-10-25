@@ -1,9 +1,15 @@
 package org.lemma.ems.base.cache;
 
+/**
+ * @author RTS Sathish  Kumar
+ * 
+ * Different Cache instance name
+ */
 public enum Caches {
 
-	ETERNAL("emscache");
-	
+	EMSCACHE("emscache"), 
+	DEVICECACHE("devicecache");
+
 	String name;
 
 	private Caches(String name) {
