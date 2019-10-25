@@ -46,4 +46,9 @@ public interface ResponseHandler extends Serializable {
 	 * 
 	 */
 	public void pollCompleted();
+	
+	/**
+	 * @return
+	 */
+	public ExtendedSerialParameter getDevice();
 }

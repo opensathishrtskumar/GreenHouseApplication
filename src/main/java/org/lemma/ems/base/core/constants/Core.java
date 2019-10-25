@@ -7,6 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.lemma.ems.base.core.ExtendedSerialParameter;
+import org.lemma.ems.base.dao.dto.ExtendedDeviceMemoryDTO;
+import org.lemma.ems.base.dao.dto.PollingDetailsDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -205,7 +207,7 @@ public abstract class Core {
 	 *            - the order of which registeres to be processed
 	 * @return
 	 */
-	public static String convertToFloatWithOrder(byte[] bytes, String registeOrder) {
+	public static float convertToFloatWithOrder(byte[] bytes, String registeOrder) {
 		byte[] byteOrder = null;
 
 		if (registeOrder.equals(Core.REG_MAPPINGS[0])) {
@@ -213,11 +215,11 @@ public abstract class Core {
 		} else {
 			byteOrder = new byte[] { bytes[2], bytes[3], bytes[0], bytes[1] };
 		}
-
-		return String.format("%.2f", ModbusUtil.registersToFloat(byteOrder));
+		
+		return ModbusUtil.registersToFloat(byteOrder);
 	}
 	
-	public static String getRegisterValue(int index, InputRegister[] registers, String registerMapping) {
+	public static float getRegisterValue(int index, InputRegister[] registers, String registerValueOrder) {
 
 		byte[] bytes = new byte[] { 0, 0, 0, 0 };
 		if (registers != null && index < registers.length) {
@@ -233,8 +235,9 @@ public abstract class Core {
 			}
 		}
 		// register ordering MSRF/LSRF
-		return convertToFloatWithOrder(bytes, registerMapping);
+		return convertToFloatWithOrder(bytes, registerValueOrder);
 	}
+	
 	
 	/**
 	 * @param base
@@ -252,7 +255,7 @@ public abstract class Core {
 			String value = DEFAULT_REG_VALUE;
 
 			try {
-				value = getRegisterValue(registerIndex, registers, msrfOrLsrf);
+				value = String.valueOf(getRegisterValue(registerIndex, registers, msrfOrLsrf));
 			} catch (Exception e) {
 				logger.error("Setting default value for register {}", e);
 				value = DEFAULT_REG_VALUE;
@@ -262,6 +265,128 @@ public abstract class Core {
 		}
 
 		return finalResponse;
+	}
+
+	
+	/**
+	 * @param base
+	 * @param requiredRegisters
+	 * @param registers
+	 * @param msrfOrLsrf
+	 * @return Converts InputResgister[] to Map based on base register and MSRF/LSRF
+	 */
+	public static void convertRegistersToMap(ExtendedDeviceMemoryDTO deviceMemory,
+			InputRegister[] registers, String msrfOrLsrf, PollingDetailsDTO dto) {
+		
+		int[] registersRequired = deviceMemory.getRegistersRequired();
+		int base = deviceMemory.getReference();
+		Map<Long, String> memoryMappings = deviceMemory.getMemoryMappings();
+		
+		for (int reg : registersRequired) {
+			int registerIndex = reg - (base + 1);
+
+			float value = 00.00f;
+			
+			try {
+				value = getRegisterValue(registerIndex, registers, msrfOrLsrf);
+			} catch (Exception e) {
+				logger.error("Setting default value for register {}", e);
+			}
+			
+			//Get register Name and set value accordingly
+			String memory = memoryMappings.get((long)reg);
+			
+			setReadingValue(memory.hashCode(), dto, value);
+		}
+	}
+	
+	
+	/**
+	 * @param type
+	 * @param dto
+	 * @param value
+	 */
+	private static void setReadingValue(int type, PollingDetailsDTO dto, float value) {
+
+		// When there is change in {@Core.MemoryMapping}, change corresponding hashCode
+		// value in cases
+		switch (type) {
+		case 1998804205: // VOLTAGE_BN /
+			dto.setVoltage_bn(value);
+			break;
+		case 1998804209: // VOLTAGE_BR /
+			dto.setVoltage_br(value);
+			break;
+		case 1998804701: // VOLTAGE_RN /
+			dto.setVoltage_rn(value);
+			break;
+		case 1998804712: // VOLTAGE_RY /
+			dto.setVoltage_ry(value);
+			break;
+		case 1998804906: // VOLTAGE_YB /
+			dto.setVoltage_yb(value);
+			break;
+		case 1998804918: // VOLTAGE_YN /
+			dto.setVoltage_yn(value);
+			break;
+		case -649941426: // VOLTAGE_AVG_LL /
+			dto.setVoltage_avg_ll(value);
+			break;
+		case -649941424: // VOLTAGE_AVG_LN /
+			dto.setVoltage_avg_ln(value);
+			break;
+		case 2020769388: // R_CURRENT /
+			dto.setR_current(value);
+			break;
+		case -2041477261: // Y_CURRENT /
+			dto.setY_current(value);
+			break;
+		case 875269724: // B_CURRENT /
+			dto.setB_current(value);
+			break;
+		case -1539497268: // CURRENT_AVG /
+			dto.setCurrent_avg(value);
+			break;
+		case -1578396356: // FREQUENCY /
+			dto.setFrequency(value);
+			break;
+		case -1204453911: // POWER_FACTOR /
+			dto.setPower_factor(value);
+			break;
+		case 2746: // W1 /
+			dto.setW1(value);
+			break;
+		case 2747: // W2 /
+			dto.setW2(value);
+			break;
+		case 2748: // W3 /
+			dto.setW3(value);
+			break;
+		case 2769: // WH /
+			dto.setWh(value);
+			break;
+		case 83241674: // W_AVG /
+			dto.setW_avg(value);
+			break;
+		case 84710: // VA1 /
+			dto.setVa1(value);
+			break;
+		case 84711: // VA2 /
+			dto.setVa2(value);
+			break;
+		case 84712: // VA3 /
+			dto.setVa3(value);
+			break;
+		case 84733: // VAH /
+			dto.setVah(value);
+			break;
+		case -1769936098: // VA_AVG /
+			dto.setVa_avg(value);
+			break;
+		case 68835: // EOM /
+			break;
+		}
+
 	}
 	
 	/**

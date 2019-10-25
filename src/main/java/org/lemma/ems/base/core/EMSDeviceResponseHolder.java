@@ -60,4 +60,9 @@ public class EMSDeviceResponseHolder implements ResponseHandler {
 		return timeOfPoll;
 	}
 
+	@Override
+	public ExtendedSerialParameter getDevice() {
+		return device;
+	}
+
 }

@@ -17,13 +17,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.lemma.ems.base.core.EMSDeviceResponseHolder;
 import org.lemma.ems.base.core.ExtendedSerialParameter;
 import org.lemma.ems.base.core.constants.Core;
 import org.lemma.ems.base.core.util.OrderedProperties;
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
+import org.lemma.ems.base.dao.dto.ExtendedDeviceMemoryDTO;
+import org.lemma.ems.base.dao.dto.PollingDetailsDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ghgande.j2mod.modbus.procimg.InputRegister;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -255,5 +259,26 @@ public abstract class EMSUtility {
 			String[] params = paramName.split(" ");
 			return params.length > 1 ? params[1] : params[0];
 		}
+	}
+	
+	public static PollingDetailsDTO populatePollingValuesToDto(EMSDeviceResponseHolder dtopoll) {
+		PollingDetailsDTO dto = new PollingDetailsDTO();
+		dto.setPolledOn(dtopoll.getTimeOfPoll());
+		dto.setDeviceUniqueId(dtopoll.getDevice().getUniqueId());
+
+		List<ExtendedDeviceMemoryDTO> deviceMemoryList = dtopoll.getDevice().getDeviceMemoryList();
+
+		int index = 0;
+		for (ExtendedDeviceMemoryDTO deviceMemory : deviceMemoryList) {
+
+			InputRegister[] inputRegisters = dtopoll.getResponseRegisters().get(index);
+			String registerValueOrder = dtopoll.getDevice().getRegisterMapping();
+			// Extracts value from InputRegister[] and sets values to PollingDetailsDTO
+			Core.convertRegistersToMap(deviceMemory, inputRegisters, registerValueOrder, dto);
+
+			index += 1;
+		}
+
+		return dto;
 	}
 }

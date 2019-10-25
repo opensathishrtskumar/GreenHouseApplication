@@ -7,6 +7,7 @@ import org.lemma.ems.base.dao.PollingDetailsDAO;
 import org.lemma.ems.base.dao.dto.PollingDetailsDTO;
 import org.lemma.ems.base.mqueue.publisher.Sender;
 import org.lemma.ems.notification.util.Mailer;
+import org.lemma.ems.util.EMSUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,18 +109,8 @@ public class PollingListener {
 	 */
 	@JmsListener(destination = POLLING_COMPLETED_TXT, containerFactory = "topicSubscriberConfig")
 	public void parsePollingResponse(EMSDeviceResponseHolder dtopoll) throws Exception {
-		//TODO : 
-		/**
-		 * 1. Parse polling response
-		 * 2. Place in Queue for Persisting and other subscribers
-		 * 
-		 */
-		
-		PollingDetailsDTO dto = new PollingDetailsDTO();
-		
+		PollingDetailsDTO dto = EMSUtility.populatePollingValuesToDto(dtopoll);
 		sender.publishEvent(Topics.PERSIST_POLLING_RESPONSE.getTopic(), dto);
 	}
-	
-	
 	
 }

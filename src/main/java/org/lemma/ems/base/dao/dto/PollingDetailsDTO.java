@@ -14,32 +14,30 @@ public class PollingDetailsDTO implements Serializable {
 	private static final long serialVersionUID = 7353069892688430105L;
 	private long deviceUniqueId;
 	private long polledOn;
-	// FIXME: check float and double compatibility, since we convert registers to
-	// fload {@link ModbusUtil}
-	private double voltage_bn;
-	private double voltage_br;
-	private double voltage_rn;
-	private double voltage_ry;
-	private double voltage_yb;
-	private double voltage_yn;
-	private double voltage_avg_ll;
-	private double voltage_avg_ln;
-	private double r_current;
-	private double y_current;
-	private double b_current;
-	private double current_avg;
-	private double frequency;
-	private double power_factor;
-	private double w1;
-	private double w2;
-	private double w3;
-	private double wh;
-	private double w_avg;
-	private double va1;
-	private double va2;
-	private double va3;
-	private double vah;
-	private double va_avg;
+	private float voltage_bn;
+	private float voltage_br;
+	private float voltage_rn;
+	private float voltage_ry;
+	private float voltage_yb;
+	private float voltage_yn;
+	private float voltage_avg_ll;
+	private float voltage_avg_ln;
+	private float r_current;
+	private float y_current;
+	private float b_current;
+	private float current_avg;
+	private float frequency;
+	private float power_factor;
+	private float w1;
+	private float w2;
+	private float w3;
+	private float wh;
+	private float w_avg;
+	private float va1;
+	private float va2;
+	private float va3;
+	private float vah;
+	private float va_avg;
 
 	public long getDeviceUniqueId() {
 		return deviceUniqueId;
@@ -57,195 +55,195 @@ public class PollingDetailsDTO implements Serializable {
 		this.polledOn = polledOn;
 	}
 
-	public double getVoltage_bn() {
+	public float getVoltage_bn() {
 		return voltage_bn;
 	}
 
-	public void setVoltage_bn(double voltage_bn) {
+	public void setVoltage_bn(float voltage_bn) {
 		this.voltage_bn = voltage_bn;
 	}
 
-	public double getVoltage_br() {
+	public float getVoltage_br() {
 		return voltage_br;
 	}
 
-	public void setVoltage_br(double voltage_br) {
+	public void setVoltage_br(float voltage_br) {
 		this.voltage_br = voltage_br;
 	}
 
-	public double getVoltage_rn() {
+	public float getVoltage_rn() {
 		return voltage_rn;
 	}
 
-	public void setVoltage_rn(double voltage_rn) {
+	public void setVoltage_rn(float voltage_rn) {
 		this.voltage_rn = voltage_rn;
 	}
 
-	public double getVoltage_ry() {
+	public float getVoltage_ry() {
 		return voltage_ry;
 	}
 
-	public void setVoltage_ry(double voltage_ry) {
+	public void setVoltage_ry(float voltage_ry) {
 		this.voltage_ry = voltage_ry;
 	}
 
-	public double getVoltage_yb() {
+	public float getVoltage_yb() {
 		return voltage_yb;
 	}
 
-	public void setVoltage_yb(double voltage_yb) {
+	public void setVoltage_yb(float voltage_yb) {
 		this.voltage_yb = voltage_yb;
 	}
 
-	public double getVoltage_yn() {
+	public float getVoltage_yn() {
 		return voltage_yn;
 	}
 
-	public void setVoltage_yn(double voltage_yn) {
+	public void setVoltage_yn(float voltage_yn) {
 		this.voltage_yn = voltage_yn;
 	}
 
-	public double getVoltage_avg_ll() {
+	public float getVoltage_avg_ll() {
 		return voltage_avg_ll;
 	}
 
-	public void setVoltage_avg_ll(double voltage_avg_ll) {
+	public void setVoltage_avg_ll(float voltage_avg_ll) {
 		this.voltage_avg_ll = voltage_avg_ll;
 	}
 
-	public double getVoltage_avg_ln() {
+	public float getVoltage_avg_ln() {
 		return voltage_avg_ln;
 	}
 
-	public void setVoltage_avg_ln(double voltage_avg_ln) {
+	public void setVoltage_avg_ln(float voltage_avg_ln) {
 		this.voltage_avg_ln = voltage_avg_ln;
 	}
 
-	public double getR_current() {
+	public float getR_current() {
 		return r_current;
 	}
 
-	public void setR_current(double r_current) {
+	public void setR_current(float r_current) {
 		this.r_current = r_current;
 	}
 
-	public double getY_current() {
+	public float getY_current() {
 		return y_current;
 	}
 
-	public void setY_current(double y_current) {
+	public void setY_current(float y_current) {
 		this.y_current = y_current;
 	}
 
-	public double getB_current() {
+	public float getB_current() {
 		return b_current;
 	}
 
-	public void setB_current(double b_current) {
+	public void setB_current(float b_current) {
 		this.b_current = b_current;
 	}
 
-	public double getCurrent_avg() {
+	public float getCurrent_avg() {
 		return current_avg;
 	}
 
-	public void setCurrent_avg(double current_avg) {
+	public void setCurrent_avg(float current_avg) {
 		this.current_avg = current_avg;
 	}
 
-	public double getFrequency() {
+	public float getFrequency() {
 		return frequency;
 	}
 
-	public void setFrequency(double frequency) {
+	public void setFrequency(float frequency) {
 		this.frequency = frequency;
 	}
 
-	public double getPower_factor() {
+	public float getPower_factor() {
 		return power_factor;
 	}
 
-	public void setPower_factor(double power_factor) {
+	public void setPower_factor(float power_factor) {
 		this.power_factor = power_factor;
 	}
 
-	public double getW1() {
+	public float getW1() {
 		return w1;
 	}
 
-	public void setW1(double w1) {
+	public void setW1(float w1) {
 		this.w1 = w1;
 	}
 
-	public double getW2() {
+	public float getW2() {
 		return w2;
 	}
 
-	public void setW2(double w2) {
+	public void setW2(float w2) {
 		this.w2 = w2;
 	}
 
-	public double getW3() {
+	public float getW3() {
 		return w3;
 	}
 
-	public void setW3(double w3) {
+	public void setW3(float w3) {
 		this.w3 = w3;
 	}
 
-	public double getWh() {
+	public float getWh() {
 		return wh;
 	}
 
-	public void setWh(double wh) {
+	public void setWh(float wh) {
 		this.wh = wh;
 	}
 
-	public double getW_avg() {
+	public float getW_avg() {
 		return w_avg;
 	}
 
-	public void setW_avg(double w_avg) {
+	public void setW_avg(float w_avg) {
 		this.w_avg = w_avg;
 	}
 
-	public double getVa1() {
+	public float getVa1() {
 		return va1;
 	}
 
-	public void setVa1(double va1) {
+	public void setVa1(float va1) {
 		this.va1 = va1;
 	}
 
-	public double getVa2() {
+	public float getVa2() {
 		return va2;
 	}
 
-	public void setVa2(double va2) {
+	public void setVa2(float va2) {
 		this.va2 = va2;
 	}
 
-	public double getVa3() {
+	public float getVa3() {
 		return va3;
 	}
 
-	public void setVa3(double va3) {
+	public void setVa3(float va3) {
 		this.va3 = va3;
 	}
 
-	public double getVah() {
+	public float getVah() {
 		return vah;
 	}
 
-	public void setVah(double vah) {
+	public void setVah(float vah) {
 		this.vah = vah;
 	}
 
-	public double getVa_avg() {
+	public float getVa_avg() {
 		return va_avg;
 	}
 
-	public void setVa_avg(double va_avg) {
+	public void setVa_avg(float va_avg) {
 		this.va_avg = va_avg;
 	}
 
