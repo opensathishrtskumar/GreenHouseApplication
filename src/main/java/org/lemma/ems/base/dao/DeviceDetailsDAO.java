@@ -36,6 +36,9 @@ public class DeviceDetailsDAO extends BaseDAO {
 	
 	public static final String RETRIEVE_EMS_ACTIVE_DEVICES = "select * from setup.devicedetails where status = ? and type = ?";
 	
+	public static final String UPDATE_DEVICE = "update setup.devicedetails set status=?,modifiedtimestamp=?,hashkey=?  where id=?";
+	
+	
 	/* All Constants */
 	public static enum Status {
 
@@ -109,6 +112,7 @@ public class DeviceDetailsDAO extends BaseDAO {
 				details.setPort(resultSet.getString("port"));
 				details.setMethod(resultSet.getString("method"));
 				details.setRegisterMapping(resultSet.getString("registermapping"));// MSRF/LSRF
+				details.setEncoding(resultSet.getString("encoding"));
 				details.setStatus(resultSet.getInt("status"));
 				details.setType(resultSet.getInt("type"));
 				details.setCreatedTimeStamp(resultSet.getLong("createdtimestamp"));
@@ -164,5 +168,9 @@ public class DeviceDetailsDAO extends BaseDAO {
 		}
 
 		return deviceUniqueId;
+	}
+	
+	public int updateDeviceDetails(DeviceDetailsDTO dto) {
+		return super.executeQuery(UPDATE_DEVICE, new Object[] {dto.getStatus(),dto.getModifiedTimeStamp(),dto.getHashKey(),dto.getUniqueId()});
 	}
 }

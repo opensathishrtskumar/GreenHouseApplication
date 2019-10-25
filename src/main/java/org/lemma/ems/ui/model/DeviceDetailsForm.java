@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.lemma.ems.base.dao.DeviceDetailsDAO;
-import org.lemma.ems.base.dao.dto.DeviceMemoryDTO;
 import org.lemma.ems.base.dao.dto.ExtendedDeviceMemoryDTO;
 
 /**
@@ -67,6 +66,9 @@ public class DeviceDetailsForm implements Serializable {
 	 * During device add, bound with check box
 	 */
 	private boolean enabled;
+	
+	private boolean deleted;
+	
 
 	private long createdTimeStamp;
 	private long modifiedTimeStamp;
@@ -245,6 +247,14 @@ public class DeviceDetailsForm implements Serializable {
 
 	public void setAccordionIndex(int accordionIndex) {
 		this.accordionIndex = accordionIndex;
+	}
+	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	@Override

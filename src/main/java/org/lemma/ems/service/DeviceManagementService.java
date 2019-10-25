@@ -97,5 +97,44 @@ public class DeviceManagementService {
 
 		return modelAndView;
 	}
+	
+	/**
+	 * @param form
+	 * @return
+	 */
+	public ModelAndView updateExistingDevice(DeviceDetailsForm form) {
+		
+		ModelAndView modelAndView = new ModelAndView("redirect:/ems/devices/show");
+		modelAndView.addObject("msg", msgSource.getMessage("device.updated", null, Locale.getDefault()));
+
+		/**
+		 * On successfull insertion 1. publish reload event 2. Redirect back to show
+		 * devices page with success
+		 */
+		long timeStamp = System.currentTimeMillis();
+		form.setModifiedTimeStamp(timeStamp);
+		
+		form.setStatus(form.isEnabled() ? DeviceDetailsDAO.Status.ACTIVE.getStatus()
+				: DeviceDetailsDAO.Status.DISABLED.getStatus());
+		form.setStatus(form.isDeleted() ? DeviceDetailsDAO.Status.DELETED.getStatus() : form.getStatus());
+
+		DeviceDetailsDTO dto = DeviceMapper.mapForm2Dto(form);
+
+		try {
+			long count = deviceDetailsDAO.updateDeviceDetails(dto);
+			
+			logger.debug(" DeviceDetails updated count {} for {} {}", count, form.getDeviceId(),form.getDeviceName());
+			
+			//Notifiy listeners to pick up new devices
+			sender.publishEvent(ApplicationStartupListener.Topics.LOAD_DEVICES.getTopic(),
+					ApplicationStartupListener.Topics.LOAD_DEVICES.getTopic());
+			
+		} catch (Exception e) {
+			logger.error("Failed to insert new device {}", e);
+			modelAndView.addObject("msg", msgSource.getMessage("device.updated.error", null, Locale.getDefault()));
+		}
+
+		return modelAndView;
+	}
 
 }

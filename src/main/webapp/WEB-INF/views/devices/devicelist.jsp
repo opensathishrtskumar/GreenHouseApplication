@@ -9,7 +9,9 @@
 <!-- Set required urls with context path -->
  <c:url var="postUrl" value="/ems/device/add" context="${pageContext.request.contextPath}" />
  <c:url var="testUrl" value="/devicemanagement/connection/test" context="${pageContext.request.contextPath}" />
- <input type="hidden" id="testUrl" value="${testUrl}"> 
+ <c:url var="updateDeviceUrl" value="/ems/device/update" context="${pageContext.request.contextPath}" />
+ 
+ <input type="hidden" id="testUrl" value="${testUrl}">
  <input type="hidden" id="memorymappingcount" min="1" max="3">
  
  <!-- Accordion index to keep open always -->
@@ -146,11 +148,141 @@
   </div>
   
   <!--Iterate existing devices in form, that can be updated/deleted(Soft delete)  -->
-  <div class="group">
-    <h3>Section 2</h3>
-    <div>
-      <p>Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In suscipit faucibus urna. </p>
-    </div>
-  </div>
+  
+  <c:forEach items="${existingDeviceList}" var="device" varStatus="index">
+  
+  	 <div class="group">
+	    <h3>${device.deviceName}</h3>
+	    <div>
+	      <form:form id="addDeviceForm${index.count}" method="post" action="${updateDeviceUrl}" modelAttribute="deviceDetailsForm">
+				
+				<!-- All form validation errors and Success message -->	     
+		     	<spring:hasBindErrors name="deviceDetailsForm">
+		    	 	<div class="error">
+						<c:forEach var="error" items="${errors.allErrors}">
+							<b><spring:message message="${error}" /></b>
+							<br />
+						</c:forEach>
+					</div>
+			    </spring:hasBindErrors>
+			
+				<c:if test="${param.msg != null}">
+					<div style="display: inline;float: left;width: 100%;align-content: center;" class="success">${param.msg}</div>
+				</c:if>
+		     
+		     	<!-- Keep accordion index to show same accordion post form submission -->
+		     	<input type="hidden" name="accordionIndex" value="${index.count}">
+		     	<form:hidden path="uniqueId" value="${device.uniqueId}"/>
+		     
+				<fieldset>
+					<div style="display: inline;width: 100%">
+						<div style="display: inline;float: left;width: 60%">
+							<form:label path="deviceName">Device Name / Description</form:label>
+							<form:input path="deviceName" value="${device.deviceName}" disabled="true" htmlEscape="true" maxlength="30" />
+						</div>
+						
+						<div style="display: inline;float: left;width: 30%">
+							<form:label path="deviceId">Device Address / ID</form:label>
+							<form:input path="deviceId" value="${device.deviceId}" disabled="true" title="Unique device identifier in given Group(Maximum can be 214)" maxlength="3"/>
+						</div>
+						
+					</div>	
+					
+					<div style="display: inline;width: 100%">
+						<div style="display: inline;float: left;width: 30%">
+							<form:label path="baudRate">Baudrate</form:label>
+							<form:input path="baudRate" value="${device.baudRate}" disabled="true" title="Data transfer rate of Device" />
+						</div>
+						
+						<div style="display: inline;float: left;width: 30%">
+							<form:label path="wordLength">Word Length</form:label>
+							<form:input path="wordLength" value="${device.wordLength}" disabled="true" title="Word Length of Device" />
+						</div>
+						
+						<div style="display: inline;float: left;width: 30%">
+							<form:label path="stopbit">Stop Bit</form:label>
+							<form:input path="stopbit" value="${device.stopbit}" disabled="true" title="Stop Bit of Device" />
+						</div>
+					</div>
+					
+					<div style="display: inline;width: 100%">
+						<div style="display: inline;float: left;width: 30%">
+							<form:label path="parity">Parity</form:label>
+							<form:input path="parity" value="${device.parity}" disabled="true" title="Parity type of Device" />
+						</div>
+						
+						<div style="display: inline;float: left;width: 30%">
+							<form:label path="method">Method</form:label>
+							<form:input path="method" value="${device.method}" disabled="true" title="Method of Device" />
+						</div>
+						
+						<div style="display: inline;float: left;width: 30%">
+							<form:label path="registerMapping">Register Data Order</form:label>
+							<form:input path="registerMapping" value="${device.registerMapping}" disabled="true" title="Register Data Order of Device" />
+						</div>
+					</div>
+					
+					
+					<div style="display: inline;width: 100%">
+						<div style="display: inline;float: left;width: 30%">
+							<form:label path="encoding">Encoding</form:label>
+							<form:input path="encoding" value="${device.encoding}" disabled="true" title="Encoding type of Device" />
+						</div>
+						
+						<div style="display: inline;float: left;width: 50%">
+							<form:label path="port">COM Port</form:label>
+							<form:input path="port" value="${device.port}" disabled="true" title="COM Port in which Device connected" />
+						</div>
+						
+					</div>
+					
+					<div style="display: inline;width: 100%">
+						<div style="display: inline;float: left;width: 30%">
+							<form:label path="enabled">Enable/Disable</form:label>
+							<c:choose>
+								<c:when test="${device.status == 1}">
+									<form:checkbox path="enabled" title="Enable / Disable Device" value="${status}" checked="checked"/>								
+								</c:when>
+								<c:otherwise>
+									<form:checkbox path="enabled" title="Enable / Disable Device"/>
+								</c:otherwise>
+							</c:choose>
+						</div>
+						
+						<div style="display: inline;float: left;width: 30%">
+							<form:label path="deleted">Delete</form:label>
+							<form:checkbox path="deleted" title="Delete Device"/>		
+						</div>		
+					</div>
+					
+					<div style="display: inline;width: 100%">
+						<div style="display: inline;float: left;width: 100%">
+							<label for="memorymapping" style="display: inline;float: left;width: 50%" >Memory Mapping Details</label>
+						</div>
+						
+						<c:set var="memoryList" value="${device.memoryMappings}"/>
+							
+						<div id="mappingDetails"  style="display: inline;float: left;width: 100%">
+						
+							<c:forEach items="${memoryList}" var="memory"  varStatus="memoryIndex">
+								<form:textarea class="memoryMapping" placeholder="${memory.memoryMapping}" disabled="true" rows="10" cols="50" path="memoryMappings[${memoryIndex.count - 1}].memoryMapping" />
+							</c:forEach>
+							
+						</div>
+					</div>	
+					
+					<div style="display: inline;width: 100%">
+						<div style="display: inline;float: left;width: 30%">
+							<input type="submit" class="updatedevice" value="Update Device">
+						</div>
+					</div>
+			
+				</fieldset>
+				
+			</form:form>
+	    </div>
+	  </div>
+  
+  </c:forEach>
   
 </div>

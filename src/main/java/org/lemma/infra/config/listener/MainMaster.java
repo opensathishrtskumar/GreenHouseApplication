@@ -5,7 +5,10 @@ import org.lemma.ems.base.core.constants.Core.MemoryMapping;
 import org.quartz.TriggerKey;
 
 public class MainMaster {
-
+	
+	
+	int[] uniqueid;
+	
 	public static void main(String[] args) throws Exception {
 		
 		TriggerKey triggerKey = TriggerKey.triggerKey("jk","gk");

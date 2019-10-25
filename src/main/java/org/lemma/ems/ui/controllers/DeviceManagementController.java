@@ -40,22 +40,31 @@ public class DeviceManagementController {
 	 * @return ModelAndView for Device Management page
 	 */
 	@RequestMapping(value = "/ems/device/add", method = RequestMethod.POST)
-	public ModelAndView checkDeviceConnection(@ModelAttribute("deviceDetailsForm") DeviceDetailsForm form,
+	public ModelAndView addNewDevice(@ModelAttribute("deviceDetailsForm") DeviceDetailsForm form,
 			BindingResult formBinding, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
 		logger.debug("Device details add request {}", form);
-		
+
 		ModelAndView modelAndView = deviceManagementService.showDeviceReportsPage();
-		
+
 		DeviceDetailValidator validator = new DeviceDetailValidator(form, formBinding);
 		validator.validateDeviceDetailsForm();
-		
-		//Return errors if there is any, along with memoryMappings to iterate and Form Binding
-		if(formBinding.hasErrors()) {
+
+		// Return errors if there is any, along with memoryMappings to iterate and Form
+		// Binding
+		if (formBinding.hasErrors()) {
 			modelAndView.addObject("deviceDetailsForm", form);
 			modelAndView.addObject("memoryMappings", form.getMemoryMappings());
 			return modelAndView;
 		}
 
 		return deviceManagementService.addNewDevice(form);
+	}
+
+	/**
+	 * @return ModelAndView for Device Management page
+	 */
+	@RequestMapping(value = "/ems/device/update", method = RequestMethod.POST)
+	public ModelAndView updateExistingDevice(@ModelAttribute("deviceDetailsForm") DeviceDetailsForm form) {
+		return deviceManagementService.updateExistingDevice(form);
 	}
 }
