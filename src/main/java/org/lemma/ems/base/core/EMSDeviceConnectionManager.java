@@ -11,6 +11,7 @@ import com.ghgande.j2mod.modbus.msg.ModbusRequest;
 import com.ghgande.j2mod.modbus.msg.ModbusResponse;
 import com.ghgande.j2mod.modbus.net.SerialConnection;
 import com.ghgande.j2mod.modbus.procimg.InputRegister;
+import com.ghgande.j2mod.modbus.procimg.SimpleRegister;
 
 /**
  * @author RTS Sathish Kumar
@@ -86,6 +87,8 @@ public class EMSDeviceConnectionManager extends Core {
 				// Handler responses
 				handler.handleResponse(responseRegisters);
 			} catch (Exception e) {
+				//Identified from list of InputRegisters
+				handler.handleResponse(new FailureRegisters[0]);
 				logger.error(" Pooling failed for device {}  with exception {}", device.getUniqueId(), e);
 				// Set exception object for referencce
 				handler.setException(e);

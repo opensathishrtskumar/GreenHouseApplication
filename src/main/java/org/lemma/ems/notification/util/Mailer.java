@@ -66,8 +66,11 @@ public class Mailer {
 			includeAttachments(mail, mimeMessageHelper);
 
 			mailSender.send(mimeMessageHelper.getMimeMessage());
+			
+			mail.setSent(true);
 		} catch (MessagingException e) {
 			logger.error("Error sending notification {}", e);
+			mail.setException(e);
 		}
 	}
 

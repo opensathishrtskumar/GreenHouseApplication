@@ -30,11 +30,17 @@ public abstract class Core {
 	private static final Logger logger = LoggerFactory.getLogger(Core.class);
 
 	private static Pattern pattern = Pattern.compile("(COM)([0-9]){1,}");
+	
+	
+	/**
+	 * Guard for Serial Port connection
+	 */
+	public static final Object SERIAL_MUTEX = new Object();
 
 	/**
 	 * valid memory mapping configuration values, used during devicemanagement
 	 * 
-	 * TODO: add value repsresentation like Hz , Voltage and so on against all
+	 * add value repsresentation like Hz , Voltage and so on against all
 	 * mapping
 	 */
 	public static enum MemoryMapping {
@@ -276,7 +282,7 @@ public abstract class Core {
 	 * @return
 	 * @throws IOException 
 	 */
-	public SerialConnection getConnection(ExtendedSerialParameter parameters) throws IOException {
+	public static SerialConnection getSerialConnection(ExtendedSerialParameter parameters) throws IOException {
 		SerialConnection connection = new SerialConnection(parameters);
 		connection.open();
 		return connection;

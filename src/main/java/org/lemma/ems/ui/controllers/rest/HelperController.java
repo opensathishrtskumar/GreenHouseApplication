@@ -110,7 +110,6 @@ public class HelperController {
 		params.put("name", "Lemma");
 
 		try {
-
 			mailer.sendMail(mail, params);
 		} catch (Exception e) {
 			logger.error("Error sending email {}", e);

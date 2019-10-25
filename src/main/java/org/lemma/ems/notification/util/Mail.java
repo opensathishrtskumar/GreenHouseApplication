@@ -27,6 +27,10 @@ public class Mail {
 
 	private List<Attachment> attachments;
 
+	private boolean sent;
+
+	private Exception exception;
+
 	public Mail() {
 		contentType = "text/html";
 	}
@@ -105,6 +109,22 @@ public class Mail {
 
 	public void setAttachments(List<Attachment> attachments) {
 		this.attachments = attachments;
+	}
+
+	public boolean isSent() {
+		return sent;
+	}
+
+	public void setSent(boolean sent) {
+		this.sent = sent;
+	}
+
+	public Exception getException() {
+		return exception;
+	}
+
+	public void setException(Exception exception) {
+		this.exception = exception;
 	}
 
 }
