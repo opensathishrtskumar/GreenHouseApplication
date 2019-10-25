@@ -32,7 +32,7 @@ public class UserDetailsForm implements Serializable {
 	@NotNull
 	private int roleID;
 
-	Map<Integer,String> roleList = new LinkedHashMap<>();
+	//Map<Integer,String> roleList = new LinkedHashMap<>();
 
 	/* COM1-N */
 	@NotNull
@@ -59,8 +59,8 @@ public class UserDetailsForm implements Serializable {
 	public UserDetailsForm() {
 		// NOOP
 
-		roleList.put(1,"ADMIN_PLUS");
-		roleList.put(2,"ADMIN");
+		//roleList.put(1,"ADMIN_PLUS");
+		//roleList.put(2,"ADMIN");
 	}
 
 	public long getUniqueId() {
@@ -151,12 +151,12 @@ public class UserDetailsForm implements Serializable {
 		this.hashKey = hashKey;
 	}
 
-	public Map<Integer,String> getRoleList() {
+/*	public Map<Integer,String> getRoleList() {
 		return roleList;
 	}
 
 	public void setRoleList(Map<Integer,String> roleList) {
 		this.roleList = roleList;
 	}
-
+*/
 }

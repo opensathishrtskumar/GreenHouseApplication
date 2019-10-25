@@ -81,4 +81,24 @@ public class UserManagementController {
 		return userManagementService.addNewUser(form);
 	}
 
+	@RequestMapping(value = "/ems/user/update", method = RequestMethod.POST)
+	public ModelAndView updateUserDetails(@ModelAttribute("userDetailsForm") UserDetailsForm form,
+			BindingResult formBinding, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+		logger.debug("User details update request {}", form);
+		ModelAndView modelAndView = userManagementService.showUserDetailssPage();
+
+		UserDetailValidator validator = new UserDetailValidator(form, formBinding);
+		validator.validateUserDetailsForm();
+
+		// Return errors if there is any, along with memoryMappings to iterate and Form
+		// Binding
+		if (formBinding.hasErrors()) {
+			modelAndView.addObject("userDetailsForm", form);
+			return modelAndView;
+		}
+
+		return userManagementService.udpateUser(form);
+	}
+	
+	
 }

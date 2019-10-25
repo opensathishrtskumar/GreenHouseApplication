@@ -1,0 +1,47 @@
+package org.lemma.ems.base.dao;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import org.lemma.ems.base.dao.dto.UserRolesDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+import com.ems.security.Security;
+
+/**
+ * @author RTS Sathish Kumar
+ *
+ */
+@Repository
+public class UserRolesDAO extends BaseDAO {
+
+	private static final Logger logger = LoggerFactory.getLogger(UserDetailsDAO.class);
+
+	@Autowired
+	private Security security;
+
+	public List<UserRolesDTO> fetchUserRoles(String query, Object[] params) {
+
+		return this.jdbcTemplate.query(query, new RowMapper<UserRolesDTO>() {
+
+			@Override
+			public UserRolesDTO mapRow(ResultSet resultSet, int rowIndex) throws SQLException {
+				UserRolesDTO details = new UserRolesDTO();
+
+				details.setUniqueId(resultSet.getLong("id"));
+				details.setRoleType(resultSet.getString("roletype"));
+				details.setPrivileges(resultSet.getInt("privileges"));
+				details.setCreatedTimeStamp(resultSet.getLong("createdtimestamp"));
+				details.setHashKey(resultSet.getString("hashkey"));
+				// Select all columns
+				return details;
+			}
+		}, params);
+	}
+
+}

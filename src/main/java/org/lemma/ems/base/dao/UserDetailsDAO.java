@@ -45,11 +45,13 @@ public class UserDetailsDAO extends BaseDAO {
 	private static final String UPDATE_PASSWORD = "update setup.user_credential set credential = ? where id=?";
 
 	public static final String RETRIEVE_USERS = "select * from setup.userdetails";
-
+	
 	public static final String INSERT_USER = "insert into setup.userdetails "
 			+ "(name, emailid, password, roleid, mobilenumber,status,createdtimestamp,modifiedtimestamp,hashkey)"
 			+ " values(?,?,?,?,?,?,?,?,?)";
 
+	public static final String UPDATE_USER = "UPDATE setup.userdetails SET name=?, roleid=?, mobilenumber=?, modifiedtimestamp=?, hashkey=? WHERE id=?";	
+	
 	@Autowired
 	private Security security;
 
@@ -118,7 +120,8 @@ public class UserDetailsDAO extends BaseDAO {
 			}
 		}, params);
 	}
-
+	
+	
 	public int updatePassword(ChangePasswordForm form) {
 		return super.executeQuery(UPDATE_PASSWORD, new Object[] { form.getConfirmPassword(), form.getId() });
 	}
@@ -129,4 +132,10 @@ public class UserDetailsDAO extends BaseDAO {
 						dto.getMobileNumber(), dto.getStatus(), dto.getCreatedTimeStamp(), dto.getModifiedTimeStamp(),
 						dto.getHashKey() });
 	}
+
+	public int updateUserDetails(UserDetailsDTO dto) {
+		return super.executeQuery(UPDATE_USER,
+				new Object[] { dto.getName(), dto.getRoleId(), dto.getMobileNumber(), dto.getModifiedTimeStamp(), dto.getHashKey(), dto.getId() });
+	}
+
 }

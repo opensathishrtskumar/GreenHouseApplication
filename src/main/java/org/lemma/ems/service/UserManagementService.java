@@ -6,8 +6,10 @@ import java.util.Locale;
 import org.joda.time.LocalDate;
 import org.lemma.ems.base.dao.DeviceDetailsDAO;
 import org.lemma.ems.base.dao.UserDetailsDAO;
+import org.lemma.ems.base.dao.UserRolesDAO;
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
 import org.lemma.ems.base.dao.dto.UserDetailsDTO;
+import org.lemma.ems.base.dao.dto.UserRolesDTO;
 import org.lemma.ems.ui.controllers.rest.HelperController;
 import org.lemma.ems.ui.model.DeviceDetailsForm;
 import org.lemma.ems.ui.model.DeviceFormDetails;
@@ -33,6 +35,9 @@ public class UserManagementService {
 	private UserDetailsDAO userDetailsDAO;
 
 	@Autowired
+	private UserRolesDAO userRolesDAO;	
+	
+	@Autowired
 	ReloadableResourceBundleMessageSource msgSource;
 
 	@Autowired
@@ -41,14 +46,17 @@ public class UserManagementService {
 	private static final Logger logger = LoggerFactory.getLogger(HelperController.class);
 
 	public static final String VIEW_USER = "select * from setup.userdetails ";
+	
+	public static final String VIEW_ROLES = "SELECT * FROM setup.userroles";	
 
 	public ModelAndView showUserDetailssPage() {
 		ModelAndView modelAndView = new ModelAndView("userlist");
 		UserDetailsForm userDetailsForm = new UserDetailsForm();
 		modelAndView.addObject("userDetailsForm", userDetailsForm);
-		modelAndView.addObject("roleList", userDetailsForm.getRoleList());
 		List<UserDetailsDTO> userList = userDetailsDAO.fetchUserDetails(VIEW_USER, new Object[] {});
-		modelAndView.addObject("existingUserDetails", userList); // '
+		modelAndView.addObject("existingUserDetails", userList); 
+		List<UserRolesDTO> userRoles = userRolesDAO.fetchUserRoles(VIEW_ROLES, new Object[] {});
+		modelAndView.addObject("existingUserRoles", userRoles); 
 		return modelAndView;
 	}
 
@@ -99,4 +107,39 @@ public class UserManagementService {
 		return dto;
 	}
 
+	public ModelAndView udpateUser(UserDetailsForm form) {
+		/**
+		 * On successfull insertion 1. publish reload event 2. Redirect back to show
+		 * devices page with success
+		 */
+		/*
+		 * LocalDate date = LocalDate.now().plusMonths(-1).withDayOfMonth(1); long
+		 * timeStamp = Helper.getStartOfDay(date.toDate().getTime());
+		 */
+		// DeviceDetailsForm to DeviceDetailsDTO convertion and insert it
+		UserDetailsDTO dto = mapUpdateUserForm2Dto(form);
+
+		int result = userDetailsDAO.updateUserDetails(dto);
+		logger.info("updating DB. Result=" + result);
+		// TODO : insert New User using DAO
+
+		ModelAndView modelAndView = new ModelAndView("redirect:/ems/user/show");
+
+		// Load message from validation.props file
+		modelAndView.addObject("msg", msgSource.getMessage("user.updated", null, Locale.getDefault()));
+		return modelAndView;
+	}
+
+	private UserDetailsDTO mapUpdateUserForm2Dto(UserDetailsForm form) {
+		UserDetailsDTO dto = new UserDetailsDTO();
+		dto.setId(form.getUniqueId());
+		dto.setName(form.getName());
+		dto.setRoleId(form.getRoleID());
+		dto.setMobileNumber(form.getMobileNumber());
+		dto.setModifiedTimeStamp(System.currentTimeMillis());
+		dto.setHashKey("12345");// TODO: calculate hash key value
+		return dto;
+	}
+	
+	
 }
