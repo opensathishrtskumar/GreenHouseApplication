@@ -81,10 +81,11 @@ public class JobUtil {
 	 * 
 	 * @return Trigger
 	 */
-	public static Trigger createSingleTrigger(String triggerName, Date startTime, int misFireInstruction){
+	public static Trigger createSingleTrigger(String triggerName, Date startTime, int misFireInstruction,JobDetail jobDetail){
 		SimpleTriggerFactoryBean factoryBean = new SimpleTriggerFactoryBean();
 	    factoryBean.setName(triggerName);
 	    factoryBean.setStartTime(startTime);
+	    factoryBean.setJobDetail(jobDetail);
 	    factoryBean.setMisfireInstruction(misFireInstruction);
 	    factoryBean.setRepeatCount(0);
 	    factoryBean.afterPropertiesSet();

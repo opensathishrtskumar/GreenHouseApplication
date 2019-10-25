@@ -69,14 +69,16 @@ public class OneTimeTriggerPollingCronJob extends QuartzJobBean implements Inter
 		Map<String, List<ExtendedSerialParameter>> cacheEntry = cacheUtil.getCacheEntry(Caches.DEVICECACHE,
 				CacheEntryConstants.DeviceEntryConstants.GROUPED_ACTIVE_DEVICES.getName(), Map.class);
 
-		// Delay between every Polling cycle
-		long delay = 30000;
+		// Delay between every Polling cycle, load from Settings
+		long delay = 10000;
 
 		EMSDeviceConnectionManager connectionManager = new EMSDeviceConnectionManager();
 
 		// Keep thread running until interrupted
 		while (polling) {
-
+			
+			logger.trace(" Polling device Job ");
+			
 			/*
 			 * 1. Refresh device details from cache to pick newly added devices
 			 * automatically 2. Get Polling delay from settings

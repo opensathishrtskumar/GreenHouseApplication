@@ -94,7 +94,6 @@ public class SchedulerStartupListener {
 
 					TriggerKey triggerKey = TriggerKey.triggerKey(schedule.getJobKey() + schedule.getGroupKey());
 					JobDetail jobDetail = createJob(schedule, forName, context);
-					Trigger cronTriggerBean = createTrigger(schedule, jobDetail);
 
 					/*
 					 * Get job existance status - unschedule all task and reschedule if status is
@@ -106,10 +105,14 @@ public class SchedulerStartupListener {
 
 					if (checkExists) {
 						schedulerFactory.getScheduler().unscheduleJob(triggerKey);
+						//FIXME: unable to delete/unscchedle onetime jobs check
+						schedulerFactory.getScheduler()
+								.deleteJob(JobKey.jobKey(schedule.getJobKey(), schedule.getGroupKey()));
 						logger.debug("{} job unscheduled", schedule.getClassName());
 					}
 
 					if (schedule.getStatus() == SchedulesDAO.Status.ACTIVE.getStatus()) {
+						Trigger cronTriggerBean = createTrigger(schedule, jobDetail);
 						schedulerFactory.getScheduler().scheduleJob(jobDetail, cronTriggerBean);
 						logger.debug("{} job scheduled", schedule.getClassName());
 					} else if (schedule.getStatus() == SchedulesDAO.Status.ONETIMEJOB.getStatus()) {
@@ -136,14 +139,17 @@ public class SchedulerStartupListener {
 
 			logger.debug("creating trigger for key : {}", triggerKey.toString());
 			Trigger cronTriggerBean = JobUtil.createSingleTrigger(triggerKey.toString(), date,
-					SimpleTrigger.MISFIRE_INSTRUCTION_FIRE_NOW);
+					SimpleTrigger.MISFIRE_INSTRUCTION_FIRE_NOW, jobDetail);
 
 			Scheduler scheduler = schedulerFactory.getScheduler();
+			scheduler.unscheduleJob(triggerKey);
+
 			scheduler.scheduleJob(jobDetail, cronTriggerBean);
 			logger.debug("Job with key {} scheduled successfully", triggerKey.toString());
 			return true;
 		} catch (Exception e) {
-			logger.debug("Scheduler Excception Job with key {} failred {}", schedule.getClassName(), e);
+			e.printStackTrace();
+			logger.debug("Scheduler Excception Job with key {} failed {}", schedule.getClassName(), e);
 		}
 
 		return false;
@@ -176,10 +182,10 @@ public class SchedulerStartupListener {
 					map.put("lastFiredTime", lastFiredTime);
 					map.put("nextFireTime", nextFireTime);
 
-					if (isJobRunning(jobName)) {
+					if (isJobRunning(jobName, jobGroup)) {
 						map.put("jobStatus", "RUNNING");
 					} else {
-						String jobState = getJobState(jobName);
+						String jobState = getJobState(jobName,jobGroup);
 						map.put("jobStatus", jobState);
 					}
 
@@ -197,11 +203,11 @@ public class SchedulerStartupListener {
 	/**
 	 * Check if job is already running
 	 */
-	private boolean isJobRunning(String jobName) {
+	private boolean isJobRunning(String jobName, String groupName) {
 		logger.debug("Request received to check if job is running");
 
 		String jobKey = jobName;
-		String groupKey = "SampleGroup";
+		String groupKey = groupName;
 
 		logger.debug("Parameters received for checking job is running now : jobKey :" + jobKey);
 		try {
@@ -227,9 +233,9 @@ public class SchedulerStartupListener {
 	/**
 	 * Get the current state of job
 	 */
-	private String getJobState(String jobName) {
+	private String getJobState(String jobName, String groupName) {
 		try {
-			String groupKey = "SampleGroup";
+			String groupKey = groupName;
 			JobKey jobKey = new JobKey(jobName, groupKey);
 
 			Scheduler scheduler = schedulerFactory.getScheduler();

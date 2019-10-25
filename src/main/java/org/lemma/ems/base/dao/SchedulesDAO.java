@@ -23,12 +23,12 @@ public class SchedulesDAO extends BaseDAO {
 	private static final Logger logger = LoggerFactory.getLogger(SchedulesDAO.class);
 
 	/* All STATUS configuration */
-	
-	public enum Status{
-		ACTIVE(1),INACTIVE(2),ONETIMEJOB(3);
-		
+
+	public enum Status {
+		ACTIVE(1), INACTIVE(2), ONETIMEJOB(3);
+
 		int status;
-		
+
 		private Status(int status) {
 			this.status = status;
 		}
@@ -37,7 +37,6 @@ public class SchedulesDAO extends BaseDAO {
 			return status;
 		}
 	}
-	
 
 	/* Queries */
 	public static final String SELECT_SCHEDULES_BY_STATUS = "select * from setup.schedules where status=?";
@@ -97,14 +96,5 @@ public class SchedulesDAO extends BaseDAO {
 
 			return details;
 		}
-	}
-
-	/**
-	 * @param query
-	 * @param params
-	 * @return
-	 */
-	public int executeQuery(final String query, final Object[] params) {
-		return super.executeQuery(query, params);
 	}
 }
