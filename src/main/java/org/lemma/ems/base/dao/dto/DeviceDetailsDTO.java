@@ -176,18 +176,4 @@ public class DeviceDetailsDTO implements Serializable {
 	public void setEncoding(String encoding) {
 		this.encoding = encoding;
 	}
-
-	/**
-	 * @returns key consists of some configuration parameter
-	 *          {@literal port,baudrate,wordlength,parity and stopbit}
-	 */
-	public String getGroupKey() {
-		StringBuilder builder = new StringBuilder();
-		builder.append(getPort());
-		builder.append(getBaudRate());
-		builder.append(getWordLength());
-		builder.append(getParity());
-		builder.append(getStopbit());
-		return builder.toString();
-	}
 }

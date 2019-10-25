@@ -57,5 +57,16 @@ public final class CacheUtil {
 	public <T> T getCacheEntry(Caches cache, String key, Class<T> className) {
 		return getCache(cache).get(key, className);
 	}
-
+	
+	
+	
+	/**
+	 * @param cache
+	 * @param key
+	 * @param className
+	 * @return
+	 */
+	public Object getCacheEntry(Caches cache, String key) {
+		return getCache(cache).get(key);
+	}
 }

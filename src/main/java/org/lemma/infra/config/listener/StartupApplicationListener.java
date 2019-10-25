@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public class StartupApplicationListenerExample implements ApplicationListener<ContextRefreshedEvent> {
+public class StartupApplicationListener implements ApplicationListener<ContextRefreshedEvent> {
 
 	@Autowired
 	private Sender sender;

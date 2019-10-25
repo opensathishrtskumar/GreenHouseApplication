@@ -7,7 +7,8 @@ import org.lemma.ems.base.dao.DeviceDetailsDAO;
 import org.lemma.ems.base.dao.DeviceMemoryDAO;
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
 import org.lemma.ems.base.dao.dto.DeviceMemoryDTO;
-import org.lemma.ems.ui.controllers.DeviceManagementController;
+import org.lemma.ems.base.mqueue.publisher.Sender;
+import org.lemma.ems.base.mqueue.subscriber.ApplicationStartupListener;
 import org.lemma.ems.ui.model.DeviceDetailsForm;
 import org.lemma.ems.ui.model.DeviceFormDetails;
 import org.slf4j.Logger;
@@ -31,6 +32,9 @@ public class DeviceManagementService {
 
 	@Autowired
 	ReloadableResourceBundleMessageSource msgSource;
+	
+	@Autowired
+	Sender sender;
 
 	/**
 	 * @return
@@ -81,6 +85,11 @@ public class DeviceManagementService {
 
 		try {
 			long insertDeviceDetails = deviceDetailsDAO.insertDeviceDetails(dto);
+			
+			//Notifiy listeners to pick up new devices
+			sender.publishEvent(ApplicationStartupListener.Topics.LOAD_DEVICES.getTopic(),
+					ApplicationStartupListener.Topics.LOAD_DEVICES.getTopic());
+			
 		} catch (Exception e) {
 			logger.error("Failed to insert new device {}", e);
 			modelAndView.addObject("msg", msgSource.getMessage("device.added.error", null, Locale.getDefault()));

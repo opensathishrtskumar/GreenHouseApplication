@@ -147,7 +147,7 @@ public class ApplicationStartupListener {
 	 */
 	@JmsListener(destination = LOAD_DEVICES_TXT, containerFactory = "topicSubscriberConfig")
 	public void loadDeviceDetails2Cache(Object message) {
-		logger.info("loadDeviceDetails2Cache Loading Settings into Cache {}", message);
+		logger.info("loadDeviceDetails2Cache Loading DeviceDetails into Cache {}", message);
 
 		// Load active EMS Devices and place in cache
 		List<DeviceDetailsDTO> emsActiveDevices = deviceDetailsDAO.fetchEMSActiveDevices();
@@ -169,6 +169,8 @@ public class ApplicationStartupListener {
 		List<ExtendedSerialParameter> mapDevicesToSerialParams = DeviceMapper.mapDevicesToSerialParams(emsActiveDevices);
 		Map<String, List<ExtendedSerialParameter>> groupDevicesForPolling = EMSUtility.groupDevicesForPolling(mapDevicesToSerialParams);
 		cacheUtil.putCacheEntry(Caches.DEVICECACHE, CacheEntryConstants.DeviceEntryConstants.GROUPED_ACTIVE_DEVICES.getName(), groupDevicesForPolling);
+		
+		logger.info("LoadDeviceDetails2Cache Loading DeviceDetails done {}", message);
 	}
 
 	
