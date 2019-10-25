@@ -13,9 +13,35 @@
  
  <input type="hidden" id="testUrl" value="${testUrl}">
  <input type="hidden" id="memorymappingcount" min="1" max="3">
+ <c:set var="accordionIndex" value="${param.accordionIndex}" />
  
  <!-- Accordion index to keep open always -->
- <input type="hidden" id="showaccordion" value="${deviceDetailsForm.accordionIndex}">
+ <c:choose>
+	<c:when test="${accordionIndex != null}">
+		<input type="hidden" id="showaccordion" value="${accordionIndex}">
+	</c:when>
+	<c:otherwise>
+		<input type="hidden" id="showaccordion" value="${deviceDetailsForm.accordionIndex}">
+	</c:otherwise>
+</c:choose>
+ 
+ 
+ 
+ <!-- All form validation errors and Success message -->	     
+   	<spring:hasBindErrors name="deviceDetailsForm">
+  	 	<div class="error">
+			<c:forEach var="error" items="${errors.allErrors}">
+				<b><spring:message message="${error}" /></b>
+				<br />
+			</c:forEach>
+		</div>
+   </spring:hasBindErrors>
+
+<c:if test="${param.msg != null}">
+	<div style="display: inline;float: left;width: 100%;align-content: center;" class="success">${param.msg}</div>
+</c:if>
+ 
+ <hr>
 
 <div id="accordion">
 
@@ -25,20 +51,6 @@
     <div>
     	 
 	     <form:form id="addDeviceForm" method="post" action="${postUrl}" modelAttribute="deviceDetailsForm">
-			
-			<!-- All form validation errors and Success message -->	     
-	     	<spring:hasBindErrors name="deviceDetailsForm">
-	    	 	<div class="error">
-					<c:forEach var="error" items="${errors.allErrors}">
-						<b><spring:message message="${error}" /></b>
-						<br />
-					</c:forEach>
-				</div>
-		    </spring:hasBindErrors>
-		
-			<c:if test="${param.msg != null}">
-				<div style="display: inline;float: left;width: 100%;align-content: center;" class="success">${param.msg}</div>
-			</c:if>
 	     
 	     	<!-- Keep accordion index to show same accordion post form submission -->
 	     	<input type="hidden" name="accordionIndex" value="0">
@@ -104,7 +116,7 @@
 					</div>
 					
 					<div style="display: inline;float: left;width: 30%">
-						<form:label path="enabled">Enable/Disable</form:label>
+						<form:label path="enabled">Enabled</form:label>
 						<form:checkbox path="enabled" title="Enable / Disable Device"/>		
 					</div>
 				</div>	
@@ -156,20 +168,6 @@
 	    <div>
 	      <form:form id="addDeviceForm${index.count}" method="post" action="${updateDeviceUrl}" modelAttribute="deviceDetailsForm">
 				
-				<!-- All form validation errors and Success message -->	     
-		     	<spring:hasBindErrors name="deviceDetailsForm">
-		    	 	<div class="error">
-						<c:forEach var="error" items="${errors.allErrors}">
-							<b><spring:message message="${error}" /></b>
-							<br />
-						</c:forEach>
-					</div>
-			    </spring:hasBindErrors>
-			
-				<c:if test="${param.msg != null}">
-					<div style="display: inline;float: left;width: 100%;align-content: center;" class="success">${param.msg}</div>
-				</c:if>
-		     
 		     	<!-- Keep accordion index to show same accordion post form submission -->
 		     	<input type="hidden" name="accordionIndex" value="${index.count}">
 		     	<form:hidden path="uniqueId" value="${device.uniqueId}"/>
@@ -238,7 +236,7 @@
 					
 					<div style="display: inline;width: 100%">
 						<div style="display: inline;float: left;width: 30%">
-							<form:label path="enabled">Enable/Disable</form:label>
+							<form:label path="enabled">Enabled</form:label>
 							<c:choose>
 								<c:when test="${device.status == 1}">
 									<form:checkbox path="enabled" title="Enable / Disable Device" value="${status}" checked="checked"/>								

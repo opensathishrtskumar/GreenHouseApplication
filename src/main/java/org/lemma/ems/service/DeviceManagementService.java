@@ -106,6 +106,7 @@ public class DeviceManagementService {
 		
 		ModelAndView modelAndView = new ModelAndView("redirect:/ems/devices/show");
 		modelAndView.addObject("msg", msgSource.getMessage("device.updated", null, Locale.getDefault()));
+		modelAndView.addObject("accordionIndex", form.getAccordionIndex());
 
 		/**
 		 * On successfull insertion 1. publish reload event 2. Redirect back to show
