@@ -34,25 +34,21 @@ public class UserManagementService {
 
 	@Autowired
 	ReloadableResourceBundleMessageSource msgSource;
-	
+
 	@Autowired
 	private Security security;
 
 	private static final Logger logger = LoggerFactory.getLogger(HelperController.class);
 
-	public static final String INSERT_USER = "insert into setup.userdetails "
-			+ "(name, emailid, password, roleid, mobilenumber,status,createdtimestamp,modifiedtimestamp,hashkey)"
-			+ " values(?,?,?,?,?,?,?,?,?)";
+	public static final String VIEW_USER = "select * from setup.userdetails ";
 
-	public static final String VIEW_USER = "select * from setup.userdetails ";	
-	
 	public ModelAndView showUserDetailssPage() {
 		ModelAndView modelAndView = new ModelAndView("userlist");
 		UserDetailsForm userDetailsForm = new UserDetailsForm();
 		modelAndView.addObject("userDetailsForm", userDetailsForm);
 		modelAndView.addObject("roleList", userDetailsForm.getRoleList());
-		List<UserDetailsDTO> userList = userDetailsDAO.fetchUserDetails(VIEW_USER);
-		modelAndView.addObject("fetchUserDetails", userList);			
+		List<UserDetailsDTO> userList = userDetailsDAO.fetchUserDetails(VIEW_USER, new Object[] {});
+		modelAndView.addObject("existingUserDetails", userList); // '
 		return modelAndView;
 	}
 
@@ -76,6 +72,20 @@ public class UserManagementService {
 		} catch (Exception e) {
 			logger.error("Password encryption error {}", e);
 		}
+		UserDetailsDTO dto = mapUserForm2Dto(form, encryptedPassword);
+
+		int result = userDetailsDAO.insertUserDetails(dto);
+		logger.info("updating DB. Result=" + result);
+		// TODO : insert New User using DAO
+
+		ModelAndView modelAndView = new ModelAndView("redirect:/ems/user/show");
+
+		// Load message from validation.props file
+		modelAndView.addObject("msg", msgSource.getMessage("user.added", null, Locale.getDefault()));
+		return modelAndView;
+	}
+
+	private UserDetailsDTO mapUserForm2Dto(UserDetailsForm form, String encryptedPassword) {
 		UserDetailsDTO dto = new UserDetailsDTO();
 		dto.setName(form.getName());
 		dto.setEmailId(form.getEmailID());
@@ -86,19 +96,7 @@ public class UserManagementService {
 		dto.setCreatedTimeStamp(System.currentTimeMillis());
 		dto.setModifiedTimeStamp(System.currentTimeMillis());
 		dto.setHashKey("12345");// TODO: calculate hash key value
-		int result = userDetailsDAO.executeQuery(INSERT_USER,
-				new Object[] { dto.getName(), dto.getEmailId(), dto.getPassword(), dto.getRoleId(),
-						dto.getMobileNumber(), dto.getStatus(), dto.getCreatedTimeStamp(), dto.getModifiedTimeStamp(),
-						dto.getHashKey() });
-		logger.info("updating DB. Result=" + result);
-		// TODO : insert New User using DAO
-
-		
-		ModelAndView modelAndView = new ModelAndView("redirect:/ems/user/show");
-
-		// Load message from validation.props file
-		modelAndView.addObject("msg", msgSource.getMessage("user.added", null, Locale.getDefault()));
-		return modelAndView;
+		return dto;
 	}
-	
+
 }

@@ -13,6 +13,8 @@
     <div>
     	 <c:url var="postUrl" value="/ems/user/add" context="${pageContext.request.contextPath}" />
 	     <form:form id="addUser" method="post" action="${postUrl}" modelAttribute="userDetailsForm">
+	     	<!-- devicemanagem check for error -->
+	     
 			<c:if test="${param.msg != null}">
 				<div style="display: inline;float: left;width: 100%;align-content: center;" class="success">${param.msg}</div>
 			</c:if>			
@@ -37,19 +39,43 @@
 				<input type="submit" value="Add User">
 			</p>
 		</form:form>
+		<hr>
 
-			<c:forEach items="${userList}" var="user" varStatus="index">
-	     <form:form class="updateUserForm" id="updateUser${index.count}" method="post" action="${postUrl}" modelAttribute="userDetailsForm">
-				<form:hidden value="" path="uniqueid" />
-				<form:textarea class="memoryMapping" value="${user.name}" htmlEscape="true" path="name" />
-				<form:input class="memoryMapping" value="${user.email}" htmlEscape="true" path="email" />
-				<form:input class="memoryMapping" value="${user.mobile}" htmlEscape="true" path="mobile" />
-				<form:select class="memoryMapping" value="${user.mobile}" htmlEscape="true" path="role" />
-			<p>
-				<input type="submit" value="Update User">
-			</p>
-		</form:form>
-			</c:forEach>
+		<c:forEach items="${existingUserDetails}" var="user" varStatus="index">
+		     <form:form class="" id="updateUser${index.count}" method="post" action="${postUrl}" modelAttribute="userDetailsForm">
+			<!-- All form validation errors and Success message -->	     
+	     	<spring:hasBindErrors name="userDetailsForm">
+	    	 	<div class="error">
+					<c:forEach var="error" items="${errors.allErrors}">
+						<b><spring:message message="${error}" /></b>
+						<br />
+					</c:forEach>
+				</div>
+		    </spring:hasBindErrors>				     
+					<form:hidden value="${user.id}" path="uniqueId" />
+				<fieldset>
+					<div style="display: inline;width: 100%">
+						<div style="display: inline;float: left;width: 40%">
+							<form:input class="user" value="${user.name}" htmlEscape="true" path="name" />
+						</div>
+						<div style="display: inline;float: left;width: 50%">
+							<form:input class="email" disabled="true" value="${user.emailId}" htmlEscape="true" path="emailID" />
+						</div>
+					</div>
+					<div style="display: inline;width: 100%">
+						<div style="display: inline;float: left;width: 50%">
+							<form:input class="mobile" value="${user.mobileNumber}" htmlEscape="true" path="mobileNumber" />
+						</div>
+						<div style="display: inline;float: left;width: 40%">	
+							<form:input class="role" value="${user.roleId}" htmlEscape="true" path="roleID" />
+						</div>
+					</div>
+					<div>
+						<input type="submit" value="Update User">
+					</div>
+				</fieldset>
+			</form:form>
+		</c:forEach>
 
     </div>
   </div>

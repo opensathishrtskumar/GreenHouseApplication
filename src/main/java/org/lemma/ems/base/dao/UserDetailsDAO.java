@@ -45,8 +45,11 @@ public class UserDetailsDAO extends BaseDAO {
 	private static final String UPDATE_PASSWORD = "update setup.user_credential set credential = ? where id=?";
 
 	public static final String RETRIEVE_USERS = "select * from setup.userdetails";
-	
-	
+
+	public static final String INSERT_USER = "insert into setup.userdetails "
+			+ "(name, emailid, password, roleid, mobilenumber,status,createdtimestamp,modifiedtimestamp,hashkey)"
+			+ " values(?,?,?,?,?,?,?,?,?)";
+
 	@Autowired
 	private Security security;
 
@@ -92,25 +95,38 @@ public class UserDetailsDAO extends BaseDAO {
 	 * @param form
 	 * @return
 	 */
-	public List<UserDetailsDTO> fetchUserDetails(String query) {
-		
+	public List<UserDetailsDTO> fetchUserDetails(String query, Object[] params) {
+
 		return this.jdbcTemplate.query(query, new RowMapper<UserDetailsDTO>() {
 
 			@Override
 			public UserDetailsDTO mapRow(ResultSet resultSet, int rowIndex) throws SQLException {
 				UserDetailsDTO details = new UserDetailsDTO();
 
+				details.setId(resultSet.getLong("id"));
 				details.setName(resultSet.getString("name"));
 				details.setEmailId(resultSet.getString("emailid"));
+				details.setPassword(resultSet.getString("password"));
 				details.setRoleId(resultSet.getInt("roleid"));
 				details.setMobileNumber(resultSet.getString("mobilenumber"));
-				//Select all columns
+				details.setStatus(resultSet.getInt("status"));
+				details.setCreatedTimeStamp(resultSet.getLong("createdtimestamp"));
+				details.setModifiedTimeStamp(resultSet.getLong("modifiedtimestamp"));
+				details.setHashKey(resultSet.getString("hashkey"));
+				// Select all columns
 				return details;
 			}
-		});
+		}, params);
 	}
-	
+
 	public int updatePassword(ChangePasswordForm form) {
 		return super.executeQuery(UPDATE_PASSWORD, new Object[] { form.getConfirmPassword(), form.getId() });
+	}
+
+	public int insertUserDetails(UserDetailsDTO dto) {
+		return super.executeQuery(INSERT_USER,
+				new Object[] { dto.getName(), dto.getEmailId(), dto.getPassword(), dto.getRoleId(),
+						dto.getMobileNumber(), dto.getStatus(), dto.getCreatedTimeStamp(), dto.getModifiedTimeStamp(),
+						dto.getHashKey() });
 	}
 }
