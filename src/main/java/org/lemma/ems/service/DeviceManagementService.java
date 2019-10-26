@@ -8,7 +8,7 @@ import org.lemma.ems.base.dao.DeviceMemoryDAO;
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
 import org.lemma.ems.base.dao.dto.DeviceMemoryDTO;
 import org.lemma.ems.base.mqueue.publisher.Sender;
-import org.lemma.ems.base.mqueue.subscriber.ApplicationStartupListener;
+import org.lemma.ems.base.mqueue.subscriber.DeviceSettingsListener;
 import org.lemma.ems.ui.model.DeviceDetailsForm;
 import org.lemma.ems.ui.model.DeviceFormDetails;
 import org.slf4j.Logger;
@@ -87,8 +87,8 @@ public class DeviceManagementService {
 			long insertDeviceDetails = deviceDetailsDAO.insertDeviceDetails(dto);
 			
 			//Notifiy listeners to pick up new devices
-			sender.publishEvent(ApplicationStartupListener.Topics.LOAD_DEVICES.getTopic(),
-					ApplicationStartupListener.Topics.LOAD_DEVICES.getTopic());
+			sender.publishEvent(DeviceSettingsListener.Topics.LOAD_DEVICES.getTopic(),
+					DeviceSettingsListener.Topics.LOAD_DEVICES.getTopic());
 			
 		} catch (Exception e) {
 			logger.error("Failed to insert new device {}", e);
@@ -127,8 +127,8 @@ public class DeviceManagementService {
 			logger.debug(" DeviceDetails updated count {} for {} {}", count, form.getDeviceId(),form.getDeviceName());
 			
 			//Notifiy listeners to pick up new devices
-			sender.publishEvent(ApplicationStartupListener.Topics.LOAD_DEVICES.getTopic(),
-					ApplicationStartupListener.Topics.LOAD_DEVICES.getTopic());
+			sender.publishEvent(DeviceSettingsListener.Topics.LOAD_DEVICES.getTopic(),
+					DeviceSettingsListener.Topics.LOAD_DEVICES.getTopic());
 			
 		} catch (Exception e) {
 			logger.error("Failed to insert new device {}", e);

@@ -13,6 +13,10 @@ import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean;
 
+/**
+ * @author RTS Sathish  Kumar
+ *
+ */
 public class JobUtil {
 	
 	private static final Logger logger = LoggerFactory.getLogger(JobUtil.class);
@@ -39,7 +43,6 @@ public class JobUtil {
         
 	    // set job data map
         JobDataMap jobDataMap = new JobDataMap();
-        jobDataMap.put("myKey", "myValue");
         factoryBean.setJobDataMap(jobDataMap);
         
         factoryBean.afterPropertiesSet();

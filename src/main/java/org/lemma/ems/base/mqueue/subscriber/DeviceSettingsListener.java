@@ -33,9 +33,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @EnableJms
-public class ApplicationStartupListener {
+public class DeviceSettingsListener {
 
-	private static final Logger logger = LoggerFactory.getLogger(ApplicationStartupListener.class);
+	private static final Logger logger = LoggerFactory.getLogger(DeviceSettingsListener.class);
 
 	@Autowired
 	private CacheUtil cacheUtil;
@@ -105,8 +105,8 @@ public class ApplicationStartupListener {
 		logger.info("MailSender bean configured Completed ");
 
 		// Load Devices once Settings are loaded succcessfully
-		sender.publishEvent(ApplicationStartupListener.Topics.LOAD_DEVICES.getTopic(),
-				ApplicationStartupListener.Topics.LOAD_DEVICES.getTopic());
+		sender.publishEvent(DeviceSettingsListener.Topics.LOAD_DEVICES.getTopic(),
+				DeviceSettingsListener.Topics.LOAD_DEVICES.getTopic());
 
 	}
 
@@ -156,7 +156,7 @@ public class ApplicationStartupListener {
 		cacheUtil.putCacheEntry(Caches.DEVICECACHE,
 				CacheEntryConstants.DeviceEntryConstants.GROUPED_ACTIVE_DEVICES.getName(), groupDevicesForPolling);
 
-		logger.info("LoadDeviceDetails2Cache Loading DeviceDetails done {}", message);
+		logger.info("LoadDeviceDetails2Cache Loading DeviceDetails done ");
 
 		// Trigger schedules once devices are loaded
 		sender.publishEvent(SchedulerStartupListener.Topics.TRIGGER_SCHEDULES.getTopic(),

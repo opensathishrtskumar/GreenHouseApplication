@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import com.ghgande.j2mod.modbus.net.SerialConnection;
 import com.ghgande.j2mod.modbus.util.ModbusUtil;
@@ -34,9 +33,9 @@ import com.ghgande.j2mod.modbus.util.ModbusUtil;
  *         Job will be executed only once, will keep running forever as
  *         configured
  */
-public class OneTimeTriggerPollingCronJob extends QuartzJobBean implements InterruptableJob {
+public class OneTimeTriggerPollingJob extends SimpleStoppableJob implements InterruptableJob {
 
-	private static final Logger logger = LoggerFactory.getLogger(OneTimeTriggerPollingCronJob.class);
+	private static final Logger logger = LoggerFactory.getLogger(OneTimeTriggerPollingJob.class);
 
 	@Autowired
 	Environment environmment;
@@ -62,7 +61,7 @@ public class OneTimeTriggerPollingCronJob extends QuartzJobBean implements Inter
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+	protected void executeStoppableJob(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 
 		int refreshCounter = 0;
 		// Get grouped device details for polling
@@ -72,13 +71,18 @@ public class OneTimeTriggerPollingCronJob extends QuartzJobBean implements Inter
 		// Delay between every Polling cycle, load from Settings
 		long delay = 10000;
 
+		String workerName = Thread.currentThread().getName();
+
 		EMSDeviceConnectionManager connectionManager = new EMSDeviceConnectionManager();
 
 		// Keep thread running until interrupted
 		while (polling) {
-			
-			logger.trace(" Polling device Job ");
-			
+
+			logger.trace(" Polling device Job with Thread Name {}", workerName);
+
+			if (checkInterrupt())
+				break;
+
 			/*
 			 * 1. Refresh device details from cache to pick newly added devices
 			 * automatically 2. Get Polling delay from settings
@@ -95,7 +99,8 @@ public class OneTimeTriggerPollingCronJob extends QuartzJobBean implements Inter
 
 			refreshCounter += 1;
 
-			ModbusUtil.sleep(delay);
+			if (!checkInterrupt())
+				ModbusUtil.sleep(delay);
 		}
 	}
 
@@ -125,11 +130,23 @@ public class OneTimeTriggerPollingCronJob extends QuartzJobBean implements Inter
 				continue;
 			}
 
+			if (checkInterrupt())
+				break;
+
 			// Create transaction, execte request and put response in queue for processing
 			synchronized (SERIAL_MUTEX) {
 				pollDevices(connectionManager, groupedDevices, serialConnection);
 			}
 		}
+	}
+
+	public boolean checkInterrupt() {
+		// Interrups current execution and set local variable to false
+		if (Thread.currentThread().isInterrupted() || !polling) {
+			polling = false;
+		}
+
+		return !polling;
 	}
 
 	/**
@@ -140,6 +157,9 @@ public class OneTimeTriggerPollingCronJob extends QuartzJobBean implements Inter
 	private void pollDevices(EMSDeviceConnectionManager connectionManager, List<ExtendedSerialParameter> groupedDevices,
 			SerialConnection serialConnection) {
 		for (ExtendedSerialParameter device : groupedDevices) {
+
+			if (checkInterrupt())
+				break;
 
 			try {
 				ResponseHandler executeTransaction = connectionManager.executeTransaction(serialConnection, device);

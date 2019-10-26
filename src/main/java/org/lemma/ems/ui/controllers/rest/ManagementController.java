@@ -34,4 +34,14 @@ public class ManagementController {
 	public List<Map<String, Object>> publish() {
 		return schedules.getAllJobs();
 	}
+	
+	/**
+	 * @return
+	 */
+	@RequestMapping(value = "/jobs/reschedule", method = RequestMethod.GET)
+	@ResponseBody
+	public String rescuedule() {
+		schedules.triggerSchedules("RESCHEDULE");
+		return "RESCHEDULED";
+	}
 }

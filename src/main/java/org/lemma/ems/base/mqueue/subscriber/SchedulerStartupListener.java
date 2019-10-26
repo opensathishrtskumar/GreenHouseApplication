@@ -12,6 +12,8 @@ import java.util.Map;
 import org.lemma.ems.base.dao.SchedulesDAO;
 import org.lemma.ems.base.dao.dto.SchedulesDTO;
 import org.lemma.ems.base.mqueue.ReceiverConfig;
+import org.lemma.ems.scheduler.base.AutowiringSpringBeanJobFactory;
+import org.lemma.ems.scheduler.jobs.SimpleStoppableJob;
 import org.lemma.ems.scheduler.util.JobUtil;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
@@ -44,6 +46,11 @@ public class SchedulerStartupListener {
 
 	private static final Logger logger = LoggerFactory.getLogger(SchedulerStartupListener.class);
 
+	/**
+	 * Locks to prevent multiple Same Onetime job
+	 */
+	private static final Object SCHEDULER_MUTEX = new Object();
+	
 	@Value("${scheduler.enabled}")
 	private boolean schedulerEnabled;
 
@@ -81,46 +88,75 @@ public class SchedulerStartupListener {
 	 */
 	@JmsListener(destination = TRIGGER_SCHEDULES_TXT, containerFactory = ReceiverConfig.SUBSCRIBER_NAME)
 	public void triggerSchedules(Object message) {
-		logger.info("triggerSchedules Scheduler status {}", schedulerEnabled);
+		logger.info("triggerSchedules Scheduler status {} msg {}", schedulerEnabled, message);
+
+		Scheduler scheduler = schedulerFactory.getScheduler();
 
 		/* Trigger schedles only when enabled */
 		if (schedulerEnabled) {
 
 			List<SchedulesDTO> activeSchedules = schedulesDAO.fetchAllSchedules();
+			
+			//Not allowed to trigger again and again
+			synchronized (SCHEDULER_MUTEX) {
+				scheduleJobs(scheduler, activeSchedules);
+			}
+		}
+	}
 
-			for (SchedulesDTO schedule : activeSchedules) {
+	private void scheduleJobs(Scheduler scheduler, List<SchedulesDTO> activeSchedules) {
+		for (SchedulesDTO schedule : activeSchedules) {
+			try {
+				Class<QuartzJobBean> forName = createClass(schedule);
+
+				TriggerKey triggerKey = TriggerKey.triggerKey(schedule.getJobKey(), schedule.getGroupKey());
+				JobDetail jobDetail = createJob(schedule, forName, context);
+				JobKey jobKey = JobKey.jobKey(schedule.getJobKey(), schedule.getGroupKey());
+
+				/*
+				 * Get job existance status - unschedule all task and reschedule if status is
+				 * active
+				 */
+				dropExistingJob(scheduler, schedule, triggerKey, jobKey);
+
+				if (schedule.getStatus() == SchedulesDAO.Status.ACTIVE.getStatus()) {
+					Trigger cronTriggerBean = createTrigger(schedule, jobDetail);
+					scheduler.scheduleJob(jobDetail, cronTriggerBean);
+				} else if (schedule.getStatus() == SchedulesDAO.Status.ONETIMEJOB.getStatus()) {
+					scheduleOneTimeJob(schedule, new Date());
+				}
+
+				logger.debug("{} job rescheduled", schedule.getClassName());
+
+			} catch (Exception e) {
+				logger.error("Error scheduling tasks {} {}", schedule.getClassName(), e);
+			}
+		}
+	}
+
+	private void dropExistingJob(Scheduler scheduler, SchedulesDTO schedule, TriggerKey triggerKey, JobKey jobKey)
+			throws SchedulerException {
+		boolean triggerExists = scheduler.checkExists(triggerKey);
+		boolean jobExists = scheduler.checkExists(jobKey);
+		List<Object> simpleStoppableJobs = AutowiringSpringBeanJobFactory.getSimpleStoppableJob(jobKey);
+
+		logger.debug("{} job existane {}", schedule.getClassName(), (triggerExists | jobExists));
+
+		if (triggerExists || jobExists) {
+			scheduler.unscheduleJob(triggerKey);
+			scheduler.interrupt(jobKey);
+			scheduler.deleteJob(jobKey);
+			logger.debug("{} job unscheduled", schedule.getClassName());
+		}
+
+		if (simpleStoppableJobs != null) {
+			for(Object simpleStoppableJob : simpleStoppableJobs) {
 				try {
-					Class<QuartzJobBean> forName = (Class<QuartzJobBean>) Class.forName(schedule.getClassName());
-
-					TriggerKey triggerKey = TriggerKey.triggerKey(schedule.getJobKey() + schedule.getGroupKey());
-					JobDetail jobDetail = createJob(schedule, forName, context);
-
-					/*
-					 * Get job existance status - unschedule all task and reschedule if status is
-					 * active
-					 */
-					boolean checkExists = schedulerFactory.getScheduler().checkExists(triggerKey);
-
-					logger.debug("{} job existane {}", schedule.getClassName(), checkExists);
-
-					if (checkExists) {
-						schedulerFactory.getScheduler().unscheduleJob(triggerKey);
-						//FIXME: unable to delete/unscchedle onetime jobs check
-						schedulerFactory.getScheduler()
-								.deleteJob(JobKey.jobKey(schedule.getJobKey(), schedule.getGroupKey()));
-						logger.debug("{} job unscheduled", schedule.getClassName());
-					}
-
-					if (schedule.getStatus() == SchedulesDAO.Status.ACTIVE.getStatus()) {
-						Trigger cronTriggerBean = createTrigger(schedule, jobDetail);
-						schedulerFactory.getScheduler().scheduleJob(jobDetail, cronTriggerBean);
-						logger.debug("{} job scheduled", schedule.getClassName());
-					} else if (schedule.getStatus() == SchedulesDAO.Status.ONETIMEJOB.getStatus()) {
-						scheduleOneTimeJob(schedule, new Date());
-					}
-
+					((SimpleStoppableJob) simpleStoppableJob).interruptStoppable();
 				} catch (Exception e) {
-					logger.error("Error scheduling tasks {} {}", schedule.getClassName(), e);
+					logger.error("Failed interrupting onetime job {}",e);
+				} finally {
+					AutowiringSpringBeanJobFactory.removeSimpleStoppableJob(jobKey);
 				}
 			}
 		}
@@ -133,26 +169,33 @@ public class SchedulerStartupListener {
 		logger.debug("Request received to scheduleJob one time");
 
 		try {
-			Class<QuartzJobBean> forName = (Class<QuartzJobBean>) Class.forName(schedule.getClassName());
-			TriggerKey triggerKey = TriggerKey.triggerKey(schedule.getJobKey() + schedule.getGroupKey());
+			Class<QuartzJobBean> forName = createClass(schedule);
+			TriggerKey triggerKey = TriggerKey.triggerKey(schedule.getJobKey(), schedule.getGroupKey());
 			JobDetail jobDetail = createJob(schedule, forName, context);
 
-			logger.debug("creating trigger for key : {}", triggerKey.toString());
+			logger.debug("creating trigger for key : {}", triggerKey);
 			Trigger cronTriggerBean = JobUtil.createSingleTrigger(triggerKey.toString(), date,
 					SimpleTrigger.MISFIRE_INSTRUCTION_FIRE_NOW, jobDetail);
 
 			Scheduler scheduler = schedulerFactory.getScheduler();
-			scheduler.unscheduleJob(triggerKey);
 
 			scheduler.scheduleJob(jobDetail, cronTriggerBean);
-			logger.debug("Job with key {} scheduled successfully", triggerKey.toString());
+			logger.debug("Job with key {} scheduled successfully {}", triggerKey);
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger.debug("Scheduler Excception Job with key {} failed {}", schedule.getClassName(), e);
+			logger.debug("Scheduler Exception Job with key {} failed {}", schedule.getClassName(), e);
 		}
 
 		return false;
+	}
+
+	/**
+	 * @param schedule
+	 * @return
+	 * @throws ClassNotFoundException
+	 */
+	private Class<QuartzJobBean> createClass(SchedulesDTO schedule) throws ClassNotFoundException {
+		return (Class<QuartzJobBean>) Class.forName(schedule.getClassName());
 	}
 
 	/**
@@ -164,6 +207,7 @@ public class SchedulerStartupListener {
 			Scheduler scheduler = schedulerFactory.getScheduler();
 
 			for (String groupName : scheduler.getJobGroupNames()) {
+
 				for (JobKey jobKey : scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupName))) {
 
 					String jobName = jobKey.getName();
@@ -185,17 +229,16 @@ public class SchedulerStartupListener {
 					if (isJobRunning(jobName, jobGroup)) {
 						map.put("jobStatus", "RUNNING");
 					} else {
-						String jobState = getJobState(jobName,jobGroup);
+						String jobState = getJobState(jobName, jobGroup);
 						map.put("jobStatus", jobState);
 					}
 
 					list.add(map);
-					logger.debug("Job details:");
 				}
 
 			}
 		} catch (SchedulerException e) {
-			logger.error("SchedulerException while fetching all jobs. error message :" + e.getMessage());
+			logger.error("SchedulerException while fetching all jobs. error message : {}", e.getMessage());
 		}
 		return list;
 	}
@@ -204,12 +247,10 @@ public class SchedulerStartupListener {
 	 * Check if job is already running
 	 */
 	private boolean isJobRunning(String jobName, String groupName) {
-		logger.debug("Request received to check if job is running");
 
 		String jobKey = jobName;
 		String groupKey = groupName;
 
-		logger.debug("Parameters received for checking job is running now : jobKey :" + jobKey);
 		try {
 
 			List<JobExecutionContext> currentJobs = schedulerFactory.getScheduler().getCurrentlyExecutingJobs();
@@ -235,13 +276,13 @@ public class SchedulerStartupListener {
 	 */
 	private String getJobState(String jobName, String groupName) {
 		try {
-			String groupKey = groupName;
-			JobKey jobKey = new JobKey(jobName, groupKey);
+			JobKey jobKey = JobKey.jobKey(jobName, groupName);
 
 			Scheduler scheduler = schedulerFactory.getScheduler();
 			JobDetail jobDetail = scheduler.getJobDetail(jobKey);
 
 			List<? extends Trigger> triggers = scheduler.getTriggersOfJob(jobDetail.getKey());
+
 			if (triggers != null && !triggers.isEmpty()) {
 				for (Trigger trigger : triggers) {
 					TriggerState triggerState = scheduler.getTriggerState(trigger.getKey());
@@ -262,8 +303,8 @@ public class SchedulerStartupListener {
 				}
 			}
 		} catch (SchedulerException e) {
-			logger.error("SchedulerException while checking job with name and group exist:" + e.getMessage());
+			logger.error("SchedulerException while checking job with name and group exist: {}", e.getMessage());
 		}
-		return null;
+		return "UNKNOWN";
 	}
 }
