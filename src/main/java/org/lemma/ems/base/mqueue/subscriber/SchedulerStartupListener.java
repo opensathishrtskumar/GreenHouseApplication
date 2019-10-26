@@ -15,6 +15,7 @@ import org.lemma.ems.base.mqueue.ReceiverConfig;
 import org.lemma.ems.scheduler.base.AutowiringSpringBeanJobFactory;
 import org.lemma.ems.scheduler.jobs.SimpleStoppableJob;
 import org.lemma.ems.scheduler.util.JobUtil;
+import org.quartz.InterruptableJob;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobKey;
@@ -50,7 +51,7 @@ public class SchedulerStartupListener {
 	 * Locks to prevent multiple Same Onetime job
 	 */
 	private static final Object SCHEDULER_MUTEX = new Object();
-	
+
 	@Value("${scheduler.enabled}")
 	private boolean schedulerEnabled;
 
@@ -96,8 +97,8 @@ public class SchedulerStartupListener {
 		if (schedulerEnabled) {
 
 			List<SchedulesDTO> activeSchedules = schedulesDAO.fetchAllSchedules();
-			
-			//Not allowed to trigger again and again
+
+			// Not allowed to trigger again and again
 			synchronized (SCHEDULER_MUTEX) {
 				scheduleJobs(scheduler, activeSchedules);
 			}
@@ -150,11 +151,12 @@ public class SchedulerStartupListener {
 		}
 
 		if (simpleStoppableJobs != null) {
-			for(Object simpleStoppableJob : simpleStoppableJobs) {
+			for (Object simpleStoppableJob : simpleStoppableJobs) {
 				try {
 					((SimpleStoppableJob) simpleStoppableJob).interruptStoppable();
+					((InterruptableJob) simpleStoppableJob).interrupt();
 				} catch (Exception e) {
-					logger.error("Failed interrupting onetime job {}",e);
+					logger.error("Failed interrupting onetime job {}", e);
 				} finally {
 					AutowiringSpringBeanJobFactory.removeSimpleStoppableJob(jobKey);
 				}

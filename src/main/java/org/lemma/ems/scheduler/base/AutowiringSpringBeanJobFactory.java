@@ -42,7 +42,7 @@ public final class AutowiringSpringBeanJobFactory extends SpringBeanJobFactory i
 	 * @param jobDetail
 	 * @param job
 	 */
-	private synchronized static void handleStoppableJob(JobDetail jobDetail, Object job) {
+	private static void handleStoppableJob(JobDetail jobDetail, Object job) {
 		if (job instanceof SimpleStoppableJob) {
 			String key = jobDetail.getKey().toString();
 			List<Object> list = STOPPABLEJOBS.get(key);
