@@ -6,15 +6,14 @@
 <h2>User Management</h2>
 
 <!-- <div id="accordion">
-	
 	First accordion with Form to Test and Add new device
   <div class="group">
  -->
 <h3>Add New User</h3>
-<div>
+<div style="width: 100%">
  <c:url var="postUrl" value="/ems/user/add" context="${pageContext.request.contextPath}" />
  <c:url var="updateUrl" value="/ems/user/update" context="${pageContext.request.contextPath}" />
-    <form:form id="addUser" method="post" action="${postUrl}" modelAttribute="userDetailsForm">
+    <form:form  id="addUser" method="post" action="${postUrl}" modelAttribute="userDetailsForm">
     	<!-- devicemanagement check for error -->
     	<spring:hasBindErrors name="userDetailsForm">
    	 	<div class="error">
@@ -48,24 +47,26 @@
 		<input type="submit" value="Add User">
 	</p>
 </form:form>
+</div>
 <hr>
 	<c:forEach items="${existingUserDetails}" var="user" varStatus="index">				     
 	     <form:form class="" id="updateUser${index.count}" method="post" action="${updateUrl}" modelAttribute="userDetailsForm">
 		<!-- All form validation errors and Success message -->	     
 				<form:hidden value="${user.id}" path="uniqueId" />
-			<fieldset>
+<div style="width: 100%;">
+	<fieldset>
 			<div style="display: inline;width: 100%">
 				<div style="display: inline;float: left;width: 20%">
-					<form:input class="user" value="${user.name}" htmlEscape="true" path="name" />
+					<form:input class="sameline" value="${user.name}" htmlEscape="true" path="name" />
 				</div>
 				<div style="display: inline;float: left;width: 30%">
-					<form:input class="email" disabled="true" value="${user.emailId}" htmlEscape="true" path="emailID" />
+					<form:input class="sameline" disabled="true" value="${user.emailId}" htmlEscape="true" path="emailID" />
 				</div>
-				<div style="display: inline;float: left;width: 15%">
-					<form:input class="mobile" value="${user.mobileNumber}" htmlEscape="true" path="mobileNumber" />
+				<div style="display: inline;float: left;width: 20%">
+					<form:input class="sameline" value="${user.mobileNumber}" htmlEscape="true" path="mobileNumber" />
 				</div>
-				<div style="display: inline;float: left;width: 10%">	
-				<form:select path="roleID">
+				<div style="display: inline;float: left;width: 20%">	
+				<form:select class="sameline" path="roleID">
 				    <c:forEach items="${existingUserRoles}" var="roles" varStatus="status">
 				        <c:choose>
 				            <c:when test="${roles.uniqueId eq user.roleId}">
@@ -79,13 +80,14 @@
 				</form:select>
 				</div>
 				<div style="display: inline;float: left;width: 10%">
-					<input type="submit" value="Update User">
+					<input class = "sameline" type="submit" value="Update User">
 				</div>
 			</div>
 			</fieldset>
+			</div>
 		</form:form>
 	</c:forEach>
-</div>
+
 <!--   </div>
 </div>
  -->
