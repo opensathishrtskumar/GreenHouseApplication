@@ -249,7 +249,7 @@
 						
 						<div style="display: inline;float: left;width: 30%">
 							<form:label path="deleted">Delete</form:label>
-							<form:checkbox path="deleted" title="Delete Device"/>		
+							<form:checkbox path="deleted" class="deleteDevice" title="Delete Device"/>		
 						</div>		
 					</div>
 					

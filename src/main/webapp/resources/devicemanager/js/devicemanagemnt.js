@@ -130,4 +130,10 @@ $(document).ready(function() {
 	}
 	
 	
+	$(".deleteDevice").change(function(){
+		if(this.checked) {
+	        alert('Device will be deleted permenantly');
+	    }
+	});
+	
 });
