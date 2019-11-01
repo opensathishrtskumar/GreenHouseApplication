@@ -6,8 +6,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.lemma.ems.service.UserManagementService;
 import org.lemma.ems.ui.model.SignupForm;
 import org.lemma.ems.ui.model.UserDetailsForm;
-import org.lemma.ems.ui.validator.DeviceDetailValidator;
+import org.lemma.ems.ui.model.UserRolesForm;
 import org.lemma.ems.ui.validator.UserDetailValidator;
+import org.lemma.ems.ui.validator.UserRoleValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,11 @@ public class UserManagementController {
 		return new ModelAndView("homeSignedIn");
 	}
 
+	@RequestMapping(value = "/ems/user", method = RequestMethod.GET)
+	public ModelAndView showReportsPage() {
+		return new ModelAndView("user");
+	}
+
 	@RequestMapping(value = "/ems/user/show", method = RequestMethod.GET)
 	public ModelAndView showUsers() {
 		return userManagementService.showUserDetailssPage();
@@ -99,6 +105,29 @@ public class UserManagementController {
 
 		return userManagementService.udpateUser(form);
 	}
-	
-	
+
+	@RequestMapping(value = "/ems/userroles/show", method = RequestMethod.GET)
+	public ModelAndView showRoles() {
+		return userManagementService.showUserRolesPage();
+	}
+
+	@RequestMapping(value = "/ems/userroles/manage", method = RequestMethod.POST)
+	public ModelAndView updateUserRoles(@ModelAttribute("userRolesForm") UserRolesForm form, BindingResult formBinding,
+			HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+		logger.debug("User Roles update request {}", form);
+		ModelAndView modelAndView = userManagementService.showUserRolesPage();
+
+		UserRoleValidator validator = new UserRoleValidator(form, formBinding);
+		validator.validateUserRolesForm();
+
+		// Return errors if there is any, along with memoryMappings to iterate and Form
+		// Binding
+		if (formBinding.hasErrors()) {
+			modelAndView.addObject("userRolesForm", form);
+			return modelAndView;
+		}
+
+		return userManagementService.udpateRole(form);
+	}
+
 }

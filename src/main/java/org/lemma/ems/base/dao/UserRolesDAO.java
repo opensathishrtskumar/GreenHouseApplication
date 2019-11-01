@@ -20,7 +20,9 @@ import com.ems.security.Security;
 @Repository
 public class UserRolesDAO extends BaseDAO {
 
-	private static final Logger logger = LoggerFactory.getLogger(UserDetailsDAO.class);
+	public static final String UPDATE_ROLE = "UPDATE setup.userroles SET roletype=?, privileges=?, modifiedtimestamp=?, hashkey=? WHERE id=?";
+	
+	private static final Logger logger = LoggerFactory.getLogger(UserRolesDAO.class);
 
 	@Autowired
 	private Security security;
@@ -28,7 +30,7 @@ public class UserRolesDAO extends BaseDAO {
 	public List<UserRolesDTO> fetchUserRoles(String query, Object[] params) {
 
 		return this.jdbcTemplate.query(query, new RowMapper<UserRolesDTO>() {
-
+			
 			@Override
 			public UserRolesDTO mapRow(ResultSet resultSet, int rowIndex) throws SQLException {
 				UserRolesDTO details = new UserRolesDTO();
@@ -37,11 +39,16 @@ public class UserRolesDAO extends BaseDAO {
 				details.setRoleType(resultSet.getString("roletype"));
 				details.setPrivileges(resultSet.getInt("privileges"));
 				details.setCreatedTimeStamp(resultSet.getLong("createdtimestamp"));
+				details.setModifiedTimeStamp(resultSet.getLong("modifiedtimestamp"));
 				details.setHashKey(resultSet.getString("hashkey"));
 				// Select all columns
 				return details;
 			}
 		}, params);
+	}
+	public int updateUserRoles(UserRolesDTO dto) {
+		return super.executeQuery(UPDATE_ROLE,
+				new Object[] { dto.getRoleType(), dto.getPrivileges(), dto.getModifiedTimeStamp(), dto.getHashKey(), dto.getUniqueId() });
 	}
 
 }

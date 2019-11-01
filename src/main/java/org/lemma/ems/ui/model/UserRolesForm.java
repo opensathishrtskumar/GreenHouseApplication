@@ -1,19 +1,37 @@
-package org.lemma.ems.base.dao.dto;
+package org.lemma.ems.ui.model;
 
 import java.io.Serializable;
+import javax.validation.constraints.NotNull;
 
 /**
- * @author Sathish Kumar
+ * @author RTS Sathish Kumar
  *
  */
-public class UserRolesDTO implements Serializable {
+public class UserRolesForm implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1676793238282380110L;
+
+	@NotNull
 	private long uniqueId;
+	@NotNull
 	private String roleType;
+	@NotNull
 	private int privileges;
+
 	private long createdTimeStamp;
 	private long modifiedTimeStamp;
+
+	/**
+	 * 
+	 */
 	private String hashKey;
+
+	public UserRolesForm() {
+		// NOOP
+	}
 
 	public long getUniqueId() {
 		return uniqueId;
@@ -61,5 +79,11 @@ public class UserRolesDTO implements Serializable {
 
 	public void setHashKey(String hashKey) {
 		this.hashKey = hashKey;
+	}
+
+	@Override
+	public String toString() {
+		return "UserRolesForm [ uniqueId=" + uniqueId + ",roleType=" + roleType + ", privileges=" + privileges
+				+ ", createdTimeStamp=" + createdTimeStamp + ", modifiedTimeStamp=" + modifiedTimeStamp + "]";
 	}
 }

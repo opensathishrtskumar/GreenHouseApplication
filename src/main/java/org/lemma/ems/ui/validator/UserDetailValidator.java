@@ -2,8 +2,6 @@ package org.lemma.ems.ui.validator;
 
 import java.util.List;
 
-import org.lemma.ems.base.dao.dto.DeviceMemoryDTO;
-import org.lemma.ems.ui.model.DeviceDetailsForm;
 import org.lemma.ems.ui.model.UserDetailsForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
