@@ -1,7 +1,5 @@
 package org.lemma.ems.reports.model;
 
-import java.util.Date;
-
 /**
  * @author RTS Sathish Kumar
  *
