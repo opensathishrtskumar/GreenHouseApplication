@@ -26,8 +26,9 @@ public class SettingsDAO extends BaseDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(SettingsDAO.class);
 
-	public static enum SettingsGroup {
-		EMAIL("EMAIL");
+	public enum SettingsGroup {
+		EMAIL("EMAIL"),
+		COMPANY("COMPANY");
 
 		String groupKey;
 
@@ -40,9 +41,33 @@ public class SettingsDAO extends BaseDAO {
 		}
 	}
 
-	public static enum EMAILGroup {
-		HOST("smtp.host"), PORT("smtp.port"), USERNAME("smtp.username"), PASSWORD("smtp.password"), BCC(
-				"smtp.bcc.mail"), CC("smtp.cc.mail"), TO("smtp.to.mail");
+	public enum CompanayGroup {
+		NAME("company.name"), 
+		LOGO("company.logo"), 
+		ALLOWED_DEVICES("company.allowed.devices.count"), 
+		VALID_DATE("company.validity.date"), 
+		ADDRESS("company.address");
+
+		String key;
+
+		private CompanayGroup(String key) {
+			this.key = key;
+		}
+
+		public String getKey() {
+			return key;
+		}
+
+	}
+	
+	public enum EMAILGroup {
+		HOST("smtp.host"), 
+		PORT("smtp.port"), 
+		USERNAME("smtp.username"), 
+		PASSWORD("smtp.password"), 
+		BCC("smtp.bcc.mail"), 
+		CC("smtp.cc.mail"), 
+		TO("smtp.to.mail");
 
 		String mailKey;
 

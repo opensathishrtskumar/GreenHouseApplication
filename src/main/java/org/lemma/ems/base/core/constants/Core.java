@@ -63,7 +63,7 @@ public abstract class Core {
 		W1("W1", "W1"),
 		W2("W2","W2"),
 		W3("W3", "W3"), 
-		WH("WH", "WH"), 
+		WH("WH", "Forward  KW"), 
 		W_AVG("W_AVG", "W Average"), 
 		VA1("VA1", "VA1"), 
 		VA2("VA2", "VA2"), 

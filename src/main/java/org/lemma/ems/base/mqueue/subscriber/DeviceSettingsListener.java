@@ -110,6 +110,21 @@ public class DeviceSettingsListener {
 
 	}
 
+	
+	/**
+	 * @param mainGroup
+	 * @param subGroup
+	 * @return
+	 */
+	public SettingsDTO getSettings(SettingsDAO.SettingsGroup mainGroup, String subGroup) {
+		Map cacheEntry = cacheUtil.getCacheEntry(CacheEntryConstants.EmsEntryConstants.SETTINGS.getName(), Map.class);
+		
+		List<SettingsDTO> object = (List<SettingsDTO>)cacheEntry.get(subGroup);
+		
+		return (object != null && !object.isEmpty()) ? object.get(0) : null;
+	}
+	
+	
 	private void populateMailSenderBean(JavaMailSenderImpl mailSender, Map<String, List<SettingsDTO>> list) {
 
 		String host = list.get(SettingsDAO.EMAILGroup.HOST.getMailKey()).get(0).getConfigValue();

@@ -24,8 +24,9 @@ import org.slf4j.LoggerFactory;
  * @author RTS Sathish Kumar
  *
  */
-public class DailyReport {
-	static Logger logger = LoggerFactory.getLogger(DailyReport.class);
+
+public class DailyCumulativeReport {
+	static Logger logger = LoggerFactory.getLogger(DailyCumulativeReport.class);
 
 	private static String template = "Daily_Templates.xls";
 	private static String output = "target/Templates_output.xls";
@@ -40,13 +41,14 @@ public class DailyReport {
 		DailyReportHolder holder = new DailyReportHolder();
 		holder.setCompanyName("Isuzu Motors India");
 		holder.setTemplateName(template);
-		InputStream imageInputStream = DailyReport.class.getResourceAsStream("Isuzu.png");
+		InputStream imageInputStream = DailyCumulativeReport.class.getResourceAsStream("Isuzu.png");
 		byte[] imageBytes = Util.toByteArray(imageInputStream);
-		holder.setEncodedImage(Base64.getEncoder().encodeToString(imageBytes));
+		String img = Base64.getEncoder().encodeToString(imageBytes);
+		holder.setEncodedImage(img);
 		List<DailyReportModel> arrayList = populateDeviceList();
 		holder.setDeviceList(arrayList);
 
-		try (InputStream is = DailyReport.class.getResourceAsStream(template)) {
+		try (InputStream is = DailyCumulativeReport.class.getResourceAsStream(template)) {
 			try (OutputStream os = new FileOutputStream(output)) {
 				Context context = new Context();
 				List<String> collect = holder.getDeviceList().stream().map(DailyReportModel::getShortFeederName)
