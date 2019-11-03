@@ -6,9 +6,9 @@
 
 <ul id="connectedAccounts" class="listings">
 	<li class="listing">
-		<a href="<c:url value="/ems/user/show" />">User Management</a>
+		<a href="<c:url value="/ems/user/show" />">Manage Users</a>
 	</li>
 	<li class="listing">		
-		<a href="<c:url value="/ems/userroles/show" />">Role Management</a>	
+		<a href="<c:url value="/ems/userroles/show" />">Manage Role</a>	
 	</li>
 </ul>

@@ -11,9 +11,8 @@
 <div id="nav">
 	<ul>
 		<li><a href="<c:url value="/ems/dashboard/show" />">Dashboard</a></li>
-		<li><a href="<c:url value="/ems/devices/show" />">Device Mangement</a></li>
 		<li><a href="<c:url value="/ems/reports" />">Reports</a></li>
-		<li><a href="<c:url value="/ems/user" />">User Mangement</a></li>
+		<li><a href="<c:url value="/ems/management" />">Mangement</a></li>
 		<li><a href="<c:url value="/ems/settings" />">Settings</a></li>
 		<li><a href="<c:url value="/signout" />">Sign out</a></li>
 	</ul>

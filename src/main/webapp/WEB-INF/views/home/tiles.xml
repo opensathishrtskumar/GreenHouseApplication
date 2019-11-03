@@ -7,5 +7,10 @@
 		<put-attribute name="header" value="/WEB-INF/views/home/header.jsp" />
 		<put-attribute name="content" value="/WEB-INF/views/home/contentSignedIn.jsp" />
 	</definition>
+	
+	
+	<definition name="management" extends="homeSignedIn">
+		<put-attribute name="content" value="/WEB-INF/views/home/management.jsp" />
+	</definition>
 		
 </tiles-definitions>

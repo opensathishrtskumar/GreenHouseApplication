@@ -4,9 +4,7 @@
 
 <h2>Dashboard</h2>
 
-<h3>TODO : Displays number of devices, failed devices, company name, address and so on</h3>
-
-<ul id="connectedAccounts" class="listings">
+<ul id="menu" class="listings">
 	<li class="listing">
 		<a href="<c:url value="/ems/dashboard/chartview" />">Live Monitor</a>	
 	</li>
