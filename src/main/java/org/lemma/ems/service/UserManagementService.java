@@ -1,10 +1,14 @@
 package org.lemma.ems.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
+import org.lemma.ems.base.dao.PageAccessDetailsDAO;
 import org.lemma.ems.base.dao.UserDetailsDAO;
 import org.lemma.ems.base.dao.UserRolesDAO;
+import org.lemma.ems.base.dao.dto.PageAccessDetailsDTO;
 import org.lemma.ems.base.dao.dto.UserDetailsDTO;
 import org.lemma.ems.base.dao.dto.UserRolesDTO;
 import org.lemma.ems.ui.controllers.rest.HelperController;
@@ -33,6 +37,9 @@ public class UserManagementService {
 	private UserRolesDAO userRolesDAO;
 
 	@Autowired
+	private PageAccessDetailsDAO pageAccessDetailsDAO;
+
+	@Autowired
 	ReloadableResourceBundleMessageSource msgSource;
 
 	@Autowired
@@ -43,6 +50,8 @@ public class UserManagementService {
 	public static final String VIEW_USER = "SELECT * FROM setup.userdetails ";
 
 	public static final String VIEW_ROLES = "SELECT * FROM setup.userroles";
+
+	public static final String VIEW_PAGES = "SELECT * FROM setup.pageaccessdetails";
 
 	public ModelAndView showUserDetailssPage() {
 		ModelAndView modelAndView = new ModelAndView("userlist");
@@ -60,7 +69,17 @@ public class UserManagementService {
 		UserRolesForm userRolesForm = new UserRolesForm();
 		modelAndView.addObject("userRolesForm", userRolesForm);
 		List<UserRolesDTO> userRoles = userRolesDAO.fetchUserRoles(VIEW_ROLES, new Object[] {});
+
+		Map<Long, String> roleMap = new HashMap<>();
+		for (UserRolesDTO role : userRoles) {
+			roleMap.put(role.getUniqueId(), role.getRoleType());
+		}
+		modelAndView.addObject("userRoles", userRoles);
+
 		modelAndView.addObject("existingUserRoles", userRoles);
+		List<PageAccessDetailsDTO> pageDetails = pageAccessDetailsDAO.fetchPageAccessDetails(VIEW_PAGES,
+				new Object[] {});
+		modelAndView.addObject("pageAccessDetails", pageDetails);
 		return modelAndView;
 	}
 
@@ -170,11 +189,13 @@ public class UserManagementService {
 
 	private UserRolesDTO mapUpdateRoleForm2Dto(UserRolesForm form) {
 		UserRolesDTO dto = new UserRolesDTO();
-		dto.setUniqueId(form.getUniqueId());
-		dto.setRoleType(form.getRoleType());
-		dto.setPrivileges(form.getPrivileges());
+		/*
+		 * dto.setUniqueId(form.getUniqueId()); dto.setRoleType(form.getRoleType());
+		 * dto.setPrivileges(form.getPrivileges());
+		 */
 		dto.setModifiedTimeStamp(System.currentTimeMillis());
 		dto.setHashKey("12345");// TODO: calculate hash key value
 		return dto;
 	}
+
 }

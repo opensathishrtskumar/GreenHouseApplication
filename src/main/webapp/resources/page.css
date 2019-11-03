@@ -1,4 +1,5 @@
 @import url("messages/messages.css");
+
 @import url("form.css");
 
 * {
@@ -6,11 +7,12 @@
 	padding: 0;
 }
 
-a img, frameset, fieldset { 
+a img, frameset, fieldset {
 	border: 0;
 }
 
 a:visited {
+	
 }
 
 a {
@@ -24,7 +26,7 @@ p {
 }
 
 h2, h3, h4, h5 {
-	font-weight:300;
+	font-weight: 300;
 }
 
 h2 {
@@ -48,10 +50,10 @@ h4 {
 	font-weight: bold;
 }
 
-h5 { 
+h5 {
 	font-weight: bold;
 	margin: 0 0 0 0;
-	font-size:1.12em;
+	font-size: 1.12em;
 }
 
 .listings {
@@ -62,7 +64,7 @@ h5 {
 .listing {
 	clear: both;
 	list-style-type: none;
-	margin-bottom:5px;
+	margin-bottom: 5px;
 	overflow: hidden;
 	padding: 0 0 5px;
 }
@@ -86,17 +88,32 @@ dt {
 }
 
 dd {
- 	margin: 0 0 0 9em;
- 	padding: 0 0 2.5em 0;
+	margin: 0 0 0 9em;
+	padding: 0 0 2.5em 0;
 }
 
 textarea, body, input, button, a.button {
-	font-family: "lucida grande", lucida, tahoma, helvetica, arial, sans-serif !important;
+	font-family: "lucida grande", lucida, tahoma, helvetica, arial,
+		sans-serif !important;
 }
 
 body {
 	background: url("background-body.png") repeat-x scroll 0 0 #EEEEEE;
 	font-size: 80%;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table, th, td {
+	border: 1px solid black;
+	padding: 5px;
+  	text-align: center;	
+}
+
+.center{
+	text-align: center;
 }
 
 #header, #content, #footer {
@@ -142,9 +159,9 @@ body {
 	display: block;
 }
 
-#content-container {	
+#content-container {
 	background-color: #EEEEEE;
-	padding: 25px;	
+	padding: 25px;
 }
 
 #content {
@@ -159,12 +176,13 @@ body {
 }
 
 #springsource {
-	background:url("logo-springsource.png") no-repeat scroll 0 0 transparent;
+	background: url("logo-springsource.png") no-repeat scroll 0 0
+		transparent;
 	display: block;
 	float: right;
 	height: 40px;
 	text-indent: -9999px;
-	width: 157px;	
+	width: 157px;
 }
 
 #nav-secondary {
@@ -189,7 +207,7 @@ body {
 	width: 500px;
 }
 
-#connectedProfiles  {
+#connectedProfiles {
 	list-style-type: none;
 	margin-bottom: 8px;
 }
@@ -215,7 +233,7 @@ body {
 }
 
 #appIcons a {
-	margin-right:12px;
+	margin-right: 12px;
 }
 
 #appIcons img {

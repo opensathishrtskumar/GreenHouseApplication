@@ -62,4 +62,16 @@ public class UserRolesDTO implements Serializable {
 	public void setHashKey(String hashKey) {
 		this.hashKey = hashKey;
 	}
+
+	public boolean isBitPositionSet(String privileges, String bitPosition) {
+		int totalValue = Integer.parseInt(privileges);
+		int checkBit = Integer.parseInt(bitPosition);
+		int returnValue =(totalValue >> checkBit) & 1; 
+		return (returnValue==1)?true: false;
+		/*
+		 * UserRolesDTO details = new UserRolesDTO(); int privileges =
+		 * details.getPrivileges();
+		 */
+		 
+	}
 }
