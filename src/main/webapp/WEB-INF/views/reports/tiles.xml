@@ -26,4 +26,9 @@
 		
 	</definition>
 	
+	
+	<definition name="reports/manage" extends="homeSignedIn">
+		<put-attribute name="content" value="/WEB-INF/views/reports/daterange.jsp" />
+	</definition>
+	
 </tiles-definitions>

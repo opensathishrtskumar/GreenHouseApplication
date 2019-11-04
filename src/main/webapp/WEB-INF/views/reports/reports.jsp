@@ -6,8 +6,21 @@
 
 
 <ul id="connectedAccounts" class="listings">
+	
 	<li class="listing">
 		<a href="<c:url value="/ems/reports/daterange" />">Date Range Reports</a>	
+	</li>
+	
+	<li class="listing">
+		<a href="#">Daily Cumulative Report</a>	
+	</li>
+	
+	<li class="listing">
+		<a href="#">Monthly Cumulative Report</a>	
+	</li>
+	
+	<li class="listing">
+		<a href="#">Summary</a>	
 	</li>
 	
 </ul>

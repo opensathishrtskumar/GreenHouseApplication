@@ -8,12 +8,20 @@
 	<li class="listing">
 		<a href="<c:url value="/ems/user" />">Mange Users / Roles</a>
 	</li>
+	
 	<li class="listing">
 		<a href="<c:url value="/ems/devices/show" />">Mange Devices</a>
 	</li>
 	
 	<li class="listing">
-		<a href="<c:url value="/ems/devices/show" />">Mange Schedules</a>
+		<a href="#">Mange Schedules</a>
 	</li>
 	
+	<li class="listing">
+		<a href="#">Mange Dashboard</a>
+	</li>
+	
+	<li class="listing">
+		<a href="#">Mange Reports</a>
+	</li>
 </ul>
