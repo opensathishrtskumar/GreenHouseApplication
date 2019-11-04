@@ -26,7 +26,7 @@ public class UserRoleValidator {
 			return formBinding;
 		}
 		
-		if(StringUtils.isEmpty(form.getUniqueId() <= 0)) {
+/*		if(StringUtils.isEmpty(form.getUniqueId() <= 0)) {
 			formBinding.rejectValue("uniqueId", "uniqueId.invalid");
 		}
 		
@@ -37,7 +37,7 @@ public class UserRoleValidator {
 		if(StringUtils.isEmpty(form.getPrivileges())) {
 			formBinding.rejectValue("privileges", "privileges.invalid");
 		}
-		
+*/		
 		return formBinding;
 	}
 

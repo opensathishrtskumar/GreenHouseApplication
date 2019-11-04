@@ -19,9 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/rest")
-public class SchedulerController {
 
-	private static final Logger logger = LoggerFactory.getLogger(SchedulerController.class);
+public class ScheudlerController {
+
+	private static final Logger logger = LoggerFactory.getLogger(ScheudlerController.class);
 
 	@Autowired
 	SchedulerStartupListener schedules;
