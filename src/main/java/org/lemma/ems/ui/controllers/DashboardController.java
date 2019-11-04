@@ -32,12 +32,4 @@ public class DashboardController {
 	public ModelAndView getDateRangeReportsPage() {
 		return new ModelAndView("dashboard/chartview", "reportForm", new DateRangeReportForm());
 	}
-
-	/**
-	 * @return
-	 */
-	@RequestMapping(value = "/ems/management", method = RequestMethod.GET)
-	public ModelAndView managementView() {
-		return new ModelAndView("management");
-	}
 }
