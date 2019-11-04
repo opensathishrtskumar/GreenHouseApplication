@@ -25,23 +25,23 @@
 	</c:otherwise>
 </c:choose>
  
- 
- 
- <!-- All form validation errors and Success message -->	     
-   	<spring:hasBindErrors name="deviceDetailsForm">
-  	 	<div class="error">
-			<c:forEach var="error" items="${errors.allErrors}">
-				<b><spring:message message="${error}" /></b>
-				<br />
-			</c:forEach>
-		</div>
-   </spring:hasBindErrors>
-
-<c:if test="${param.msg != null}">
-	<div style="display: inline;float: left;width: 100%;align-content: center;" class="success">${param.msg}</div>
-</c:if>
- 
- <hr>
+ <form>
+	 <fieldset>
+	 <!-- All form validation errors and Success message -->	     
+	   	<spring:hasBindErrors name="deviceDetailsForm">
+	  	 	<div class="error">
+				<c:forEach var="error" items="${errors.allErrors}">
+					<b><spring:message message="${error}" /></b>
+					<br />
+				</c:forEach>
+			</div>
+	   </spring:hasBindErrors>
+	
+		<c:if test="${param.msg != null}">
+			<div style="display: inline;float: left;width: 100%;align-content: center;" class="success">${param.msg}</div>
+		</c:if>
+	 </fieldset>
+ </form>
 
 <div id="accordion">
 
@@ -145,10 +145,10 @@
 				</div>	
 				
 				<div style="display: inline;width: 100%">
-					<div style="display: inline;float: left;width: 30%">
+					<div style="display: inline;float: left;width: 35%">
 						<input type="submit" id="adddevice" value="Add Device" disabled="disabled">
 					</div>
-					<div style="display: inline;float: left;width: 30%">	
+					<div style="display: inline;float: left;width: 40%">	
 						<input type="button" id="testconnection" value="Test Connection">
 					</div>	
 				</div>
