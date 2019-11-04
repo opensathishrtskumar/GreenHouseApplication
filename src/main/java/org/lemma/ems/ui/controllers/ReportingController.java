@@ -24,17 +24,26 @@ public class ReportingController {
 	private static final Logger logger = LoggerFactory.getLogger(ReportingController.class);
 
 
+	/**
+	 * @return
+	 */
 	@RequestMapping(value = "/ems/reports", method = RequestMethod.GET)
 	public ModelAndView showReportsPage() {
 		return new ModelAndView("reports");
 	}
 
+	/**
+	 * @return
+	 */
 	@RequestMapping(value = "/ems/reports/daterange", method = RequestMethod.GET)
 	public ModelAndView getDateRangeReportsPage() {
-		ModelAndView view = new ModelAndView("reports/daterange", "reportForm", new DateRangeReportForm());
-		return view;
+		return new ModelAndView("reports/daterange", "reportForm", new DateRangeReportForm());
 	}
 
+	/**
+	 * @param deviceid
+	 * @return
+	 */
 	@RequestMapping(value = "/ems/reports/getmemorymapping/{deviceid}", method = { RequestMethod.GET,
 			RequestMethod.POST })
 	public @ResponseBody Map<String, String> getMemoryMappings(@PathVariable("deviceid") int deviceid) {
@@ -45,6 +54,12 @@ public class ReportingController {
 		return memoryMapping;
 	}
 
+	/**
+	 * @param form
+	 * @param formBinding
+	 * @param response
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/ems/reports/daterange", method = RequestMethod.POST)
 	public void postDateRangeReportsPage(@Valid DateRangeReportForm form, BindingResult formBinding,
 			HttpServletResponse response) throws Exception {
@@ -54,5 +69,13 @@ public class ReportingController {
 		if (formBinding.hasErrors()) {
 			logger.error("Form has error !!!");
 		}
+	}
+	
+	/**
+	 * @return
+	 */
+	@RequestMapping(value = "/ems/reports/management", method = RequestMethod.GET)
+	public ModelAndView showManageReports() {
+		return new ModelAndView("reports/manage");
 	}
 }

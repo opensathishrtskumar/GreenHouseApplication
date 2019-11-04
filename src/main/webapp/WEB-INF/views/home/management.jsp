@@ -22,6 +22,6 @@
 	</li>
 	
 	<li class="listing">
-		<a href="#">Mange Reports</a>
+		<a href="<c:url value="/ems/reports/management" />">Mange Reports</a>
 	</li>
 </ul>
