@@ -28,7 +28,7 @@
 	
 	
 	<definition name="reports/manage" extends="homeSignedIn">
-		<put-attribute name="content" value="/WEB-INF/views/reports/daterange.jsp" />
+		<put-attribute name="content" value="/WEB-INF/views/reports/rptmanage.jsp" />
 	</definition>
 	
 </tiles-definitions>
