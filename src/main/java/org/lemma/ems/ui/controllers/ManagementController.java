@@ -25,8 +25,8 @@ public class ManagementController {
 		return new ModelAndView("homeSignedIn");
 	}
 
-	@RequestMapping(value = "/ems/user", method = RequestMethod.GET)
+	@RequestMapping(value = "/ems/management", method = RequestMethod.GET)
 	public ModelAndView showReportsPage() {
-		return new ModelAndView("user");
+		return new ModelAndView("management");
 	}
 }
