@@ -14,41 +14,41 @@
 </form>
 
 <form:form id="roleManageForm" method="post" action="${roleManageUrl}" modelAttribute="userRolesForm">
-<table border="1">
-	<!-- Print the roles name only once  -->
-		<tr>
-			<th rowspan="2">Page Details</th>
-			<c:forEach items="${existingUserRoles}" var="role" varStatus="roleIndex">
-				<c:set var = "roleCount" value = "${roleIndex.count}"/>
-			</c:forEach>
-			<th colspan="${roleCount}">Roles</th>
-		</tr>
-		<tr>
-			<c:forEach items="${existingUserRoles}" var="role" varStatus="roleIndex">
-				<td>${role.roleType}</td>			
-			</c:forEach>
-		</tr>
-		
-		<c:forEach items="${pageAccessDetails}" var="page" varStatus="index">
+	<table border="1">
+		<!-- Print the roles name only once  -->
 			<tr>
-			<td>${page.resourceName}</td> 
-			<c:forEach items="${existingUserRoles}" var="role" varStatus="roleIndex">
-				<td> <input type="hidden" path="uniqueId[${page.uniqueId}]" value="${page.uniqueId}"/> 
-	 			<c:choose>
-					<c:when test="${role.isBitPositionSet(role.privileges,page.bitPosition) == true}">
-						<center><input  type="checkbox" path="bitPosition[${page.bitPosition}]" value="${page.bitPosition}" checked="checked"/></center>								
-					</c:when>
-					<c:otherwise>
-						<center><input type="checkbox" path="bitPosition[${page.bitPosition}]" value="${page.bitPosition}" /></center>
-					</c:otherwise>
-				</c:choose>
-				</td>
-			</c:forEach>
+				<th rowspan="2">Device Name</th>
+				<th colspan="${reportTypes.size()}">Report Type</th>
 			</tr>
-		 </c:forEach>
- </table> 
- <br>
-		<div style="display: inline;float: left;width: 30%">
-			<input type="submit" class="addUpdatedevice" value="Add/Update Device">
-		</div>
+			<tr>
+				<c:forEach items="${reportTypes}" var="reportType">
+					<td>${reportType.desc}</td>			
+				</c:forEach>
+			</tr>
+			
+			<c:forEach items="${activeDevices}" var="device" varStatus="index">
+				<tr>
+				<td>${device.deviceName}</td> 
+				<td><input style="display: ce" type="checkbox" /></td>
+				
+				<%-- <c:forEach items="${existingUserRoles}" var="role" varStatus="roleIndex">
+					<td> <input type="hidden" path="uniqueId[${page.uniqueId}]" value="${page.uniqueId}"/> 
+					<center><input  type="checkbox" path="bitPosition[${page.bitPosition}]" value="${page.bitPosition}" checked="checked"/></center>
+		 			<c:choose>
+						<c:when test="${role.isBitPositionSet(role.privileges,page.bitPosition) == true}">
+							<center><input  type="checkbox" path="bitPosition[${page.bitPosition}]" value="${page.bitPosition}" checked="checked"/></center>								
+						</c:when>
+						<c:otherwise>
+							<center><input type="checkbox" path="bitPosition[${page.bitPosition}]" value="${page.bitPosition}" /></center>
+						</c:otherwise>
+					</c:choose>
+					</td>
+				</c:forEach> --%>
+				</tr>
+			 </c:forEach>
+	 </table> 
+ 	<br>
+	<div style="display: inline;float: left;width: 100%">
+		<center><input type="submit" class="addUpdatedevice" value="  Update  "></center>
+	</div>
 </form:form>
