@@ -30,11 +30,13 @@
 <form:form id="roleManageForm" method="post" action="${roleManageUrl}" modelAttribute="userRolesForm">
 <table border="1">
 	<!-- Print the roles name only once  -->
-		<th rowspan="2">Page Details</th>
-		<c:forEach items="${existingUserRoles}" var="role" varStatus="roleIndex">
-			<c:set var = "roleCount" value = "${roleIndex.count}"/>
-		</c:forEach>
-		<th colspan="${roleCount}">Roles</th>
+		<tr>
+			<th rowspan="2">Page Details</th>
+			<c:forEach items="${existingUserRoles}" var="role" varStatus="roleIndex">
+				<c:set var = "roleCount" value = "${roleIndex.count}"/>
+			</c:forEach>
+			<th colspan="${roleCount}">Roles</th>
+		</tr>
 		<tr>
 		<c:forEach items="${existingUserRoles}" var="role" varStatus="roleIndex">
 			<td>${role.roleType}</td>			

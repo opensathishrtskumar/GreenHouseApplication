@@ -3,70 +3,52 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<h3>Date Range Reports</h3>
+<h3>Reports Configuration</h3>
 
-<c:if test="${not empty message}">
-	<div class="${message.type.cssClass}">${message.text}</div>
-</c:if>
-
-<form:form id="daterangereport" method="post"
-	modelAttribute="reportForm" >
-	<div class="formInfo">
-		<h2>Select Report Criteria</h2>
-		<s:bind path="*">
-		</s:bind>
-	</div>
+<form>
 	<fieldset>
-	
-		<span class="oneline">
-			<form:label path="deviceName">Device Name <form:errors
-					path="deviceName" cssClass="error" />
-			</form:label>
-			<form:select path="deviceName" id="deviceNames" multiple="multiple" class="3col active">
-				<c:forEach items="${deviceNames}" var="device">
-					<form:option value="${device.uniqueId}" id="${device.uniqueId}">${device}</form:option>
-				</c:forEach>
-			</form:select>
-		</span>
-		
-		<span class="oneline">
-			<form:label path="memoryMappingDetails">Memory Mappings <form:errors
-					path="memoryMappingDetails" cssClass="error" />
-			</form:label>
-			
-			<form:select path="memoryMappingDetails" id="memoryMappings" multiple="multiple" class="3col active">
-			</form:select>
-		</span>
-		
-		<div class="oneline">
-			<form:label path="reportStartTime">Report start time <form:errors
-					path="reportStartTime" cssClass="error" />
-			</form:label>
-			
-			<div id="starttime"  class="input-append">
-				<form:input path="reportStartTime" id="reportStartTime" cssStyle="width: 30%;" />
-				<span class="add-on"> <i data-time-icon="icon-time"
-					data-date-icon="icon-calendar"></i>
-				</span>
-			</div>
-		</div>
-		
-		<div class="oneline">
-			<form:label path="reportEndTime">Report end time <form:errors
-					path="reportEndTime" cssClass="error" />
-			</form:label>
-	
-			<div  id="endtime" class="input-append">
-				<form:input path="reportEndTime" id="reportEndTime" cssStyle="width: 30%;" />
-				<span class="add-on"> <i data-time-icon="icon-time"
-					data-date-icon="icon-calendar"></i>
-				</span>
-			</div>
-		</div>
-
+		<c:if test="${not empty message}">
+			<div class="${message.type.cssClass}">${message.text}</div>
+		</c:if>	
 	</fieldset>
+</form>
 
-	<p align="center">
-		<button type="submit">Download</button>
-	</p>
+<form:form id="roleManageForm" method="post" action="${roleManageUrl}" modelAttribute="userRolesForm">
+<table border="1">
+	<!-- Print the roles name only once  -->
+		<tr>
+			<th rowspan="2">Page Details</th>
+			<c:forEach items="${existingUserRoles}" var="role" varStatus="roleIndex">
+				<c:set var = "roleCount" value = "${roleIndex.count}"/>
+			</c:forEach>
+			<th colspan="${roleCount}">Roles</th>
+		</tr>
+		<tr>
+			<c:forEach items="${existingUserRoles}" var="role" varStatus="roleIndex">
+				<td>${role.roleType}</td>			
+			</c:forEach>
+		</tr>
+		
+		<c:forEach items="${pageAccessDetails}" var="page" varStatus="index">
+			<tr>
+			<td>${page.resourceName}</td> 
+			<c:forEach items="${existingUserRoles}" var="role" varStatus="roleIndex">
+				<td> <input type="hidden" path="uniqueId[${page.uniqueId}]" value="${page.uniqueId}"/> 
+	 			<c:choose>
+					<c:when test="${role.isBitPositionSet(role.privileges,page.bitPosition) == true}">
+						<center><input  type="checkbox" path="bitPosition[${page.bitPosition}]" value="${page.bitPosition}" checked="checked"/></center>								
+					</c:when>
+					<c:otherwise>
+						<center><input type="checkbox" path="bitPosition[${page.bitPosition}]" value="${page.bitPosition}" /></center>
+					</c:otherwise>
+				</c:choose>
+				</td>
+			</c:forEach>
+			</tr>
+		 </c:forEach>
+ </table> 
+ <br>
+		<div style="display: inline;float: left;width: 30%">
+			<input type="submit" class="addUpdatedevice" value="Add/Update Device">
+		</div>
 </form:form>

@@ -6,10 +6,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.lemma.ems.service.ReportManagementService;
 import org.lemma.ems.ui.model.DateRangeReportForm;
 import org.lemma.ems.util.EMSUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +25,9 @@ public class ReportingController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ReportingController.class);
 
+	@Autowired
+	private ReportManagementService reportService;
+	
 
 	/**
 	 * @return
@@ -76,6 +81,6 @@ public class ReportingController {
 	 */
 	@RequestMapping(value = "/ems/reports/management", method = RequestMethod.GET)
 	public ModelAndView showManageReports() {
-		return new ModelAndView("reports/manage");
+		return reportService.showReportManagementPage();
 	}
 }
