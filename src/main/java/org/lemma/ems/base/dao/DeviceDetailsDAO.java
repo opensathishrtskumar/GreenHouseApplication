@@ -40,7 +40,7 @@ public class DeviceDetailsDAO extends BaseDAO {
 	
 	
 	/* All Constants */
-	public static enum Status {
+	public enum Status {
 
 		ACTIVE(1), DISABLED(2), DELETED(9);
 
@@ -59,7 +59,7 @@ public class DeviceDetailsDAO extends BaseDAO {
 	 * EMS is read-only devices BMS is read-write devices
 	 *
 	 */
-	public static enum Type {
+	public enum Type {
 
 		EMS(1), BMS(2);
 
@@ -100,24 +100,7 @@ public class DeviceDetailsDAO extends BaseDAO {
 
 			@Override
 			public DeviceDetailsDTO mapRow(ResultSet resultSet, int rowIndex) throws SQLException {
-				DeviceDetailsDTO details = new DeviceDetailsDTO();
-
-				details.setUniqueId(resultSet.getLong("id"));
-				details.setDeviceId(resultSet.getInt("deviceid"));
-				details.setDeviceName(resultSet.getString("devicedesc"));
-				details.setBaudRate(resultSet.getInt("baudrate"));
-				details.setWordLength(resultSet.getInt("wordlength"));
-				details.setStopbit(resultSet.getInt("stopbit"));
-				details.setParity(resultSet.getString("parity"));
-				details.setPort(resultSet.getString("port"));
-				details.setMethod(resultSet.getString("method"));
-				details.setRegisterMapping(resultSet.getString("registermapping"));// MSRF/LSRF
-				details.setEncoding(resultSet.getString("encoding"));
-				details.setStatus(resultSet.getInt("status"));
-				details.setType(resultSet.getInt("type"));
-				details.setCreatedTimeStamp(resultSet.getLong("createdtimestamp"));
-				details.setModifiedTimeStamp(resultSet.getLong("modifiedtimestamp"));
-				details.setHashKey(resultSet.getString("hashkey"));
+				DeviceDetailsDTO details = mapDeviceDetail(resultSet);
 
 				// Load Memory Mappings of current device
 				List<ExtendedDeviceMemoryDTO> fetchAllMemoryMappings = deviceMemoryDAO.fetchAllMemoryMappings(
@@ -127,9 +110,32 @@ public class DeviceDetailsDAO extends BaseDAO {
 
 				return details;
 			}
+			
 		}, params);
 	}
 
+	private DeviceDetailsDTO mapDeviceDetail(ResultSet resultSet) throws SQLException {
+		DeviceDetailsDTO details = new DeviceDetailsDTO();
+
+		details.setUniqueId(resultSet.getLong("id"));
+		details.setDeviceId(resultSet.getInt("deviceid"));
+		details.setDeviceName(resultSet.getString("devicedesc"));
+		details.setBaudRate(resultSet.getInt("baudrate"));
+		details.setWordLength(resultSet.getInt("wordlength"));
+		details.setStopbit(resultSet.getInt("stopbit"));
+		details.setParity(resultSet.getString("parity"));
+		details.setPort(resultSet.getString("port"));
+		details.setMethod(resultSet.getString("method"));
+		details.setRegisterMapping(resultSet.getString("registermapping"));// MSRF/LSRF
+		details.setEncoding(resultSet.getString("encoding"));
+		details.setStatus(resultSet.getInt("status"));
+		details.setType(resultSet.getInt("type"));
+		details.setCreatedTimeStamp(resultSet.getLong("createdtimestamp"));
+		details.setModifiedTimeStamp(resultSet.getLong("modifiedtimestamp"));
+		details.setHashKey(resultSet.getString("hashkey"));
+		return details;
+	}
+	
 	/**
 	 * @param device
 	 * @return

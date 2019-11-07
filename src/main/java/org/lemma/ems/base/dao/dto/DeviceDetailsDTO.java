@@ -36,6 +36,8 @@ public class DeviceDetailsDTO implements Serializable {
 	private String hashKey;
 
 	private List<ExtendedDeviceMemoryDTO> memoryMappings;
+	
+	private DeviceReportMasterDTO reportMaster;
 
 	public DeviceDetailsDTO() {
 		//
@@ -175,5 +177,13 @@ public class DeviceDetailsDTO implements Serializable {
 
 	public void setEncoding(String encoding) {
 		this.encoding = encoding;
+	}
+
+	public DeviceReportMasterDTO getReportMaster() {
+		return reportMaster;
+	}
+
+	public void setReportMaster(DeviceReportMasterDTO reportMaster) {
+		this.reportMaster = reportMaster;
 	}
 }
