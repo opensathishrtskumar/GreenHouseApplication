@@ -13,7 +13,7 @@
 	</fieldset>
 </form>
 
-<form:form id="roleManageForm" method="post" action="${roleManageUrl}" modelAttribute="userRolesForm">
+<form:form id="reportManagementForm" method="post" action="${roleManageUrl}" modelAttribute="reportManagementForm">
 	<table border="1">
 		<!-- Print the roles name only once  -->
 			<tr>
@@ -22,33 +22,34 @@
 			</tr>
 			<tr>
 				<c:forEach items="${reportTypes}" var="reportType">
-					<td>${reportType.desc}</td>			
+					<td><b>${reportType.desc}</b></td>			
 				</c:forEach>
 			</tr>
 			
 			<c:forEach items="${activeDevices}" var="device" varStatus="index">
 				<tr>
-				<td>${device.deviceName}</td> 
-				<td><input style="display: ce" type="checkbox" /></td>
 				
-				<%-- <c:forEach items="${existingUserRoles}" var="role" varStatus="roleIndex">
-					<td> <input type="hidden" path="uniqueId[${page.uniqueId}]" value="${page.uniqueId}"/> 
-					<center><input  type="checkbox" path="bitPosition[${page.bitPosition}]" value="${page.bitPosition}" checked="checked"/></center>
-		 			<c:choose>
-						<c:when test="${role.isBitPositionSet(role.privileges,page.bitPosition) == true}">
-							<center><input  type="checkbox" path="bitPosition[${page.bitPosition}]" value="${page.bitPosition}" checked="checked"/></center>								
-						</c:when>
-						<c:otherwise>
-							<center><input type="checkbox" path="bitPosition[${page.bitPosition}]" value="${page.bitPosition}" /></center>
-						</c:otherwise>
-					</c:choose>
+				<td>${device.deviceName}</td> 
+				
+				<c:forEach items="${reportTypes}" var="type" varStatus="rptIndex">
+					<td>  
+			 			<c:choose>
+							<c:when test="${device.reportMaster.isBitSet(device.reportMaster.type,type.bitPosition)}">
+								<center><input  type="checkbox" name="bitPosition[${page.bitPosition}]" value="${page.bitPosition}" checked="checked"/></center>								
+							</c:when>
+							<c:otherwise>
+								<center><input  type="checkbox" name="bitPosition[${page.bitPosition}]" value="${page.bitPosition}"/></center>
+							</c:otherwise>
+						</c:choose>
 					</td>
-				</c:forEach> --%>
+				</c:forEach>
 				</tr>
 			 </c:forEach>
-	 </table> 
- 	<br>
-	<div style="display: inline;float: left;width: 100%">
-		<center><input type="submit" class="addUpdatedevice" value="  Update  "></center>
+	 </table>
+	 <br> 
+	<div style="display: inline;float: left;width: 100%;">
+		<p align="center">
+			<input type="submit" class="addUpdatedevice" value="  Update  ">
+		</p>
 	</div>
 </form:form>

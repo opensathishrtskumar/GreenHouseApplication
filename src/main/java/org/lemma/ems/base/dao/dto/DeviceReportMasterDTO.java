@@ -2,6 +2,8 @@ package org.lemma.ems.base.dao.dto;
 
 import java.io.Serializable;
 
+import org.lemma.ems.util.BitUtil;
+
 /**
  * @author RTS Sathish  Kumar
  *
@@ -54,5 +56,8 @@ public class DeviceReportMasterDTO implements Serializable {
 	public void setCreatedtimestamp(long createdtimestamp) {
 		this.createdtimestamp = createdtimestamp;
 	}
-
+	
+	public boolean isBitSet(long number, int position) {
+		return BitUtil.checkBit(number, position);
+	}
 }

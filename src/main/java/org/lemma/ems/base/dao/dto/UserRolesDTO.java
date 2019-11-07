@@ -2,6 +2,8 @@ package org.lemma.ems.base.dao.dto;
 
 import java.io.Serializable;
 
+import org.lemma.ems.util.BitUtil;
+
 /**
  * @author Sathish Kumar
  *
@@ -63,15 +65,7 @@ public class UserRolesDTO implements Serializable {
 		this.hashKey = hashKey;
 	}
 
-	public boolean isBitPositionSet(String privileges, String bitPosition) {
-		int totalValue = Integer.parseInt(privileges);
-		int checkBit = Integer.parseInt(bitPosition);
-		int returnValue =(totalValue >> checkBit) & 1; 
-		return (returnValue==1)?true: false;
-		/*
-		 * UserRolesDTO details = new UserRolesDTO(); int privileges =
-		 * details.getPrivileges();
-		 */
-		 
+	public boolean isBitPositionSet(int privileges, int bitPosition) {
+		return BitUtil.checkBit(privileges, bitPosition);
 	}
 }
