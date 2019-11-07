@@ -98,7 +98,7 @@ public class SchedulerStartupListener {
 
 			List<SchedulesDTO> activeSchedules = schedulesDAO.fetchAllSchedules();
 
-			// Not allowed to trigger again and again
+			// Not allowed to trigger multiple times
 			synchronized (SCHEDULER_MUTEX) {
 				scheduleJobs(scheduler, activeSchedules);
 			}
@@ -120,10 +120,13 @@ public class SchedulerStartupListener {
 				 */
 				dropExistingJob(scheduler, schedule, triggerKey, jobKey);
 
-				if (schedule.getStatus() == SchedulesDAO.Status.ACTIVE.getStatus()) {
+				if(schedule.getType() == SchedulesDAO.Status.INACTIVE.getStatus())
+					continue;
+				
+				if (schedule.getStatus() == SchedulesDAO.Type.CRONJOB.getType()) {
 					Trigger cronTriggerBean = createTrigger(schedule, jobDetail);
 					scheduler.scheduleJob(jobDetail, cronTriggerBean);
-				} else if (schedule.getStatus() == SchedulesDAO.Status.ONETIMEJOB.getStatus()) {
+				} else if (schedule.getStatus() == SchedulesDAO.Type.ONETIMEJOB.getType()) {
 					scheduleOneTimeJob(schedule, new Date());
 				}
 

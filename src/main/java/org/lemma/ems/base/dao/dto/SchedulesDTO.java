@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @author RTS Sathish Kumar
  *
  */
-public class SchedulesDTO implements Serializable{
+public class SchedulesDTO implements Serializable {
 
 	private long id;
 	private String groupKey;
@@ -14,6 +14,7 @@ public class SchedulesDTO implements Serializable{
 	private String description;
 	private String className;
 	private String cronExpression;
+	private int type;
 	private long status;
 	private long createdTimeStamp;
 	private long modifiedTimeStamp;
@@ -65,6 +66,14 @@ public class SchedulesDTO implements Serializable{
 
 	public void setCronExpression(String cronExpression) {
 		this.cronExpression = cronExpression;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 
 	public long getStatus() {

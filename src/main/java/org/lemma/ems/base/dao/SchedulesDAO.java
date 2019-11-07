@@ -25,7 +25,7 @@ public class SchedulesDAO extends BaseDAO {
 	/* All STATUS configuration */
 
 	public enum Status {
-		ACTIVE(1), INACTIVE(2), ONETIMEJOB(3);
+		ACTIVE(1), INACTIVE(2);
 
 		int status;
 
@@ -35,6 +35,20 @@ public class SchedulesDAO extends BaseDAO {
 
 		public int getStatus() {
 			return status;
+		}
+	}
+	
+	public enum Type {
+		CRONJOB(1), ONETIMEJOB(3);
+
+		int type;
+
+		private Type(int type) {
+			this.type = type;
+		}
+
+		public int getType() {
+			return type;
 		}
 	}
 
@@ -89,6 +103,7 @@ public class SchedulesDAO extends BaseDAO {
 			details.setDescription(resultSet.getString("description"));
 			details.setClassName(resultSet.getString("classname"));
 			details.setCronExpression(resultSet.getString("cronexpression"));
+			details.setType(resultSet.getInt("type"));
 			details.setStatus(resultSet.getInt("status"));
 			details.setCreatedTimeStamp(resultSet.getLong("createdtimestamp"));
 			details.setModifiedTimeStamp(resultSet.getLong("modifiedtimestamp"));
