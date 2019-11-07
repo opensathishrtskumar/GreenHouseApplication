@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
 import org.lemma.ems.base.dao.dto.DeviceMemoryDTO;
+import org.lemma.ems.base.dao.dto.DeviceReportMasterDTO;
 import org.lemma.ems.base.dao.dto.ExtendedDeviceMemoryDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,12 +34,14 @@ public class DeviceDetailsDAO extends BaseDAO {
 			+ "port,method,registermapping,encoding,status,type,createdtimestamp,modifiedtimestamp,hashkey) "
 			+ "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-	
 	public static final String RETRIEVE_EMS_ACTIVE_DEVICES = "select * from setup.devicedetails where status = ? and type = ?";
-	
+
 	public static final String UPDATE_DEVICE = "update setup.devicedetails set status=?,modifiedtimestamp=?,hashkey=?  where id=?";
-	
-	
+
+	public static final String RETRIEVES_DEVICES_4_REPORT = "select d.*,r.id as rid,r.deviceid as rdeviceid,r.type as rtype, "
+			+ "r.status as rstatus,r.createdtimestamp as  rcreatedtimestamp  from setup.devicedetails d left join setup.devicereportmaster r"
+			+ " on d.id = r.deviceid where d.status = ? and d.type = ?";
+
 	/* All Constants */
 	public enum Status {
 
@@ -81,11 +84,11 @@ public class DeviceDetailsDAO extends BaseDAO {
 		this.deviceMemoryDAO = deviceMemoryDAO;
 	}
 
-	public List<DeviceDetailsDTO> fetchEMSActiveDevices(){
-		return fetchDeviceDetails(RETRIEVE_EMS_ACTIVE_DEVICES, new Object[] {Status.ACTIVE.getStatus(), Type.EMS.getType() });
+	public List<DeviceDetailsDTO> fetchEMSActiveDevices() {
+		return fetchDeviceDetails(RETRIEVE_EMS_ACTIVE_DEVICES,
+				new Object[] { Status.ACTIVE.getStatus(), Type.EMS.getType() });
 	}
-	
-	
+
 	/**
 	 * Loads all devices except {@link DeviceDetailsDAO.Status.DELETED} All columnns
 	 * must be selected from table
@@ -110,10 +113,38 @@ public class DeviceDetailsDAO extends BaseDAO {
 
 				return details;
 			}
-			
+
 		}, params);
 	}
 
+	
+	public List<DeviceDetailsDTO> fetchDevice4ReportMaster() {
+		
+		final String query = RETRIEVES_DEVICES_4_REPORT;
+		final Object[] params = new Object[] {Status.ACTIVE.getStatus(), Type.EMS.getType()};
+		
+		return this.jdbcTemplate.query(query, new RowMapper<DeviceDetailsDTO>() {
+
+			@Override
+			public DeviceDetailsDTO mapRow(ResultSet resultSet, int rowIndex) throws SQLException {
+				DeviceDetailsDTO details = mapDeviceDetail(resultSet);
+				details.setReportMaster(mapReportMasterDetails(resultSet));
+				return details;
+			}
+
+		}, params);
+	}
+	
+	private DeviceReportMasterDTO mapReportMasterDetails(ResultSet resultSet) throws SQLException {
+		DeviceReportMasterDTO details = new DeviceReportMasterDTO();
+		details.setId(resultSet.getLong("rid"));
+		details.setDeviceid(resultSet.getLong("rdeviceid"));
+		details.setType(resultSet.getInt("rtype"));
+		details.setStatus(resultSet.getInt("rstatus"));
+		details.setCreatedtimestamp(resultSet.getLong("rcreatedtimestamp"));
+		return details;
+	}
+	
 	private DeviceDetailsDTO mapDeviceDetail(ResultSet resultSet) throws SQLException {
 		DeviceDetailsDTO details = new DeviceDetailsDTO();
 
@@ -135,7 +166,7 @@ public class DeviceDetailsDAO extends BaseDAO {
 		details.setHashKey(resultSet.getString("hashkey"));
 		return details;
 	}
-	
+
 	/**
 	 * @param device
 	 * @return
@@ -175,8 +206,9 @@ public class DeviceDetailsDAO extends BaseDAO {
 
 		return deviceUniqueId;
 	}
-	
+
 	public int updateDeviceDetails(DeviceDetailsDTO dto) {
-		return super.executeQuery(UPDATE_DEVICE, new Object[] {dto.getStatus(),dto.getModifiedTimeStamp(),dto.getHashKey(),dto.getUniqueId()});
+		return super.executeQuery(UPDATE_DEVICE,
+				new Object[] { dto.getStatus(), dto.getModifiedTimeStamp(), dto.getHashKey(), dto.getUniqueId() });
 	}
 }

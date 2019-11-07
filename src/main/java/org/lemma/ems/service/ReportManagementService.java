@@ -47,7 +47,7 @@ public class ReportManagementService {
 				list.add(new ReportDTO(type.getDesc(), type.getType()));
 		}
 				
-		List<DeviceDetailsDTO> emsActiveDevices = deviceDetailsDAO.fetchEMSActiveDevices();
+		List<DeviceDetailsDTO> emsActiveDevices = deviceDetailsDAO.fetchDevice4ReportMaster();
 		
 		modelAndView.addObject("reportTypes", list);
 		modelAndView.addObject("activeDevices", emsActiveDevices);
