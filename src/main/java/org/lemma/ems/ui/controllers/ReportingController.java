@@ -1,23 +1,20 @@
 package org.lemma.ems.ui.controllers;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.lemma.ems.service.ReportManagementService;
 import org.lemma.ems.ui.model.DateRangeReportForm;
+import org.lemma.ems.ui.model.ReportManagementForm;
 import org.lemma.ems.util.EMSUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -46,20 +43,6 @@ public class ReportingController {
 	}
 
 	/**
-	 * @param deviceid
-	 * @return
-	 */
-	@RequestMapping(value = "/ems/reports/getmemorymapping/{deviceid}", method = { RequestMethod.GET,
-			RequestMethod.POST })
-	public @ResponseBody Map<String, String> getMemoryMappings(@PathVariable("deviceid") int deviceid) {
-		logger.trace("Memory mapping requested for deviceuniqueid {}", deviceid);
-
-		Map<String, String> memoryMapping = new LinkedHashMap<>();
-
-		return memoryMapping;
-	}
-
-	/**
 	 * @param form
 	 * @param formBinding
 	 * @param response
@@ -82,5 +65,13 @@ public class ReportingController {
 	@RequestMapping(value = "/ems/reports/management", method = RequestMethod.GET)
 	public ModelAndView showManageReports() {
 		return reportService.showReportManagementPage();
+	}
+	
+	/**
+	 * @return
+	 */
+	@RequestMapping(value = "/ems/reports/management", method = RequestMethod.POST)
+	public ModelAndView updateReportsMaster(@ModelAttribute("reportManagementForm") ReportManagementForm form) {
+		return reportService.updateReportMaster(form);
 	}
 }
