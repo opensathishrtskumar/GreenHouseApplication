@@ -23,7 +23,6 @@ public class ReportingController {
 
 	@Autowired
 	private ReportManagementService reportService;
-	
 
 	/**
 	 * @return
@@ -31,6 +30,22 @@ public class ReportingController {
 	@RequestMapping(value = "/ems/reports", method = RequestMethod.GET)
 	public ModelAndView showReportsPage() {
 		return new ModelAndView("reports");
+	}
+
+	/**
+	 * @return
+	 */
+	@RequestMapping(value = "/ems/reports/management", method = RequestMethod.GET)
+	public ModelAndView showManageReports() {
+		return reportService.showReportManagementPage();
+	}
+
+	/**
+	 * @return
+	 */
+	@RequestMapping(value = "/ems/reports/management", method = RequestMethod.POST)
+	public ModelAndView updateReportsMaster(@ModelAttribute("reportManagementForm") ReportManagementForm form) {
+		return reportService.updateReportMaster(form);
 	}
 
 	/**
@@ -54,21 +69,5 @@ public class ReportingController {
 		if (formBinding.hasErrors()) {
 			logger.error("Form has error !!!");
 		}
-	}
-	
-	/**
-	 * @return
-	 */
-	@RequestMapping(value = "/ems/reports/management", method = RequestMethod.GET)
-	public ModelAndView showManageReports() {
-		return reportService.showReportManagementPage();
-	}
-	
-	/**
-	 * @return
-	 */
-	@RequestMapping(value = "/ems/reports/management", method = RequestMethod.POST)
-	public ModelAndView updateReportsMaster(@ModelAttribute("reportManagementForm") ReportManagementForm form) {
-		return reportService.updateReportMaster(form);
 	}
 }
