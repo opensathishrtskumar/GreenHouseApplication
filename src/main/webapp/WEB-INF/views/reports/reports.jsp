@@ -19,8 +19,4 @@
 		<a href="#">Monthly Cumulative Report</a>	
 	</li>
 	
-	<li class="listing">
-		<a href="#">Summary</a>	
-	</li>
-	
 </ul>

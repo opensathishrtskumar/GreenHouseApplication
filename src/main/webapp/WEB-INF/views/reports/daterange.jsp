@@ -23,18 +23,21 @@
 					path="deviceName" cssClass="error" />
 			</form:label>
 			<form:select path="deviceName" id="deviceNames" multiple="multiple" class="3col active">
-				<c:forEach items="${deviceNames}" var="device">
-					<form:option value="${device.uniqueId}" id="${device.uniqueId}">${device}</form:option>
+				<c:forEach items="${deviceList}" var="device">
+					<form:option value="${device.uniqueId}" id="${device.uniqueId}">${device.deviceName}(${device.port})</form:option>
 				</c:forEach>
 			</form:select>
 		</span>
 		
 		<span class="oneline">
-			<form:label path="memoryMappingDetails">Memory Mappings <form:errors
+			<form:label path="memoryMappingDetails">Memory Mappings<form:errors
 					path="memoryMappingDetails" cssClass="error" />
 			</form:label>
 			
 			<form:select path="memoryMappingDetails" id="memoryMappings" multiple="multiple" class="3col active">
+				<c:forEach items="${memoryMapping}" var="memory">
+					<form:option value="${memory.getName()}">${memory.getDesc()}</form:option>
+				</c:forEach>
 			</form:select>
 		</span>
 		

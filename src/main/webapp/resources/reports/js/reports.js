@@ -9,8 +9,9 @@ $(document).ready(
 			$("#starttime,#endtime").datetimepicker(options);
 
 			var memoryMappings = $('#memoryMappings');
+			var deviceNames = $('#deviceNames');
 
-			$('#deviceNames').multiselect({
+			$(deviceNames).multiselect({
 				columns : 2,
 				placeholder : 'Select Devices',
 				search : true,
@@ -19,7 +20,7 @@ $(document).ready(
 				},
 				selectAll : false,
 				onOptionClick : function(element, option) {
-					loadMemoryMappings($(option).val());
+					/*loadMemoryMappings($(option).val());*/
 				}
 			});
 
@@ -59,13 +60,18 @@ $(document).ready(
 			$("#daterangereport").submit(function() {
 				console.log("Form submit");
 				// Validate form
-				var memory = $(memoryMappings).val();
+				var selectedMemory = $(memoryMappings).val();
+				var selectedDevice = $(deviceNames).val();
+				
 
 				var validation = true;
 				var startTime = $("#reportStartTime").val();
 				var endTime = $("#reportEndTime").val();
 
-				if (memory.length == 0) {
+				if (selectedDevice.length == 0) {
+					alert("Please select any Device!");
+					validation = false;
+				} else if (selectedMemory.length == 0) {
 					alert("Please select any memory mapping!");
 					validation = false;
 				} else if (startTime.length == 0) {

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.lemma.ems.base.core.constants.Core;
+import org.lemma.ems.base.core.constants.Core.MemoryMapping;
 import org.lemma.ems.base.dao.DeviceDetailsDAO;
 import org.lemma.ems.base.dao.DeviceReportMasterDAO;
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
@@ -12,6 +14,7 @@ import org.lemma.ems.base.dao.dto.ReportDTO;
 import org.lemma.ems.base.mqueue.publisher.Sender;
 import org.lemma.ems.reports.core.ReportConstants;
 import org.lemma.ems.reports.core.ReportConstants.Reports;
+import org.lemma.ems.ui.model.DateRangeReportForm;
 import org.lemma.ems.ui.model.ReportManagementForm;
 import org.lemma.ems.ui.model.ReportManagementForm.ReportStatus;
 import org.lemma.ems.util.BitUtil;
@@ -127,4 +130,24 @@ public class ReportManagementService {
 		
 		return (int)sum;
 	}
+	
+	/**
+	 * @return
+	 */
+	public ModelAndView getDateRageReportPage() {
+		ModelAndView modelAndView = new ModelAndView("reports/daterange", "reportForm", new DateRangeReportForm());
+		
+		List<DeviceDetailsDTO> deviceList = deviceDetailsDAO.fetchEMSActiveDevices();
+		MemoryMapping[] source = Core.MemoryMapping.values();
+		//Ignore EOM from display
+		MemoryMapping[] target = new MemoryMapping[source.length - 1];
+		
+		System.arraycopy(source, 0, target, 0, target.length);
+		
+		modelAndView.addObject("deviceList", deviceList);
+		modelAndView.addObject("memoryMapping", target);
+		
+		return modelAndView;
+	}
+	
 }

@@ -6,7 +6,6 @@ import javax.validation.Valid;
 import org.lemma.ems.service.ReportManagementService;
 import org.lemma.ems.ui.model.DateRangeReportForm;
 import org.lemma.ems.ui.model.ReportManagementForm;
-import org.lemma.ems.util.EMSUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,7 @@ public class ReportingController {
 	 */
 	@RequestMapping(value = "/ems/reports/daterange", method = RequestMethod.GET)
 	public ModelAndView getDateRangeReportsPage() {
-		return new ModelAndView("reports/daterange", "reportForm", new DateRangeReportForm());
+		return reportService.getDateRageReportPage();
 	}
 
 	/**
@@ -51,8 +50,6 @@ public class ReportingController {
 	@RequestMapping(value = "/ems/reports/daterange", method = RequestMethod.POST)
 	public void postDateRangeReportsPage(@Valid DateRangeReportForm form, BindingResult formBinding,
 			HttpServletResponse response) throws Exception {
-
-		logger.debug("DateRange report requested with input {}", EMSUtility.convertObjectToJSONString(form));
 
 		if (formBinding.hasErrors()) {
 			logger.error("Form has error !!!");

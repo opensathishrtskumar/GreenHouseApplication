@@ -12,9 +12,18 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  */
 public class DateRangeReportForm implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8737934591484167924L;
 
+	@NotNull
+	@NotEmpty
 	private String deviceName;
 
+	@NotNull
+	@NotEmpty
 	private String memoryMappingDetails;
 
 	@NotNull

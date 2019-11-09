@@ -45,7 +45,7 @@ public abstract class Core {
 	 * add value repsresentation like Hz , Voltage and so on against all
 	 * mapping
 	 */
-	public static enum MemoryMapping {
+	public enum MemoryMapping {
 		VOLTAGE_BN("VOLTAGE_BN", "Voltage BN"), 
 		VOLTAGE_BR("VOLTAGE_BR", "Voltage BR"), 
 		VOLTAGE_RN("VOLTAGE_RN", "Voltage RN"), 
@@ -82,6 +82,10 @@ public abstract class Core {
 
 		public String getName() {
 			return name;
+		}
+		
+		public String getDesc() {
+			return desc;
 		}
 
 		/**
