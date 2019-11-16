@@ -18,6 +18,13 @@ public class UserRolesForm implements Serializable {
 	private long uniqueId[];
 	@NotNull
 	private int bitPosition[];
+	@NotNull
+	private String roleType;
+
+	private long createdTimeStamp;
+	private long modifiedTimeStamp;
+
+	private String hashKey;
 
 	public UserRolesForm() {
 		// NOOP
@@ -37,6 +44,38 @@ public class UserRolesForm implements Serializable {
 
 	public void setBitPosition(int[] bitPosition) {
 		this.bitPosition = bitPosition;
+	}
+
+	public String getRoleType() {
+		return roleType;
+	}
+
+	public void setRoleType(String roleType) {
+		this.roleType = roleType;
+	}
+
+	public long getCreatedTimeStamp() {
+		return createdTimeStamp;
+	}
+
+	public void setCreatedTimeStamp(long createdTimeStamp) {
+		this.createdTimeStamp = createdTimeStamp;
+	}
+
+	public long getModifiedTimeStamp() {
+		return modifiedTimeStamp;
+	}
+
+	public void setModifiedTimeStamp(long modifiedTimeStamp) {
+		this.modifiedTimeStamp = modifiedTimeStamp;
+	}
+
+	public String getHashKey() {
+		return hashKey;
+	}
+
+	public void setHashKey(String hashKey) {
+		this.hashKey = hashKey;
 	}
 
 }

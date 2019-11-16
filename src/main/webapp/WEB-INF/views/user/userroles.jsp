@@ -7,8 +7,8 @@
 <h2>User Roles</h2>
 
 <!-- Set required URLs with context path -->
- <c:url var="postUrl" value="/ems/userroles/manage" context="${pageContext.request.contextPath}" />
- 
+ <c:url var="updateUrl" value="/ems/userroles/update" context="${pageContext.request.contextPath}" />
+ <c:url var="addUrl" value="/ems/userroles/add" context="${pageContext.request.contextPath}" /> 
  <input type="hidden" id="testUrl" value="${testUrl}">
  
  <!-- All form validation errors and Success message -->	     
@@ -24,10 +24,16 @@
 <c:if test="${param.msg != null}">
 	<div style="display: inline;float: left;width: 100%;align-content: center;" class="success">${param.msg}</div>
 </c:if>
- 
- <!--Iterate existing devices in form, that can be updated/deleted(Soft delete)  -->    
- 
-<form:form id="roleManageForm" method="post" action="${roleManageUrl}" modelAttribute="userRolesForm">
+<center>
+<form:form id="roleAddForm" method="post" action="${addUrl}" modelAttribute="userRolesForm"> 
+	<div style="display: inline;float: centre">
+		<form:label path="roleType">Enter New RoleName</form:label>
+		<form:input path="roleType" htmlEscape="true" maxlength="50"/>	
+		<p><input type="submit" class="addrole" value="Add Role"></p>
+	</div>    
+</form:form>
+</hr> 
+<form:form id="roleManageForm" method="post" action="${updateUrl}" modelAttribute="userRolesForm">
 <table border="1">
 	<!-- Print the roles name only once  -->
 		<tr>
@@ -61,9 +67,9 @@
 		</tr>
 	 </c:forEach>
  </table> 
- <br>
-		<div style="display: inline;float: left;width: 30%">
-			<input type="submit" class="addUpdatedevice" value="Add/Update Device">
-		</div>
+ </br>
+	<div style="display: inline;float: left;width: 30%">
+		<input type="submit" class="updaterole" value="Update Role">
+	</div>
 </form:form>
- 
+</center> 

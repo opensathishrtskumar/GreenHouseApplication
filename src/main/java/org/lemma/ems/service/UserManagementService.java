@@ -198,4 +198,34 @@ public class UserManagementService {
 		return dto;
 	}
 
+	public ModelAndView addNewRole(UserRolesForm form) {
+		/**
+		 * On successfull insertion 1. publish reload event 2. Redirect back to show
+		 * devices page with success
+		 */
+		/*
+		 * LocalDate date = LocalDate.now().plusMonths(-1).withDayOfMonth(1); long
+		 * timeStamp = Helper.getStartOfDay(date.toDate().getTime());
+		 */
+		// DeviceDetailsForm to DeviceDetailsDTO convertion and insert it
+		UserRolesDTO dto = mapUserRolesForm2Dto(form);
+
+		int result = userRolesDAO.insertUserRoles(dto);
+		logger.info("updating DB. Result=" + result);
+		// TODO : insert New User using DAO
+
+		ModelAndView modelAndView = new ModelAndView("redirect:/ems/userroles/show");
+
+		// Load message from validation.props file
+		modelAndView.addObject("msg", msgSource.getMessage("user.added", null, Locale.getDefault()));
+		return modelAndView;
+	}
+
+	private UserRolesDTO mapUserRolesForm2Dto(UserRolesForm form) {
+		UserRolesDTO dto = new UserRolesDTO();
+		dto.setRoleType(form.getRoleType());
+		dto.setCreatedTimeStamp(System.currentTimeMillis());
+		dto.setHashKey("12345");// TODO: calculate hash key value
+		return dto;
+	}	
 }

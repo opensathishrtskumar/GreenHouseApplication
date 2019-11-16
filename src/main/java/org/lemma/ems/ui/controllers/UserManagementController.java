@@ -110,8 +110,26 @@ public class UserManagementController {
 	public ModelAndView showRoles() {
 		return userManagementService.showUserRolesPage();
 	}
+	@RequestMapping(value = "/ems/userroles/add", method = RequestMethod.POST)
+	public ModelAndView insertUserRoles(@ModelAttribute("userRolesForm") UserRolesForm form, BindingResult formBinding,
+			HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+		logger.debug("User Roles add request {}", form);
+		ModelAndView modelAndView = userManagementService.showUserRolesPage();
 
-	@RequestMapping(value = "/ems/userroles/manage", method = RequestMethod.POST)
+		UserRoleValidator validator = new UserRoleValidator(form, formBinding);
+		validator.validateUserRolesForm();
+
+		// Return errors if there is any, along with memoryMappings to iterate and Form
+		// Binding
+		if (formBinding.hasErrors()) {
+			modelAndView.addObject("userRolesForm", form);
+			return modelAndView;
+		}
+
+		return userManagementService.addNewRole(form);
+	}
+
+	@RequestMapping(value = "/ems/userroles/update", method = RequestMethod.POST)
 	public ModelAndView updateUserRoles(@ModelAttribute("userRolesForm") UserRolesForm form, BindingResult formBinding,
 			HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
 		logger.debug("User Roles update request {}", form);
