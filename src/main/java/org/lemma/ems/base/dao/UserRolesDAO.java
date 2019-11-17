@@ -1,13 +1,18 @@
 package org.lemma.ems.base.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
+import org.lemma.ems.base.dao.dto.DeviceReportMasterDTO;
 import org.lemma.ems.base.dao.dto.UserRolesDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -23,8 +28,7 @@ public class UserRolesDAO extends BaseDAO {
 	public static final String INSERT_ROLE = "insert into setup.userroles "
 			+ "(roletype, privileges,createdtimestamp,modifiedtimestamp,hashkey) values(?,?,?,?,?)";
 	
-	public static final String UPDATE_ROLE = "UPDATE setup.userroles SET roletype=?, privileges=?, modifiedtimestamp=?, hashkey=? "
-			+ "WHERE id=?";
+	public static final String UPDATE_ROLE = "UPDATE setup.userroles SET privileges=?, modifiedtimestamp=? WHERE id=?";
 
 	private static final Logger logger = LoggerFactory.getLogger(UserRolesDAO.class);
 
@@ -57,8 +61,7 @@ public class UserRolesDAO extends BaseDAO {
 	}
 	
 	public int updateUserRoles(UserRolesDTO dto) {
-		return super.executeQuery(UPDATE_ROLE, new Object[] { dto.getRoleType(), dto.getPrivileges(),
-				dto.getModifiedTimeStamp(), dto.getHashKey(), dto.getUniqueId() });
+		return executeQuery(UPDATE_ROLE, new Object[] {dto.getPrivileges(),dto.getModifiedTimeStamp(),dto.getUniqueId()});
 	}
-
+	
 }

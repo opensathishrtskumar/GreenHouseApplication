@@ -145,7 +145,7 @@ public class UserManagementController {
 			return modelAndView;
 		}
 
-		return userManagementService.udpateRole(form);
+		return userManagementService.updateUserRoles(form);
 	}
 
 }

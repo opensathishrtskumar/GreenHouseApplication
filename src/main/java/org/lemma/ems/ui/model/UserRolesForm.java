@@ -1,6 +1,8 @@
 package org.lemma.ems.ui.model;
 
 import java.io.Serializable;
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -15,36 +17,11 @@ public class UserRolesForm implements Serializable {
 	private static final long serialVersionUID = 1676793238282380110L;
 
 	@NotNull
-	private long uniqueId[];
-	@NotNull
-	private int bitPosition[];
-	@NotNull
+	private long roleId[];
+
+	private List<RoleConfig> config;
+
 	private String roleType;
-
-	private long createdTimeStamp;
-	private long modifiedTimeStamp;
-
-	private String hashKey;
-
-	public UserRolesForm() {
-		// NOOP
-	}
-
-	public long[] getUniqueId() {
-		return uniqueId;
-	}
-
-	public void setUniqueId(long[] uniqueId) {
-		this.uniqueId = uniqueId;
-	}
-
-	public int[] getBitPosition() {
-		return bitPosition;
-	}
-
-	public void setBitPosition(int[] bitPosition) {
-		this.bitPosition = bitPosition;
-	}
 
 	public String getRoleType() {
 		return roleType;
@@ -54,28 +31,47 @@ public class UserRolesForm implements Serializable {
 		this.roleType = roleType;
 	}
 
-	public long getCreatedTimeStamp() {
-		return createdTimeStamp;
+	public List<RoleConfig> getConfig() {
+		return config;
 	}
 
-	public void setCreatedTimeStamp(long createdTimeStamp) {
-		this.createdTimeStamp = createdTimeStamp;
+	public void setConfig(List<RoleConfig> config) {
+		this.config = config;
 	}
 
-	public long getModifiedTimeStamp() {
-		return modifiedTimeStamp;
+	public UserRolesForm() {
+		// NOOP
 	}
 
-	public void setModifiedTimeStamp(long modifiedTimeStamp) {
-		this.modifiedTimeStamp = modifiedTimeStamp;
+	public long[] getRoleId() {
+		return roleId;
 	}
 
-	public String getHashKey() {
-		return hashKey;
+	public void setRoleId(long[] roleId) {
+		this.roleId = roleId;
 	}
 
-	public void setHashKey(String hashKey) {
-		this.hashKey = hashKey;
-	}
+	public static class RoleConfig {
+		@NotNull
+		private int bitPosition[];
+		@NotNull
+		private boolean status[];
 
+		public int[] getBitPosition() {
+			return bitPosition;
+		}
+
+		public void setBitPosition(int[] bitPosition) {
+			this.bitPosition = bitPosition;
+		}
+
+		public boolean[] getStatus() {
+			return status;
+		}
+
+		public void setStatus(boolean[] status) {
+			this.status = status;
+		}
+
+	}
 }

@@ -9,7 +9,6 @@
 <!-- Set required URLs with context path -->
  <c:url var="updateUrl" value="/ems/userroles/update" context="${pageContext.request.contextPath}" />
  <c:url var="addUrl" value="/ems/userroles/add" context="${pageContext.request.contextPath}" /> 
- <input type="hidden" id="testUrl" value="${testUrl}">
  
  <!-- All form validation errors and Success message -->	     
    	<spring:hasBindErrors name="userRolesForm">
@@ -33,40 +32,45 @@
 	</div>    
 </form:form>
 </hr> 
+
 <form:form id="roleManageForm" method="post" action="${updateUrl}" modelAttribute="userRolesForm">
+
 <table border="1">
 	<!-- Print the roles name only once  -->
 		<tr>
 			<th rowspan="2">Page Details</th>
-			<c:forEach items="${existingUserRoles}" var="role" varStatus="roleIndex">
-				<c:set var = "roleCount" value = "${roleIndex.count}"/>
-			</c:forEach>
-			<th colspan="${roleCount}">Roles</th>
+			<th colspan="${existingUserRoles.size()}">Roles</th>
 		</tr>
 		<tr>
-		<c:forEach items="${existingUserRoles}" var="role" varStatus="roleIndex">
-			<td>${role.roleType}</td>			
-		</c:forEach>
+			<c:forEach items="${existingUserRoles}" var="role" varStatus="roleIndex">
+				<td>${role.roleType}</td>
+				<input type="hidden" name="roleId[${roleIndex.count - 1}]" value="${role.uniqueId}" >			
+			</c:forEach>
 		</tr>
-<%-- 	</c:if> --%>
+
+
 	<c:forEach items="${pageAccessDetails}" var="page" varStatus="index">
 		<tr>
 		<td>${page.resourceName}</td> 
 		<c:forEach items="${existingUserRoles}" var="role" varStatus="roleIndex">
-			<td> <input type="hidden" path="uniqueId[${page.uniqueId}]" value="${page.uniqueId}"/> 
+			<td>
+			<input type="hidden" name="config[${roleIndex.count - 1}].bitPosition[${index.count - 1}]" value="${page.bitPosition}"/>  
  			<c:choose>
-				<c:when test="${role.isBitPositionSet(role.privileges,page.bitPosition) == true}">
-					<center><input  type="checkbox" path="bitPosition[${page.bitPosition}]" value="${page.bitPosition}" checked="checked"/></center>								
+				<c:when test="${role.isBitPositionSet(role.privileges,page.bitPosition)}">
+					<center><input  type="checkbox" name="config[${roleIndex.count - 1}].status[${index.count - 1}]" checked="checked"/></center>								
 				</c:when>
 				<c:otherwise>
-					<center><input type="checkbox" path="bitPosition[${page.bitPosition}]" value="${page.bitPosition}" /></center>
+					<center><input  type="checkbox" name="config[${roleIndex.count - 1}].status[${index.count - 1}]"/></center>
 				</c:otherwise>
 			</c:choose>
 			</td>
 		</c:forEach>
 		</tr>
 	 </c:forEach>
+	 
+	 
  </table> 
+ 
  </br>
 	<div style="display: inline;float: left;width: 30%">
 		<input type="submit" class="updaterole" value="Update Role">
