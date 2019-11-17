@@ -1,5 +1,14 @@
 package org.lemma.ems.ui.controllers;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URLConnection;
+import java.nio.charset.Charset;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -10,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,10 +74,36 @@ public class ReportingController {
 	 */
 	@RequestMapping(value = "/ems/reports/daterange", method = RequestMethod.POST)
 	public void postDateRangeReportsPage(@Valid DateRangeReportForm form, BindingResult formBinding,
-			HttpServletResponse response) throws Exception {
+			HttpServletResponse response, HttpServletRequest request) throws Exception {
 
 		if (formBinding.hasErrors()) {
 			logger.error("Form has error !!!");
+			String errorMessage = "Sorry. Invalid input details for report";
+			OutputStream outputStream = response.getOutputStream();
+			outputStream.write(errorMessage.getBytes(Charset.forName("UTF-8")));
+			outputStream.close();
+			return;
 		}
+
+		File file = new File("C:\\Users\\RTS Sathish  Kumar\\Downloads\\project bms.xlsx");
+
+		String fileName = file.getName();
+
+		String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+		if (mimeType == null) {
+			mimeType = "application/octet-stream";
+		}
+
+		response.setContentType(mimeType);
+
+		response.setHeader("Content-Disposition", String.format("inline; filename=%s", fileName));
+
+		response.setContentLength((int) file.length());
+
+		InputStream inputStream = new FileInputStream(file);
+
+		// Copy bytes from source to destination(outputstream in this example), closes
+		// both streams.
+		FileCopyUtils.copy(inputStream, response.getOutputStream());
 	}
 }
