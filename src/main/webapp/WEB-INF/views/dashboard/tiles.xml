@@ -5,7 +5,8 @@
 	
 	<!-- Displays devices for Live monitoring as per configuration  -->
 	<definition name="dashboard" extends="homeSignedIn">
-		<put-attribute name="content" value="/WEB-INF/views/dashboard/dashboard.jsp" />
+		<put-attribute name="content" value="empty"/>
+		<put-attribute name="extendedcontent" value="/WEB-INF/views/dashboard/dashboard.jsp" />
 	</definition>
 	
 	<definition name="dashboard/chartview" extends="homeSignedIn">

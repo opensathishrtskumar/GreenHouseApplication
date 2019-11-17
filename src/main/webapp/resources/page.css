@@ -121,6 +121,11 @@ table, th, td {
 	width: 944px;
 }
 
+#extendedcontent {
+	margin: 0 auto;
+	width: 95%;	
+}
+
 #header {
 	height: 92px;
 	position: relative;
@@ -164,7 +169,7 @@ table, th, td {
 	padding: 25px;
 }
 
-#content {
+#content,#extendedcontent {
 	background-color: #FFFFFF;
 	padding: 25px;
 }

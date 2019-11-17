@@ -26,13 +26,27 @@
 		<tiles:insertAttribute name="header" />
 	</div>
 	<div id="content-container">
-		<div id="content">
-			<tiles:insertAttribute name="content" />
-		</div>
+		
+		<c:set var="contentVar"><tiles:getAsString name="content" defaultValue="empty"/></c:set>
+		<c:set var="extendedcontentVar"><tiles:getAsString name="extendedcontent" defaultValue="empty"/></c:set>
+		
+		<c:if test="${contentVar != null && contentVar != 'empty'}">
+			<div id="content">
+				<tiles:insertAttribute name="content" ignore="true" />
+			</div>
+		</c:if>		
+	
+		<c:if test="${extendedcontentVar != null && extendedcontentVar != 'empty'}">
+			<div id="extendedcontent">
+				<tiles:insertAttribute name="extendedcontent"  ignore="true"/>
+			</div>		
+		</c:if>
+		
 		<div id="footer">
 			<tiles:insertAttribute name="footer" />
 		</div>
 	</div>
+	
 	<c:forEach var="script" items="${scripts}">
 		<script type="text/javascript" src="<c:url value="${script}" />"></script>	
 	</c:forEach>
