@@ -3,5 +3,16 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 
 
+<div class="grid-stack">
+  <div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="4" data-gs-height="2">
+    <div class="grid-stack-item-content">my first widget</div>
+  </div>
+  <div class="grid-stack-item" data-gs-x="4" data-gs-y="0" data-gs-width="4" data-gs-height="4">
+    <div class="grid-stack-item-content">another widget!</div>
+  </div>
+</div>
 
-Dashboard view changes goes here
+
+<%-- <script type="text/javascript">
+  $('.grid-stack').gridstack();
+</script> --%>

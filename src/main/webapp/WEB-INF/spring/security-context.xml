@@ -23,8 +23,8 @@
 		
 		<intercept-url pattern="/admin/**" access="permitAll" requires-channel="${application.secureChannel}" />
 		
-		<!-- FIXME: Remove for producction -->
-		<intercept-url pattern="/rest/**" access="permitAll" requires-channel="${application.secureChannel}" />
+		<!-- Allow documents page -->
+		<intercept-url pattern="/docs/**" access="permitAll" requires-channel="${application.secureChannel}" />
 		           
 		<intercept-url pattern="/**" access="isAuthenticated()" requires-channel="${application.secureChannel}" />
 		
