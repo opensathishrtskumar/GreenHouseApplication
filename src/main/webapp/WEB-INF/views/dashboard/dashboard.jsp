@@ -3,16 +3,34 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 
 
-<div class="grid-stack">
-  <div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="4" data-gs-height="2">
-    <div class="grid-stack-item-content">my first widget</div>
-  </div>
-  <div class="grid-stack-item" data-gs-x="4" data-gs-y="0" data-gs-width="4" data-gs-height="4">
-    <div class="grid-stack-item-content">another widget!</div>
-  </div>
-</div>
+<div class="container-fluid">
+		<div class="grid-stack grid-stack-instance-1055" data-gs-current-height="16" style="height: 1260px;">
+			<div data-gs-x="0" data-gs-y="0" data-gs-width="6" data-gs-height="6" class="grid-stack-item ui-draggable ui-resizable ui-resizable-autohide">
+				<div class="grid-stack-item-content ui-draggable-handle">zer0</div>
+				<div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90; display: none;"></div>
+			</div>
+			<div data-gs-x="6" data-gs-y="0" data-gs-width="6" data-gs-height="4" class="grid-stack-item ui-draggable ui-resizable ui-resizable-autohide" style="">
+				<div class="grid-stack-item-content ui-draggable-handle">1</div>
+				<div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90; display: none;"></div>
+			</div>
+			<div data-gs-x="6" data-gs-y="4" data-gs-width="3" data-gs-height="1" class="grid-stack-item ui-draggable ui-resizable ui-resizable-autohide" style="">
+				<div class="grid-stack-item-content ui-draggable-handle">2</div>
+				<div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90; display: none;"></div>
+			</div>
+			<div data-gs-x="9" data-gs-y="4" data-gs-width="3" data-gs-height="1" class="grid-stack-item ui-draggable ui-resizable ui-resizable-autohide">
+				<div class="grid-stack-item-content ui-draggable-handle">3</div>
+				<div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90; display: none;"></div>
+			</div>
+			<div data-gs-x="6" data-gs-y="5" data-gs-width="6" data-gs-height="1" class="grid-stack-item ui-draggable ui-resizable ui-resizable-autohide">
+				<div class="grid-stack-item-content ui-draggable-handle">4</div>
+				<div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90; display: none;"></div>
+			</div>
+			<div data-gs-x="0" data-gs-y="6" data-gs-width="12" data-gs-height="4" class="grid-stack-item ui-draggable ui-resizable ui-resizable-autohide">
+				<div class="grid-stack-item-content ui-draggable-handle">5</div>
+				<div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90; display: none;"></div>
+			</div>
+			
+		</div>
+	</div>
 
-
-<%-- <script type="text/javascript">
-  $('.grid-stack').gridstack();
-</script> --%>
+<hr>

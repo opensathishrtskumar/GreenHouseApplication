@@ -9,14 +9,19 @@
 		<put-attribute name="extendedcontent" value="/WEB-INF/views/dashboard/dashboard.jsp" />
 		
 		<put-list-attribute name="styles" inherit="true">
-			<add-attribute value="/resources/dashboard/css/gridstack.min.css" />
+			<add-attribute value="/resources/datetimepicker/css//bootstrap.min.css" />
+			<add-attribute value="/resources/dashboard/css/gridstack.css" />
+			<add-attribute value="/resources/dashboard/css/gridstack-extra.css" />
+			<add-attribute value="/resources/dashboard/css/dashboard.css" />
 		</put-list-attribute>
 
 		<put-list-attribute name="scripts" inherit="true">
-			<add-attribute value="/resources/dashboard/js/dashboard.js" />
-			<add-attribute value="/resources/dashboard/js/gridstack.all.js" />
 			<add-attribute value="/resources/jquery/3.3.1/jquery-3.4.1.min.js" />
 			<add-attribute value="/resources/jquery/ui/js/jquery-ui.min.js" />
+			<add-attribute value="/resources/datetimepicker/js/bootstrap.min.js" />
+			<add-attribute value="/resources/dashboard/js/shim.min.js" />
+			<add-attribute value="/resources/dashboard/js/gridstack.all.js" />
+			<add-attribute value="/resources/dashboard/js/dashboard.js" />
 		</put-list-attribute>
 		
 	</definition>
