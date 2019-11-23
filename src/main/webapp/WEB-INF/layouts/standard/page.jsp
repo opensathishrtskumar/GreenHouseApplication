@@ -51,7 +51,7 @@
 		<script type="text/javascript" src="<c:url value="${script}" />"></script>	
 	</c:forEach>
 	<script type="text/javascript">
-		$.cookie('ems.timeZoneOffset', new Date().getTimezoneOffset() * 60000);
+		//$.cookie('ems.timeZoneOffset', new Date().getTimezoneOffset() * 60000);
 	</script>
 </body>
 </html>

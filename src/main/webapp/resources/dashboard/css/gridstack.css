@@ -43,6 +43,7 @@
   width: auto;
   overflow-x: hidden;
   overflow-y: auto;
+  text-align: -webkit-center;
 }
 
 .grid-stack > .grid-stack-item > .ui-resizable-handle {

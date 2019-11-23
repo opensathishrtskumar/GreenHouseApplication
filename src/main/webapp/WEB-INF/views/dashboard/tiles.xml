@@ -13,6 +13,8 @@
 			<add-attribute value="/resources/dashboard/css/gridstack.css" />
 			<add-attribute value="/resources/dashboard/css/gridstack-extra.css" />
 			<add-attribute value="/resources/dashboard/css/dashboard.css" />
+			
+			<add-attribute value="/resources/guage/css/speedometer.css" />
 		</put-list-attribute>
 
 		<put-list-attribute name="scripts" inherit="true">
@@ -22,6 +24,8 @@
 			<add-attribute value="/resources/dashboard/js/shim.min.js" />
 			<add-attribute value="/resources/dashboard/js/gridstack.all.js" />
 			<add-attribute value="/resources/dashboard/js/dashboard.js" />
+			
+			<add-attribute value="/resources/guage/js/speedometer.js" />
 		</put-list-attribute>
 		
 	</definition>
