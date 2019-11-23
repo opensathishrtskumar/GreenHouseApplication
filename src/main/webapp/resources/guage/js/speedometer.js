@@ -173,6 +173,12 @@ $.fn.myfunc = function (userPref) {
       }
     }
   }
+  
+  this.setGuageValue = function (v){
+	  $(this).val(v);
+	  $(this).trigger(this.defaultProperty.eventListenerType);
+  }
+  
   this.creatHtmlsElecments();
   $(this).bind(this.defaultProperty.eventListenerType,this.changePosition);
   return this;
