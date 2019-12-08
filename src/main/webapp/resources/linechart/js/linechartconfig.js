@@ -16,7 +16,7 @@ $(function() {
 			scales: {
 				xAxes: [{
 					display: true,
-					scaleLabel: { display: false,labelString: 'Time'}
+					scaleLabel: { display: true,labelString: 'Time'}
 				}],
 				yAxes: [{
 					display: true,
