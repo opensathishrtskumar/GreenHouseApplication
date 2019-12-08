@@ -12,7 +12,7 @@ public class PollingDetailsDTO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 7353069892688430105L;
-	private long deviceUniqueId;
+	private long uniqueId;
 	private long polledOn;
 	private float voltage_bn;
 	private float voltage_br;
@@ -39,12 +39,12 @@ public class PollingDetailsDTO implements Serializable {
 	private float vah;
 	private float va_avg;
 
-	public long getDeviceUniqueId() {
-		return deviceUniqueId;
+	public long getUniqueId() {
+		return uniqueId;
 	}
 
-	public void setDeviceUniqueId(long deviceUniqueId) {
-		this.deviceUniqueId = deviceUniqueId;
+	public void setUniqueId(long uniqueId) {
+		this.uniqueId = uniqueId;
 	}
 
 	public long getPolledOn() {

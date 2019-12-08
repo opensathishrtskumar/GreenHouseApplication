@@ -264,7 +264,7 @@ public abstract class EMSUtility {
 	public static PollingDetailsDTO populatePollingValuesToDto(EMSDeviceResponseHolder dtopoll) {
 		PollingDetailsDTO dto = new PollingDetailsDTO();
 		dto.setPolledOn(dtopoll.getTimeOfPoll());
-		dto.setDeviceUniqueId(dtopoll.getDevice().getUniqueId());
+		dto.setUniqueId(dtopoll.getDevice().getUniqueId());
 
 		List<ExtendedDeviceMemoryDTO> deviceMemoryList = dtopoll.getDevice().getDeviceMemoryList();
 

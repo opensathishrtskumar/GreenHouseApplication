@@ -1,15 +1,20 @@
 package org.lemma.ems.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
+import org.joda.time.LocalDate;
 import org.lemma.ems.base.core.constants.Core;
 import org.lemma.ems.base.core.constants.Core.MemoryMapping;
 import org.lemma.ems.base.dao.DeviceDetailsDAO;
 import org.lemma.ems.base.dao.DeviceReportMasterDAO;
+import org.lemma.ems.base.dao.PollingDetailsDAO;
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
 import org.lemma.ems.base.dao.dto.DeviceReportMasterDTO;
+import org.lemma.ems.base.dao.dto.PollingDetailsDTO;
 import org.lemma.ems.base.dao.dto.ReportDTO;
 import org.lemma.ems.base.mqueue.publisher.Sender;
 import org.lemma.ems.reports.core.ReportConstants;
@@ -18,6 +23,7 @@ import org.lemma.ems.ui.model.DateRangeReportForm;
 import org.lemma.ems.ui.model.ReportManagementForm;
 import org.lemma.ems.ui.model.ReportManagementForm.ReportStatus;
 import org.lemma.ems.util.BitUtil;
+import org.lemma.ems.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +51,8 @@ public class ReportManagementService {
 	
 	@Autowired
 	Sender sender;
+	@Autowired
+	PollingDetailsDAO pollingDetailsDAO;
 
 	/**
 	 * @return
@@ -150,4 +158,35 @@ public class ReportManagementService {
 		return modelAndView;
 	}
 	
+	
+	public ModelAndView insertDummy() {
+		ModelAndView modelAndView = new ModelAndView("reports/daterange", "reportForm", new DateRangeReportForm());
+		LocalDate plusDays = LocalDate.now().plusDays(-1);
+		Date date = plusDays.toDate();
+		
+		long startOfDay = DateUtil.getStartOfDay(date);
+		long endOfDay = DateUtil.getEndOfDay(date);
+		
+		float voltage = 1.000f;
+		float w1 = 1.000f;
+		float va1 = 1.000f;
+		float factor = 0.012f;
+		Random rand = new Random();
+		
+		for(long i = startOfDay;i < endOfDay;i = i + 15000) {
+			//Random number to include random seconds in PolledOn Time
+			int randInt = rand.nextInt(60000); 
+			PollingDetailsDTO pollingDetailsDTO = new PollingDetailsDTO();
+			pollingDetailsDTO.setUniqueId(1);
+			pollingDetailsDTO.setPolledOn(i + randInt);
+			pollingDetailsDTO.setVoltage_br(voltage += factor);
+			pollingDetailsDTO.setW1(w1 += factor);
+			pollingDetailsDTO.setVa1(va1 += factor);
+			
+			pollingDetailsDAO.insertPollingDetails(pollingDetailsDTO);
+		}
+		
+		return modelAndView;
+	}
+
 }

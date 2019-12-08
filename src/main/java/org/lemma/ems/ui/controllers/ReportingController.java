@@ -1,6 +1,5 @@
 package org.lemma.ems.ui.controllers;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -85,8 +84,8 @@ public class ReportingController {
 			return;
 		}
 
-		File file = new File("C:\\Users\\RTS Sathish  Kumar\\Downloads\\project bms.xlsx");
-
+		File file = new File("C:\\Users\\user\\Downloads\\project bms.xlsx");
+	
 		String fileName = file.getName();
 
 		String mimeType = URLConnection.guessContentTypeFromName(file.getName());
@@ -106,4 +105,10 @@ public class ReportingController {
 		// both streams.
 		FileCopyUtils.copy(inputStream, response.getOutputStream());
 	}
+	
+	@RequestMapping(value = "/ems/reports/dummy", method = RequestMethod.GET)
+	public ModelAndView insertDummmyRecords() {
+		return reportService.insertDummy();
+	}
+
 }

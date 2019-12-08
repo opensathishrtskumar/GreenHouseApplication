@@ -25,10 +25,10 @@ public class PollingDetailsDAO extends BaseDAO {
 	
 	/* All Queries constants*/
 	public static final String INSERT_POLLING_DETAILS = "insert into setup.pollingdetails"
-			+ "(deviceuniqueid, polledon, voltage_bn,voltage_br,voltage_rn,voltage_ry,voltage_yb,voltage_yn,voltage_avg_ll,"
+			+ "(uniqueid, polledon, voltage_bn,voltage_br,voltage_rn,voltage_ry,voltage_yb,voltage_yn,voltage_avg_ll,"
 			+ "voltage_avg_ln,r_current,y_current,b_current,current_avg,frequency,power_factor,w1,w2,w3,wh,w_avg,va1,va2,va3,vah,va_avg)"
 			+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
+	
 	/**
 	 * @param query
 	 * @param params
@@ -42,7 +42,7 @@ public class PollingDetailsDAO extends BaseDAO {
 			public DeviceDetailsDTO mapRow(ResultSet resultSet, int rowIndex) throws SQLException {
 				DeviceDetailsDTO details = new DeviceDetailsDTO();
 
-				details.setUniqueId(resultSet.getLong("deviceuniqueid"));
+				details.setUniqueId(resultSet.getLong("uniqueid"));
 				details.setDeviceId(resultSet.getInt("unitid"));
 				details.setDeviceName(resultSet.getString("devicealiasname"));
 				details.setBaudRate(resultSet.getInt("baudrate"));
@@ -109,7 +109,7 @@ public class PollingDetailsDAO extends BaseDAO {
 			@Override
 			public PollingDetailsDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 				PollingDetailsDTO details = new PollingDetailsDTO();
-				details.setDeviceUniqueId(rs.getLong("deviceuniqueid"));
+				details.setUniqueId(rs.getLong("uniqueid"));
 				details.setPolledOn(rs.getLong("polledon"));
 				// details.setUnitresponse(rs.getString("unitresponse"));
 				return details;
@@ -145,7 +145,7 @@ public class PollingDetailsDAO extends BaseDAO {
 	 * @return
 	 */
 	public int insertPollingDetails(PollingDetailsDTO dtopoll) {
-		return super.executeQuery(INSERT_POLLING_DETAILS, new Object[] { dtopoll.getDeviceUniqueId(),
+		return super.executeQuery(INSERT_POLLING_DETAILS, new Object[] { dtopoll.getUniqueId(),
 				dtopoll.getPolledOn(), dtopoll.getVoltage_bn(), dtopoll.getVoltage_br(), dtopoll.getVoltage_rn(),
 				dtopoll.getVoltage_ry(), dtopoll.getVoltage_yb(), dtopoll.getVoltage_yn(), dtopoll.getVoltage_avg_ll(),
 				dtopoll.getVoltage_avg_ln(), dtopoll.getR_current(), dtopoll.getY_current(), dtopoll.getB_current(),
