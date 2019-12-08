@@ -15,6 +15,8 @@
 			<add-attribute value="/resources/dashboard/css/dashboard.css" />
 			
 			<add-attribute value="/resources/guage/css/speedometer.css" />
+			
+			<add-attribute value="/resources/linechart/css/linechart.css" />
 		</put-list-attribute>
 
 		<put-list-attribute name="scripts" inherit="true">
@@ -26,6 +28,11 @@
 			<add-attribute value="/resources/dashboard/js/dashboard.js" />
 			
 			<add-attribute value="/resources/guage/js/speedometer.js" />
+			
+			<add-attribute value="/resources/linechart/js/Chart.min.js" />
+			<add-attribute value="/resources/linechart/js/utils.js" />
+			<add-attribute value="/resources/linechart/js/linechartconfig.js" />
+			
 		</put-list-attribute>
 		
 	</definition>
