@@ -5,7 +5,7 @@
         alwaysShowResizeHandle: false,
         resizable: { handles: 'e, se, s, sw, w'},
         animate:true,
-        removable:true,
+        removable:false,
         rtl: true
       };
       
