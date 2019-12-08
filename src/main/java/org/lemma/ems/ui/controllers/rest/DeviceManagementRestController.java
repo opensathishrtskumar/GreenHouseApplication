@@ -1,7 +1,10 @@
 
 package org.lemma.ems.ui.controllers.rest;
 
+import java.io.IOException;
+
 import org.lemma.ems.base.core.util.DeviceConnectionValidator;
+import org.lemma.ems.reports.DailyCumulativeReport;
 import org.lemma.ems.ui.model.DeviceConnectionResponse;
 import org.lemma.ems.ui.model.DeviceDetailsForm;
 import org.lemma.ems.ui.util.RequestResponseUtil;
@@ -27,6 +30,9 @@ public class DeviceManagementRestController {
 	
 	@Autowired
 	ApplicationContext context;
+	
+	@Autowired
+	DailyCumulativeReport dailyCumulativeReport;
 
 	@RequestMapping(value = "/connection/test", method = RequestMethod.POST)
 	@ResponseBody
@@ -50,4 +56,16 @@ public class DeviceManagementRestController {
 		return response;
 	}
 
+	
+	@RequestMapping(value = "/reports/testreport", method = RequestMethod.GET)
+	public String fetchTestRecords() {
+		try {
+			dailyCumulativeReport.execute();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "Success";
+	}
 }

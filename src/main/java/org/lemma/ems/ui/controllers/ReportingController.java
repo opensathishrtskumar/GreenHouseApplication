@@ -85,7 +85,7 @@ public class ReportingController {
 		}
 
 		File file = new File("C:\\Users\\user\\Downloads\\project bms.xlsx");
-	
+
 		String fileName = file.getName();
 
 		String mimeType = URLConnection.guessContentTypeFromName(file.getName());
@@ -105,7 +105,7 @@ public class ReportingController {
 		// both streams.
 		FileCopyUtils.copy(inputStream, response.getOutputStream());
 	}
-	
+
 	@RequestMapping(value = "/ems/reports/dummy", method = RequestMethod.GET)
 	public ModelAndView insertDummmyRecords() {
 		return reportService.insertDummy();

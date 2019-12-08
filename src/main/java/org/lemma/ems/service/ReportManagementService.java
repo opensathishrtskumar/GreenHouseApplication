@@ -173,11 +173,11 @@ public class ReportManagementService {
 		float factor = 0.012f;
 		Random rand = new Random();
 		
-		for(long i = startOfDay;i < endOfDay;i = i + 15000) {
+		for(long i = startOfDay;i < endOfDay;i = i + 200000) {
 			//Random number to include random seconds in PolledOn Time
 			int randInt = rand.nextInt(60000); 
 			PollingDetailsDTO pollingDetailsDTO = new PollingDetailsDTO();
-			pollingDetailsDTO.setUniqueId(1);
+			pollingDetailsDTO.setUniqueId(2);
 			pollingDetailsDTO.setPolledOn(i + randInt);
 			pollingDetailsDTO.setVoltage_br(voltage += factor);
 			pollingDetailsDTO.setW1(w1 += factor);

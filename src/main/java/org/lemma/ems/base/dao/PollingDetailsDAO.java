@@ -28,6 +28,14 @@ public class PollingDetailsDAO extends BaseDAO {
 			+ "(uniqueid, polledon, voltage_bn,voltage_br,voltage_rn,voltage_ry,voltage_yb,voltage_yn,voltage_avg_ll,"
 			+ "voltage_avg_ln,r_current,y_current,b_current,current_avg,frequency,power_factor,w1,w2,w3,wh,w_avg,va1,va2,va3,vah,va_avg)"
 			+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+	public static final String FETCH_DAILY_CUMULATIVE_DETAILS = "SELECT DATE_FORMAT(FROM_UNIXTIME(p.polledon/1000),'%d-%k')  timeformat,p.*" + 
+			"	FROM setup.pollingdetails p" + 
+			"    WHERE  " + 
+			"		p.uniqueid in (select uniqueid from setup.devicedetails where status = ? and type = ?) " + 
+			"		AND p.polledon BETWEEN ? AND ? " + 
+			"	GROUP BY p.uniqueid,timeformat" + 
+			"	ORDER BY p.uniqueid,CAST(p.polledon AS UNSIGNED) ASC";	
 	
 	/**
 	 * @param query
@@ -154,4 +162,38 @@ public class PollingDetailsDAO extends BaseDAO {
 				dtopoll.getVa2(), dtopoll.getVa3(), dtopoll.getVah(), dtopoll.getVa_avg() });
 	}
 
+	public List<PollingDetailsDTO> fetchDailyPolledSummary(String query, Object[] params) {
+
+		logger.trace(" entry ");
+
+		List<PollingDetailsDTO> details = this.jdbcTemplate.query(new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				con.setAutoCommit(false);
+				PreparedStatement statement = con.prepareStatement(query);
+
+				int index = 1;
+				for (Object obj : params)
+					statement.setObject(index++, obj);
+
+				//statement.setFetchSize(Integer.MIN_VALUE);
+				logger.debug(" prepared statement created {} ", Arrays.toString(params));
+				return statement;
+			}
+		}, new RowMapper<PollingDetailsDTO>() {
+
+			@Override
+			public PollingDetailsDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				PollingDetailsDTO details = new PollingDetailsDTO();
+				details.setTimeFormat(rs.getString("timeformat"));
+				details.setUniqueId(rs.getLong("uniqueid"));
+				details.setPolledOn(rs.getLong("polledon"));
+				details.setVoltage_br(rs.getLong("voltage_br"));
+				return details;
+			}
+		});
+
+		return details;
+	}	
+	
 }

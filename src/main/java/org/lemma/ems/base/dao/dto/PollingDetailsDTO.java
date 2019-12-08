@@ -12,6 +12,7 @@ public class PollingDetailsDTO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 7353069892688430105L;
+	private String timeFormat;
 	private long uniqueId;
 	private long polledOn;
 	private float voltage_bn;
@@ -38,6 +39,14 @@ public class PollingDetailsDTO implements Serializable {
 	private float va3;
 	private float vah;
 	private float va_avg;
+
+	public String getTimeFormat() {
+		return timeFormat;
+	}
+
+	public void setTimeFormat(String timeFormat) {
+		this.timeFormat = timeFormat;
+	}
 
 	public long getUniqueId() {
 		return uniqueId;
