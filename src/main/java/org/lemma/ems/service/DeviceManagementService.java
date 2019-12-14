@@ -177,12 +177,12 @@ public class DeviceManagementService {
 	
 	
 	private List<PollingDetailsDTO> retrieveDeviceStateFromCache(long deviceId) {
-		List<PollingDetailsDTO> dto = new ArrayList<>();  
+		Object wrapper = cacheUtil.getCacheEntry(Caches.DEVICECACHE, CacheEntryConstants.DeviceEntryConstants.DEVICE_STATES.getName(),Map.class);
 		
-		Map<Long, CircularFifoQueue<PollingDetailsDTO>> cacheEntry = (Map<Long, CircularFifoQueue<PollingDetailsDTO>>)
-				cacheUtil.getCacheEntry(Caches.DEVICECACHE, CacheEntryConstants.DeviceEntryConstants.DEVICE_STATES.getName());
-		
+		Map<Long, CircularFifoQueue<PollingDetailsDTO>> cacheEntry = (Map<Long, CircularFifoQueue<PollingDetailsDTO>>)wrapper;
 		CircularFifoQueue<PollingDetailsDTO> circularFifoQueue = cacheEntry.get(deviceId);
+		
+		List<PollingDetailsDTO> dto = new ArrayList<>();
 		
 		if(circularFifoQueue !=  null) {
 			circularFifoQueue.forEach(object -> dto.add(object));
