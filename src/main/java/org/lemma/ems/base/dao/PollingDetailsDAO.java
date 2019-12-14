@@ -44,16 +44,18 @@ public class PollingDetailsDAO extends BaseDAO {
 			"	GROUP BY p.uniqueid,timeformat" + 
 			"	ORDER BY p.uniqueid,CAST(p.polledon AS UNSIGNED) ASC";	
 
-	public static final String FETCH_MONTHLY_CUMULATIVE_DETAILS = "SELECT DATE_FORMAT(FROM_UNIXTIME(p.polledon/1000),'%Y-%d')  timeformat,p.*\r\n" + 
-			"	FROM setup.pollingdetails WHERE " + 
-			"		p.uniqueid in (select uniqueid from setup.devicedetails where status = :status and type = :type) " + 
-			"		AND p.polledon BETWEEN :startofday AND :endofday " + 
-			"	UNION SELECT DATE_FORMAT(FROM_UNIXTIME(mp.polledon/1000),'%Y-%d')  timeformat,mp.*" + 
-			"	FROM monthly.pollingdetails mp WHERE " + 
-			"		mp.uniqueid in (select uniqueid from setup.devicedetails where status = :status and type = :type) " + 
-			"		AND mp.polledon BETWEEN :startofday AND :endofday " + 
-			"	GROUP BY uniqueid,timeformat " + 
-			"	ORDER BY uniqueid,CAST(polledon AS UNSIGNED) ASC";	
+	public static final String FETCH_MONTHLY_CUMULATIVE_DETAILS = 
+			"select * from (SELECT DATE_FORMAT(FROM_UNIXTIME(p.polledon/1000),'%Y-%d')  timeformat,p.*" + 
+			" FROM setup.pollingdetails p WHERE " + 
+			" p.uniqueid in (select uniqueid from setup.devicedetails where status = :status and type = :type) " + 
+			" AND p.polledon BETWEEN :startofday AND :endofday "  
+			+ " UNION " + 
+			" SELECT DATE_FORMAT(FROM_UNIXTIME(mp.polledon/1000),'%Y-%d')  timeformat,mp.*" + 
+			" FROM setup.pollingdetails mp WHERE " + 
+			" mp.uniqueid in (select uniqueid from setup.devicedetails where status = :status and type = :type) " + 
+			" AND mp.polledon BETWEEN :startofday AND :endofday) temp " + 
+			" GROUP BY temp.uniqueid,temp.timeformat " + 
+			" ORDER BY temp.uniqueid,CAST(temp.polledon AS UNSIGNED) ASC";	
 	
 	/**
 	 * @param query
@@ -114,8 +116,6 @@ public class PollingDetailsDAO extends BaseDAO {
 
 	public List<PollingDetailsDTO> fetchMainIncomerDailySummary(String query, Object[] params) {
 
-		logger.trace(" entry ");
-
 		List<PollingDetailsDTO> details = this.jdbcTemplate.query(new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
@@ -141,8 +141,6 @@ public class PollingDetailsDAO extends BaseDAO {
 				return details;
 			}
 		});
-
-		logger.trace(" exit " + EMSUtility.convertObjectToJSONString(details));
 
 		return details;
 	}
@@ -192,8 +190,6 @@ public class PollingDetailsDAO extends BaseDAO {
 	
 	public List<PollingDetailsDTO> fetchDailyPolledSummary(String query, Object[] params) {
 
-		logger.trace(" entry ");
-
 		List<PollingDetailsDTO> details = this.jdbcTemplate.query(new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
@@ -224,17 +220,16 @@ public class PollingDetailsDAO extends BaseDAO {
 		return details;
 	}	
 
-	public List<PollingDetailsDTO> fetchMonthlyPolledSummary(String queryStr, int status,int type,long startOfDay,long endOfDay) {
+	public List<PollingDetailsDTO> fetchMonthlyPolledSummary(String queryStr, int status, int type, long startOfDay,
+			long endOfDay) {
 
-		logger.trace(" entry ");
+		Map<String, Object> map = new HashMap<>();
+		map.put("status", status);
+		map.put("type", type);
+		map.put("startofday", startOfDay);
+		map.put("endofday", endOfDay);
 
-		Map<String,Object> map=new HashMap<String,Object>();
-		map.put("status",status);
-		map.put("type",type);
-		map.put("startofday",startOfDay);
-		map.put("endofday",endOfDay);
-		
-		List<PollingDetailsDTO> details = this.jdbcNamedTemplate.query(queryStr,map, new RowMapper<PollingDetailsDTO>() {
+		return super.namedParameterJdbcTemplate.query(queryStr, map, new RowMapper<PollingDetailsDTO>() {
 
 			@Override
 			public PollingDetailsDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -247,7 +242,6 @@ public class PollingDetailsDAO extends BaseDAO {
 			}
 		});
 
-		return details;
-	}	
+	}
 	
 }

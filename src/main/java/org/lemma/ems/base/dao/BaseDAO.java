@@ -1,7 +1,5 @@
 package org.lemma.ems.base.dao;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -14,20 +12,12 @@ import org.springframework.jdbc.support.KeyHolder;
  *
  */
 public class BaseDAO {
-
+	
+	@Autowired
 	protected JdbcTemplate jdbcTemplate;
 
 	@Autowired
-	public void setDataSource(DataSource dataSource) {
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
-	}
-
-	protected NamedParameterJdbcTemplate jdbcNamedTemplate;
-
-	@Autowired
-	public void setNamedDataSource(DataSource dataSource) {
-		this.jdbcNamedTemplate = new NamedParameterJdbcTemplate(dataSource);
-	}	
+	protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	
 	/**
 	 * Inserts into table
