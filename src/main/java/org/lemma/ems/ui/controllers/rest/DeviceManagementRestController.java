@@ -5,8 +5,11 @@ import java.io.IOException;
 
 import org.lemma.ems.base.core.util.DeviceConnectionValidator;
 import org.lemma.ems.reports.DailyCumulativeReport;
+import org.lemma.ems.service.DeviceManagementService;
 import org.lemma.ems.ui.model.DeviceConnectionResponse;
 import org.lemma.ems.ui.model.DeviceDetailsForm;
+import org.lemma.ems.ui.model.DeviceStateRequest;
+import org.lemma.ems.ui.model.DeviceStateResponse;
 import org.lemma.ems.ui.util.RequestResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +36,9 @@ public class DeviceManagementRestController {
 	
 	@Autowired
 	DailyCumulativeReport dailyCumulativeReport;
+	
+	@Autowired
+	DeviceManagementService deviceManagementService;
 
 	@RequestMapping(value = "/connection/test", method = RequestMethod.POST)
 	@ResponseBody
@@ -67,5 +73,15 @@ public class DeviceManagementRestController {
 		}
 
 		return "Success";
+	}
+	
+	/**
+	 * @param request
+	 * @return device status for dashboard
+	 */
+	@RequestMapping(value = "/devicestate/retrieve", method = RequestMethod.POST)
+	@ResponseBody
+	public DeviceStateResponse getDeviceCurrtState(@RequestBody DeviceStateRequest request) {
+		return deviceManagementService.retrieveDeviceStates(request);
 	}
 }

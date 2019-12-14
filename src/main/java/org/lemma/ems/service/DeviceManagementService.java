@@ -1,16 +1,26 @@
 package org.lemma.ems.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
+import org.apache.commons.collections4.queue.CircularFifoQueue;
+import org.lemma.ems.base.cache.CacheEntryConstants;
+import org.lemma.ems.base.cache.CacheUtil;
+import org.lemma.ems.base.cache.Caches;
 import org.lemma.ems.base.dao.DeviceDetailsDAO;
 import org.lemma.ems.base.dao.DeviceMemoryDAO;
 import org.lemma.ems.base.dao.dto.DeviceDetailsDTO;
 import org.lemma.ems.base.dao.dto.DeviceMemoryDTO;
+import org.lemma.ems.base.dao.dto.PollingDetailsDTO;
 import org.lemma.ems.base.mqueue.publisher.Sender;
 import org.lemma.ems.base.mqueue.subscriber.DeviceSettingsListener;
 import org.lemma.ems.ui.model.DeviceDetailsForm;
 import org.lemma.ems.ui.model.DeviceFormDetails;
+import org.lemma.ems.ui.model.DeviceStateRequest;
+import org.lemma.ems.ui.model.DeviceStateResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +41,13 @@ public class DeviceManagementService {
 	private DeviceDetailsDAO deviceDetailsDAO;
 
 	@Autowired
-	ReloadableResourceBundleMessageSource msgSource;
+	private ReloadableResourceBundleMessageSource msgSource;
 	
 	@Autowired
-	Sender sender;
-
+	private Sender sender;
+	
+	@Autowired
+	private CacheUtil cacheUtil;
 	/**
 	 * @return
 	 */
@@ -138,4 +150,45 @@ public class DeviceManagementService {
 		return modelAndView;
 	}
 
+	
+	/**
+	 * @param request
+	 * @returns Given devices currrent state from Cache is updated using Live Poller
+	 */
+	public DeviceStateResponse retrieveDeviceStates(DeviceStateRequest request) {
+		DeviceStateResponse response = new DeviceStateResponse();
+		
+		if(request.getDeviceIds()  !=  null) {
+			for(long deviceId : request.getDeviceIds()) {
+				
+				List<PollingDetailsDTO> deviceStateFromCache = retrieveDeviceStateFromCache(deviceId);
+				//When firstRecord is true, set only first record in response
+				//otherwise whole details available in cahce will be responded
+				if(request.isFirstRecord() && deviceStateFromCache != null && !deviceStateFromCache.isEmpty()) {
+					response.getDeviceStates().put(deviceId, Arrays.asList(deviceStateFromCache.get(0)));
+				} else {
+					response.getDeviceStates().put(deviceId, deviceStateFromCache);
+				}
+			}
+		}
+		
+		return response;
+	}
+	
+	
+	private List<PollingDetailsDTO> retrieveDeviceStateFromCache(long deviceId) {
+		List<PollingDetailsDTO> dto = new ArrayList<>();  
+		
+		Map<Long, CircularFifoQueue<PollingDetailsDTO>> cacheEntry = (Map<Long, CircularFifoQueue<PollingDetailsDTO>>)
+				cacheUtil.getCacheEntry(Caches.DEVICECACHE, CacheEntryConstants.DeviceEntryConstants.DEVICE_STATES.getName());
+		
+		CircularFifoQueue<PollingDetailsDTO> circularFifoQueue = cacheEntry.get(deviceId);
+		
+		if(circularFifoQueue !=  null) {
+			circularFifoQueue.forEach(object -> dto.add(object));
+		}
+		
+		return  dto;
+	}
+	
 }
