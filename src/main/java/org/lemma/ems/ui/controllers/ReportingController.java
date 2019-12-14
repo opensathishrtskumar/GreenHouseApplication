@@ -111,4 +111,9 @@ public class ReportingController {
 		return reportService.insertDummy();
 	}
 
+	@RequestMapping(value = "/ems/reports/monthlydummy", method = RequestMethod.GET)
+	public ModelAndView insertMonthlyDummmyRecords() {
+		return reportService.insertMonthlyDummy();
+	}
+	
 }

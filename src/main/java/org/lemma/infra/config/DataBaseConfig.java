@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 @Configuration
 public class DataBaseConfig {
@@ -26,4 +27,14 @@ public class DataBaseConfig {
 	public JdbcTemplate jdbcTemplate() {
 		return new JdbcTemplate(dataSource);
 	}
+
+	/**
+	 * Allows repositories to access RDBMS data using the JDBC API.
+	 */
+	@Bean
+	@DependsOn("dataSource")
+	public NamedParameterJdbcTemplate jdbcNamedTemplate() {
+		return new NamedParameterJdbcTemplate(dataSource);
+	}	
+	
 }

@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
@@ -21,6 +22,13 @@ public class BaseDAO {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
+	protected NamedParameterJdbcTemplate jdbcNamedTemplate;
+
+	@Autowired
+	public void setNamedDataSource(DataSource dataSource) {
+		this.jdbcNamedTemplate = new NamedParameterJdbcTemplate(dataSource);
+	}	
+	
 	/**
 	 * Inserts into table
 	 * 
