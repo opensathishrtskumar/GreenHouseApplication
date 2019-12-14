@@ -1,12 +1,13 @@
 package org.lemma.ems.ui.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author RTS Sathish Kumar
  *
  */
-public class DeviceStateRequest extends BaseResponse {
+public class DeviceStateRequest implements Serializable {
 
 	/**
 	 * 

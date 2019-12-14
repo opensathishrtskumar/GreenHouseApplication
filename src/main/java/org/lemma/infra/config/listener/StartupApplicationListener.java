@@ -2,6 +2,7 @@ package org.lemma.infra.config.listener;
 
 import org.lemma.ems.base.mqueue.publisher.Sender;
 import org.lemma.ems.base.mqueue.subscriber.DeviceSettingsListener;
+import org.lemma.ems.base.mqueue.subscriber.Receiver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,9 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
 			// Send notification for individual events on Application startup
 			sender.publishEvent(DeviceSettingsListener.Topics.LOAD_SETTINGS.getTopic(),
 					DeviceSettingsListener.Topics.LOAD_SETTINGS.getTopic());
+			
+			sender.publishEvent(Receiver.Topics.STARTUP.getTopic(),
+					Receiver.Topics.STARTUP.getTopic());
 		}
 	}
 }

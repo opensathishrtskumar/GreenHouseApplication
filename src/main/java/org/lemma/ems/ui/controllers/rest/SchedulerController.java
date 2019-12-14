@@ -32,7 +32,7 @@ public class SchedulerController {
 	 */
 	@RequestMapping(value = "/list/schedules", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Map<String, Object>> publish() {
+	public List<Map<String, String>> publish() {
 		return schedules.getAllJobs();
 	}
 	

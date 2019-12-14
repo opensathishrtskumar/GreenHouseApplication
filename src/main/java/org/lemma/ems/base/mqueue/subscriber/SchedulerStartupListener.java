@@ -206,8 +206,8 @@ public class SchedulerStartupListener {
 	/**
 	 * Get all jobs
 	 */
-	public List<Map<String, Object>> getAllJobs() {
-		List<Map<String, Object>> list = new ArrayList<>();
+	public List<Map<String, String>> getAllJobs() {
+		List<Map<String, String>> list = new ArrayList<>();
 		try {
 			Scheduler scheduler = schedulerFactory.getScheduler();
 
@@ -224,12 +224,12 @@ public class SchedulerStartupListener {
 					Date nextFireTime = triggers.get(0).getNextFireTime();
 					Date lastFiredTime = triggers.get(0).getPreviousFireTime();
 
-					Map<String, Object> map = new HashMap<>();
+					Map<String, String> map = new HashMap<>();
 					map.put("jobName", jobName);
 					map.put("groupName", jobGroup);
-					map.put("scheduleTime", scheduleTime);
-					map.put("lastFiredTime", lastFiredTime);
-					map.put("nextFireTime", nextFireTime);
+					map.put("scheduleTime", scheduleTime.toString());
+					map.put("lastFiredTime", lastFiredTime.toString());
+					map.put("nextFireTime", nextFireTime.toString());
 
 					if (isJobRunning(jobName, jobGroup)) {
 						map.put("jobStatus", "RUNNING");
