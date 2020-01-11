@@ -21,6 +21,7 @@ import org.lemma.ems.ui.model.DeviceDetailsForm;
 import org.lemma.ems.ui.model.DeviceFormDetails;
 import org.lemma.ems.ui.model.DeviceStateRequest;
 import org.lemma.ems.ui.model.DeviceStateResponse;
+import org.lemma.ems.ui.model.DeviceStateResponse.DeviceState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,9 +166,9 @@ public class DeviceManagementService {
 				//When firstRecord is true, set only first record in response
 				//otherwise whole details available in cahce will be responded
 				if(request.isFirstRecord() && deviceStateFromCache != null && !deviceStateFromCache.isEmpty()) {
-					response.getDeviceStates().put(deviceId, Arrays.asList(deviceStateFromCache.get(0)));
+					response.getDeviceStates().add(new DeviceState(deviceId, Arrays.asList(deviceStateFromCache.get(0))));
 				} else {
-					response.getDeviceStates().put(deviceId, deviceStateFromCache);
+					response.getDeviceStates().add(new DeviceState(deviceId, deviceStateFromCache));
 				}
 			}
 		}
