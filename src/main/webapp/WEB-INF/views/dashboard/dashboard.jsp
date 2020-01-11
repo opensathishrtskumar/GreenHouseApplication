@@ -6,6 +6,8 @@
 <!-- Repeat the whole block to configure new device -->
 <!-- dashboard.js is responsible for creating dashboard and rendering guage and linechartconfig.js is for line chart rendering -->
 
+<div style="visibility: hidden;"><input type="hidden" value="{}"></div>
+
 <div class="container-fluid">
 	<div class="grid-stack grid-stack-instance-1055" data-gs-current-height="16" style="height: 1260px;">
 		<div data-gs-x="0" data-gs-y="0" data-gs-width="3" data-gs-height="4" class="grid-stack-item ui-draggable ui-resizable ui-resizable-autohide">

@@ -18,7 +18,7 @@
 	</li>
 	
 	<li class="listing">
-		<a href="#">Mange Dashboard</a>
+		<a href="<c:url value="/ems/dashboard/management/show" />">Mange Dashboard</a>
 	</li>
 	
 	<li class="listing">

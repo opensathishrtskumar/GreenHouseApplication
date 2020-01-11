@@ -51,5 +51,20 @@
 		</put-list-attribute>
 		
 	</definition>
+
+
+	<definition name="dashboardmngmt/show" extends="homeSignedIn">
+		<put-attribute name="content"
+			value="/WEB-INF/views/dashboard/dashboardmngmt.jsp" />
+
+		<put-list-attribute name="styles" inherit="true">
+		</put-list-attribute>
+
+		<put-list-attribute name="scripts" inherit="true">
+		</put-list-attribute>
+
+	</definition>
+	
+	
 	
 </tiles-definitions>
