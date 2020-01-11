@@ -165,7 +165,7 @@ public class DeviceManagementService {
 				List<PollingDetailsDTO> deviceStateFromCache = retrieveDeviceStateFromCache(deviceId);
 				//When firstRecord is true, set only first record in response
 				//otherwise whole details available in cahce will be responded
-				if(request.isFirstRecord() && deviceStateFromCache != null && !deviceStateFromCache.isEmpty()) {
+				if(request.isFirstRecord() && !deviceStateFromCache.isEmpty()) {
 					response.getDeviceStates().add(new DeviceState(deviceId, Arrays.asList(deviceStateFromCache.get(0))));
 				} else {
 					response.getDeviceStates().add(new DeviceState(deviceId, deviceStateFromCache));

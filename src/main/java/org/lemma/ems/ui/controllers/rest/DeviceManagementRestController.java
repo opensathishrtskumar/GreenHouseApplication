@@ -73,7 +73,6 @@ public class DeviceManagementRestController {
 		try {
 			dailyCumulativeReport.execute();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -95,7 +94,6 @@ public class DeviceManagementRestController {
 		try {
 			monthlyCumulativeReport.execute();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
