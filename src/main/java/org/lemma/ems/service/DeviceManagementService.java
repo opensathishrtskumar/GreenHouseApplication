@@ -17,6 +17,7 @@ import org.lemma.ems.base.dao.dto.DeviceMemoryDTO;
 import org.lemma.ems.base.dao.dto.PollingDetailsDTO;
 import org.lemma.ems.base.mqueue.publisher.Sender;
 import org.lemma.ems.base.mqueue.subscriber.DeviceSettingsListener;
+import org.lemma.ems.ui.model.DashboardMngmtForm;
 import org.lemma.ems.ui.model.DeviceDetailsForm;
 import org.lemma.ems.ui.model.DeviceFormDetails;
 import org.lemma.ems.ui.model.DeviceStateRequest;
@@ -25,6 +26,7 @@ import org.lemma.ems.ui.model.DeviceStateResponse.DeviceState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.ModelAndView;
@@ -49,6 +51,10 @@ public class DeviceManagementService {
 	
 	@Autowired
 	private CacheUtil cacheUtil;
+	
+	@Value("${linechart.memorymapping}")
+	private String memoryMapping;
+	
 	/**
 	 * @return
 	 */
@@ -190,6 +196,22 @@ public class DeviceManagementService {
 		}
 		
 		return  dto;
+	}
+	
+	
+	/**
+	 * @return MVC shows Dashboard management page
+	 */
+	public ModelAndView showDashboardMngmtView() {
+		// List of devices not DELETED and Type EMS
+		List<DeviceDetailsDTO> deviceList = deviceDetailsDAO.fetchDeviceDetails(DeviceDetailsDAO.RETRIEVE_EMS_DEVICES,
+				new Object[] { DeviceDetailsDAO.Status.DELETED.getStatus(), DeviceDetailsDAO.Type.EMS.getType() });
+
+		ModelAndView modelAndView = new ModelAndView("dashboardmngmt/show", "dashboardMngmtForm",  new DashboardMngmtForm());
+		
+		modelAndView.addObject("deviceList", deviceList);
+		
+		return modelAndView;
 	}
 	
 }
