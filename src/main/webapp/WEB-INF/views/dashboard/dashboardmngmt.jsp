@@ -25,10 +25,16 @@
 	 </fieldset>
  </form>
 
-	
+<c:url var="updateDashboardUrl" value="/ems/dashboardmngmt/update" context="${pageContext.request.contextPath}" />
+
+<form:form id="dashboardMngmtForm" method="post" action="${updateDashboardUrl}" modelAttribute="dashboardMngmtForm">
+
 	<c:forEach items="${deviceList}" var="device" >
 	
 		<div><c:out value="${device.deviceName}"></c:out></div>
 	
 	</c:forEach>
+
+</form:form>
+
 

@@ -214,4 +214,18 @@ public class DeviceManagementService {
 		return modelAndView;
 	}
 	
+	
+	/**
+	 * @return MVC shows Dashboard management page
+	 */
+	public ModelAndView updateDashboardMngmtConfig() {
+		
+		//TODO: code to update dashboard devices and set status
+		
+		
+		
+		ModelAndView modelAndView = showDashboardMngmtView();
+		
+		return modelAndView;
+	}
 }

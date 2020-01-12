@@ -46,4 +46,12 @@ public class DashboardController {
 	public ModelAndView showDashboardManagement() {
 		return deviceManagementService.showDashboardMngmtView();
 	}
+	
+	/**
+	 * @return
+	 */
+	@RequestMapping(value = "/ems/dashboardmngmt/update", method = RequestMethod.GET)
+	public ModelAndView updateDashboardManagement() {
+		return deviceManagementService.showDashboardMngmtView();
+	}
 }
