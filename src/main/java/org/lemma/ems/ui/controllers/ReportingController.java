@@ -14,6 +14,9 @@ import javax.validation.Valid;
 import org.lemma.ems.service.ReportManagementService;
 import org.lemma.ems.ui.model.DateRangeReportForm;
 import org.lemma.ems.ui.model.ReportManagementForm;
+import org.lemma.ems.reports.DailyCumulativeReport;
+import org.lemma.ems.reports.MonthlyCumulativeReport;
+import org.lemma.ems.reports.DateRangeReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,12 @@ public class ReportingController {
 
 	@Autowired
 	private ReportManagementService reportService;
+	@Autowired
+	private DailyCumulativeReport dailyReport;
+	@Autowired
+	private MonthlyCumulativeReport monthlyReport;
+	@Autowired
+	private DateRangeReport rangeReport;
 
 	/**
 	 * @return
@@ -62,7 +71,7 @@ public class ReportingController {
 	 */
 	@RequestMapping(value = "/ems/reports/daterange", method = RequestMethod.GET)
 	public ModelAndView getDateRangeReportsPage() {
-		return reportService.getDateRageReportPage();
+		return reportService.getDateRangeReportPage();
 	}
 
 	/**
@@ -83,9 +92,16 @@ public class ReportingController {
 			outputStream.close();
 			return;
 		}
-
-		File file = new File("C:\\Users\\user\\Downloads\\project bms.xlsx");
-
+		String strTemp;
+		if (form.getReportType().equals("1") ){
+			rangeReport.execute(); 
+		}else if(form.getReportType().equals("2") ){
+			dailyReport.execute();
+		}else if(form.getReportType().equals("3") ){
+			monthlyReport.execute();
+		}
+/*		File file = new File("C:\\Users\\user\\Downloads\\project bms.xlsx");
+		System.out.println(form.getReportType());
 		String fileName = file.getName();
 
 		String mimeType = URLConnection.guessContentTypeFromName(file.getName());
@@ -104,7 +120,7 @@ public class ReportingController {
 		// Copy bytes from source to destination(outputstream in this example), closes
 		// both streams.
 		FileCopyUtils.copy(inputStream, response.getOutputStream());
-	}
+*/	}
 
 	@RequestMapping(value = "/ems/reports/dummy", method = RequestMethod.GET)
 	public ModelAndView insertDummmyRecords() {
@@ -112,7 +128,7 @@ public class ReportingController {
 	}
 
 	@RequestMapping(value = "/ems/reports/monthlydummy", method = RequestMethod.GET)
-	public ModelAndView insertMonthlyDummmyRecords() {
+	public ModelAndView insertMonthlyDummmyRecords() throws Exception {
 		return reportService.insertMonthlyDummy();
 	}
 	

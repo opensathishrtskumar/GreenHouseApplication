@@ -142,7 +142,7 @@ public class ReportManagementService {
 	/**
 	 * @return
 	 */
-	public ModelAndView getDateRageReportPage() {
+	public ModelAndView getDateRangeReportPage() {
 		ModelAndView modelAndView = new ModelAndView("reports/daterange", "reportForm", new DateRangeReportForm());
 		
 		List<DeviceDetailsDTO> deviceList = deviceDetailsDAO.fetchEMSActiveDevices();
@@ -177,7 +177,7 @@ public class ReportManagementService {
 			//Random number to include random seconds in PolledOn Time
 			int randInt = rand.nextInt(60000); 
 			PollingDetailsDTO pollingDetailsDTO = new PollingDetailsDTO();
-			pollingDetailsDTO.setUniqueId(2);
+			pollingDetailsDTO.setUniqueId(1);
 			pollingDetailsDTO.setPolledOn(i + randInt);
 			pollingDetailsDTO.setVoltage_br(voltage += factor);
 			pollingDetailsDTO.setW1(w1 += factor);
@@ -188,15 +188,14 @@ public class ReportManagementService {
 		
 		return modelAndView;
 	}
-	public ModelAndView insertMonthlyDummy() {
+	public ModelAndView insertMonthlyDummy() throws Exception {
 		ModelAndView modelAndView = new ModelAndView("reports/daterange", "reportForm", new DateRangeReportForm());
-		LocalDate plusDays = LocalDate.now().plusDays(-10);
-		Date date = plusDays.toDate();		
-		long startOfDay = DateUtil.getStartOfDay(date);
 		
-		plusDays = LocalDate.now().plusDays(-1);
-		date = plusDays.toDate();		
-		long endOfDay = DateUtil.getEndOfDay(date);
+		long start = DateUtil.parseDateTime("01-01-2020", "dd-MM-yyyy");
+		long end = DateUtil.parseDateTime("29-01-2020", "dd-MM-yyyy");
+		
+		long startOfDay = DateUtil.getStartOfDay(start);
+		long endOfDay = DateUtil.getEndOfDay(end);
 		
 		float voltage = 1.000f;
 		float w1 = 1.000f;
@@ -214,6 +213,7 @@ public class ReportManagementService {
 			pollingDetailsDTO.setW1(w1 += factor);
 			pollingDetailsDTO.setVa1(va1 += factor);
 			
+			//pollingDetailsDAO.insertPollingDetails(pollingDetailsDTO);
 			pollingDetailsDAO.insertMonthlyPollingDetails(pollingDetailsDTO);
 		}
 		

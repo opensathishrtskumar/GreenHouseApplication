@@ -1,93 +1,54 @@
 package org.lemma.infra.config.listener;
 
-import org.apache.commons.collections4.queue.CircularFifoQueue;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
+import java.util.Random;
+
+import org.apache.commons.collections.map.HashedMap;
+import org.joda.time.LocalDate;
 
 public class MainMaster {
 
-	public static class X {
 
-		private String a;
-		private String b;
+	@SuppressWarnings("deprecation")
+	public static void main(String[] args) throws Exception {
+		
+	Map<String, Object> map = new HashedMap();
+	float minValue;
+	float maxValue;
+	String minConsumeDate;
+	String maxConsumeDate;
+	minValue = -1;
+	maxValue = 0;
+	minConsumeDate = "";
+	maxConsumeDate = "";	
+	int difference = 3;
+	String key;
+	//Random rand = new Random();
+	for (int i=1;i<31;i++) {
+		key = String.valueOf(i);
+		difference = difference + new Random().nextInt(10);
 
-		public X() {
-
-		}
-
-		public X(String a) {
-			this.a = a;
-		}
-
-		public X(String a, String b) {
-			this.a = a;
-			this.b = b;
-		}
-
-		public String getA() {
-			return a;
-		}
-
-		public void setA(String a) {
-			this.a = a;
-		}
-
-		public String getB() {
-			return b;
-		}
-
-		public void setB(String b) {
-			this.b = b;
-		}
-
-		@Override
-		public String toString() {
-			return "X [a=" + a + ", b=" + b + "]";
+		map.put(key, difference);
+		if(minValue ==-1 ) {
+            minValue = difference;
+            minConsumeDate = key;					
+		}else if(difference < minValue){
+            minValue = difference;
+            minConsumeDate = key;
+        }
+		if(difference > maxValue){
+			maxValue = difference;
+			maxConsumeDate = key;
 		}
 	}
-
-	public static void main(String[] args) throws Exception {
-
-		CircularFifoQueue<String> queue = new CircularFifoQueue<>(5);
-		
-		for(int i = 0;i<10;i++) {
-			queue.add("Elelemet " + i);
-			System.out.println(queue);
-		}
-		List<X> list = new ArrayList<>();
-		list.add(new X("a"));
-		list.add(new X("a","b"));
-		list.add(new X("ax","by"));
-		list.add(new X("ax","bx"));
-		
-		/*System.out.println(list);
-		
-		for(X x : list) {
-			System.out.println(x);
-		}
-		
-		for(int i=0;i<list.size();i++) {
-			System.out.println(list.get(i));
-		}*/
-		
-		Map<String, List<X>> group = list.stream().collect(Collectors.groupingBy(X::getA));
-		
-		
-		for(Entry<String, List<X>> entry : group.entrySet()) {
-			System.out.println(entry.getKey());
-			System.out.println("");
-			
-			for(X x : entry.getValue()) {
-				System.out.println("\t"+ entry.getValue());
-			}
-			
-		}
-		
-		//System.out.println(group);
-		
+	System.out.println("MinDate=" + minConsumeDate + ";MaxDate=" + maxConsumeDate);
+	long m = LocalDate.now().minusDays(1).toDate().getTime();//.getMonthOfYear();
+	SimpleDateFormat originalFormat = new SimpleDateFormat("MMM");
+	String date = originalFormat.format(m);
+    System.out.println(date);
 	}
 
 }

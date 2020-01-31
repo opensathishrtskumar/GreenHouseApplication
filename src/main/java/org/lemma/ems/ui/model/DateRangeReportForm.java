@@ -4,6 +4,7 @@ package org.lemma.ems.ui.model;
 import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -13,9 +14,6 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 public class DateRangeReportForm implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8737934591484167924L;
 
 	@NotNull
@@ -33,6 +31,19 @@ public class DateRangeReportForm implements Serializable {
 	@NotNull
 	@NotEmpty
 	private String reportEndTime;
+
+	@NotNull
+	@Size(min = 1, message = "Select Report Type", max = 3)
+	private String reportType;
+	
+	
+	public String getReportType() {
+		return reportType;
+	}
+
+	public void setReportType(String reportType) {
+		this.reportType = reportType;
+	}
 
 	public String getDeviceName() {
 		return deviceName;

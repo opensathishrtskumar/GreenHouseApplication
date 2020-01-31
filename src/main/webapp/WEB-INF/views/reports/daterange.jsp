@@ -66,7 +66,17 @@
 				</span>
 			</div>
 		</div>
-
+		<div class="oneline">
+			<form:label path="reportType">Report Type<form:errors
+					path="reportType" cssClass="error" />
+			</form:label>
+	
+			<form:select path="reportType" id="reportTypeDetails" class="3col active">
+				<form:option value="1">Date Range Report</form:option>
+				<form:option value="2">Daily Cummulative Report</form:option>
+				<form:option value="3">Monthly Cummulative Report</form:option>
+			</form:select>
+		</div>
 	</fieldset>
 
 	<p align="center">
