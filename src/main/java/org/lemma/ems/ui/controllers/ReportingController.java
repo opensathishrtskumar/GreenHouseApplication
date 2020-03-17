@@ -92,7 +92,6 @@ public class ReportingController {
 			outputStream.close();
 			return;
 		}
-		String strTemp;
 		if (form.getReportType().equals("1") ){
 			rangeReport.execute(); 
 		}else if(form.getReportType().equals("2") ){

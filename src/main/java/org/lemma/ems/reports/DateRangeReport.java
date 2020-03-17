@@ -12,7 +12,6 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections.map.HashedMap;
-import org.joda.time.LocalDateTime;
 import org.jxls.common.Context;
 import org.jxls.util.JxlsHelper;
 import org.jxls.util.Util;
@@ -21,6 +20,7 @@ import org.lemma.ems.base.dao.PollingDetailsDAO;
 import org.lemma.ems.base.dao.dto.PollingDetailsDTO;
 import org.lemma.ems.reports.model.DailyReportHolder;
 import org.lemma.ems.reports.model.DailyReportModel;
+import org.lemma.ems.ui.model.DateRangeReportForm;
 import org.lemma.ems.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +45,9 @@ public class DateRangeReport {
 	@Autowired
 	DeviceDetailsDAO deviceDetailsDAO;
 
+	@Autowired
+	DateRangeReportForm dateRangeReportForm;
+	
 	public static void main(String[] args) throws IOException {
 		logger.info("Running Multiple Sheet demo");
 	}
@@ -92,7 +95,7 @@ public class DateRangeReport {
 	private List<DailyReportModel> populateDeviceList() {
 		List<DailyReportModel> arrayList = new ArrayList<>();
 
-		long yesterday = LocalDateTime.now().minusDays(1).toDate().getTime();
+/*		long yesterday = LocalDateTime.now().minusDays(1).toDate().getTime();
 		long startOfDay = DateUtil.getStartOfDay(yesterday);
 		// Add one hour too get last next day first record too
 		long endOfDay = DateUtil.getEndOfDay(yesterday) + (60 * 60 * 1000);
@@ -101,7 +104,17 @@ public class DateRangeReport {
 				PollingDetailsDAO.FETCH_DAILY_CUMULATIVE_DETAILS,
 				new Object[] { DeviceDetailsDAO.Status.ACTIVE.getStatus(), DeviceDetailsDAO.Type.EMS.getType(),
 						startOfDay, endOfDay });
+*/		
 
+		long startOfDay = Long.parseLong(dateRangeReportForm.getReportStartTime());
+		
+		long endOfDay = Long.parseLong(dateRangeReportForm.getReportEndTime());
+
+		List<PollingDetailsDTO> cumulativeRecords = pollingDetailsDAO.fetchRangePolledSummary(
+				PollingDetailsDAO.FETCH_RANGE_CUMULATIVE_DETAILS,
+				new Object[] { DeviceDetailsDAO.Status.ACTIVE.getStatus(), DeviceDetailsDAO.Type.EMS.getType(),
+						startOfDay, endOfDay });		
+		
 		Map<Long, List<PollingDetailsDTO>> collect = cumulativeRecords.stream()
 				.collect(Collectors.groupingBy(PollingDetailsDTO::getUniqueId));
 
@@ -111,8 +124,9 @@ public class DateRangeReport {
 
 			DailyReportModel reportModel = new DailyReportModel(
 					"Feeder " + uniqueid /* TODO : get feeder name from cache */, uniqueid.intValue(),
-					DateUtil.getFormattedTime(yesterday, DateUtil.DD_MM_YY));
+					DateUtil.getFormattedTime(startOfDay, DateUtil.DD_MM_YY));
 
+			@SuppressWarnings("unchecked")
 			Map<String, Object> map = new HashedMap();
 
 			for (int i = 0; i < value.size() - 1; i++) {

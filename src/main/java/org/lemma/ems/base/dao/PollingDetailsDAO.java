@@ -44,6 +44,10 @@ public class PollingDetailsDAO extends BaseDAO {
 			"	GROUP BY p.uniqueid,timeformat" + 
 			"	ORDER BY p.uniqueid,CAST(p.polledon AS UNSIGNED) ASC";	
 
+	public static final String FETCH_RANGE_CUMULATIVE_DETAILS = "SELECT * FROM setup.pollingdetails as sp WHERE sp.polledon BETWEEN ? AND ?" + 
+			"	UNION ALL " + 
+			"	SELECT * FROM monthly.pollingdetails as mp WHERE mp.polledon BETWEEN ? AND ?";
+	
 /*	public static final String FETCH_MONTHLY_CUMULATIVE_DETAILS = 
 			"select * from (SELECT DATE_FORMAT(FROM_UNIXTIME(p.polledon/1000),'%Y-%d')  timeformat,p.*" + 
 			" FROM setup.pollingdetails p WHERE " + 
@@ -228,7 +232,7 @@ UNION
 				PreparedStatement statement = con.prepareStatement(query);
 
 				int index = 1;
-				for (Object obj : params)
+				for (Object obj : params) 
 					statement.setObject(index++, obj);
 
 				//statement.setFetchSize(Integer.MIN_VALUE);
@@ -274,5 +278,37 @@ UNION
 		});
 
 	}
+	
+	public List<PollingDetailsDTO> fetchRangePolledSummary(String query, Object[] params) {
+
+		List<PollingDetailsDTO> details = this.jdbcTemplate.query(new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				con.setAutoCommit(false);
+				PreparedStatement statement = con.prepareStatement(query);
+
+				int index = 1;
+				for (Object obj : params) 
+					statement.setObject(index++, obj);
+
+				//statement.setFetchSize(Integer.MIN_VALUE);
+				logger.debug(" prepared statement created {} ", Arrays.toString(params));
+				return statement;
+			}
+		}, new RowMapper<PollingDetailsDTO>() {
+
+			@Override
+			public PollingDetailsDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				PollingDetailsDTO details = new PollingDetailsDTO();
+				details.setTimeFormat(rs.getString("timeformat"));
+				details.setUniqueId(rs.getLong("uniqueid"));
+				details.setPolledOn(rs.getLong("polledon"));
+				details.setVoltage_br(rs.getLong("voltage_br"));
+				return details;
+			}
+		});
+
+		return details;
+	}		
 	
 }
