@@ -7,11 +7,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.stereotype.Component;
 
 /**
  * @author RTS Sathish Kumar
  *
  */
+@Component
 public class DateRangeReportForm implements Serializable {
 	
 	private static final long serialVersionUID = 8737934591484167924L;
